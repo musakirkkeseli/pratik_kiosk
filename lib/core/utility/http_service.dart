@@ -202,12 +202,16 @@ class HttpService implements IHttpService {
       if (apiResponse.success) {
         return apiResponse;
       } else {
-        throw NetworkException(apiResponse.message);
+        throw NetworkException(apiResponse.message, 200);
       }
     } on DioException catch (e) {
       MyLog.debug("HttpService request DioException $e");
       final message = _extractErrorMessage(e);
-      throw NetworkException(BaseDioService.service.handleDioError(e, message));
+      final statusCode = _extractErrorStatusCode(e);
+      throw NetworkException(
+        BaseDioService.service.handleDioError(e, message),
+        statusCode,
+      );
     } catch (e) {
       MyLog.debug("HttpService request catch $e");
       rethrow;
@@ -226,11 +230,15 @@ class HttpService implements IHttpService {
       if (apiResponse.success ?? false) {
         return apiResponse;
       } else {
-        throw NetworkException(apiResponse.message ?? "");
+        throw NetworkException(apiResponse.message ?? "", 200);
       }
     } on DioException catch (e) {
       final message = _extractErrorMessage(e);
-      throw NetworkException(BaseDioService.service.handleDioError(e, message));
+      final statusCode = _extractErrorStatusCode(e);
+      throw NetworkException(
+        BaseDioService.service.handleDioError(e, message),
+        statusCode,
+      );
     } catch (e) {
       rethrow;
     }
@@ -242,5 +250,13 @@ class HttpService implements IHttpService {
       return data["message"]?.toString() ?? ConstantString().errorOccurred;
     }
     return ConstantString().errorOccurred;
+  }
+
+  int _extractErrorStatusCode(DioException e) {
+    final data = e.response?.statusCode;
+    if (data is int) {
+      return data;
+    }
+    return 500;
   }
 }

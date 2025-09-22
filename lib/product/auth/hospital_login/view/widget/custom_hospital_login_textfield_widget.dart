@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class CustomHospitalLoginTextfieldWidget extends StatelessWidget {
   final String labelText;
   final TextEditingController controller;
+  final bool obscureText;
 
   const CustomHospitalLoginTextfieldWidget({
     super.key,
     required this.labelText,
     required this.controller,
+    this.obscureText = false,
   });
 
   @override
