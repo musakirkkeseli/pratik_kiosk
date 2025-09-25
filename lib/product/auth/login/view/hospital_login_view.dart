@@ -6,7 +6,7 @@ import 'package:kiosk/features/utility/enum/enum_general_state_status.dart';
 import 'package:kiosk/features/utility/navigation_service.dart';
 import 'package:kiosk/product/auth/login/view/widget/custom_hospital_login_textfield_widget.dart';
 
-import '../../../../core/utility/http_service.dart';
+import '../../../../core/utility/tenant_http_service.dart';
 import '../cubit/hospital_login_cubit.dart';
 import '../services/hospital_and_user_login_services.dart';
 
@@ -27,7 +27,7 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
   Widget build(BuildContext context) {
     return BlocProvider<HospitalLoginCubit>(
       create: (_) => HospitalLoginCubit(
-        service: HospitalAndUserLoginServices(HttpService()),
+        service: HospitalAndUserLoginServices(TenantHttpService()),
       ),
       child: BlocConsumer<HospitalLoginCubit, HospitalLoginState>(
         listenWhen: (prev, curr) => prev.status != curr.status,

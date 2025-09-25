@@ -19,7 +19,5 @@ final class AppInitialize {
     await dotenv.load(fileName: Environment.fileName);
 
     await AnalyticsService().init();
-
-    await HttpService.init();
   }
 }

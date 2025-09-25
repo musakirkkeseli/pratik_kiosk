@@ -9,9 +9,7 @@ import '../../features/utility/navigation_service.dart';
 import '../exception/network_exception.dart';
 import 'analytics_service.dart';
 import 'base_dio_service.dart';
-import 'cache_manager.dart';
 import 'logger_service.dart';
-import 'login_status_service.dart';
 
 abstract class IHttpService {
   Future<Response> get(String path, {Map<String, dynamic>? queryParameters});
@@ -31,48 +29,47 @@ abstract class IHttpService {
   });
 }
 
+/// Tüm ortak kurulum burada. Farklılık: dışarıdan verilen InterceptorsWrapper.
 class HttpService implements IHttpService {
-  static HttpService? _instance;
   late final Dio _dio;
 
-  static Future<void> init() async {
-    if (_instance != null) return;
+  /// Uygulama sürümü tek sefer alınır.
+  static String? _appVersion;
+  static Future<void> _ensureAppVersionLoaded() async {
+    if (_appVersion != null) return;
     final info = await PackageInfo.fromPlatform();
-    _instance = HttpService._internal(info.version);
+    _appVersion = info.version;
   }
 
-  factory HttpService() {
-    if (_instance == null) {
-      throw StateError(
-        'HttpService kullanılmadan önce await HttpService.init() çağırın',
-      );
-    }
-    return _instance!;
-  }
-
-  HttpService._internal(String appVersion) {
+  /// DIKKAT: Ortak interceptor'lar + dışarıdan verilen InterceptorsWrapper eklenir.
+  HttpService.withInterceptor({
+    required InterceptorsWrapper interceptor,
+    Duration connectTimeout = const Duration(seconds: 20),
+    Duration receiveTimeout = const Duration(seconds: 20),
+  }) {
     _dio = Dio(
       BaseOptions(
         baseUrl: ConstantString.backendUrl,
-        headers: {
-          'Content-Type': 'application/json',
-          "x-app-version": appVersion,
-        },
-        connectTimeout: const Duration(seconds: 20),
-        receiveTimeout: const Duration(seconds: 20),
+        headers: {'Content-Type': 'application/json'},
+        connectTimeout: connectTimeout,
+        receiveTimeout: receiveTimeout,
       ),
     );
 
+    // 1) Ortak interceptor (versiyon, stopwatch, Sentry, analytics, 400->forceUpdate)
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          // 1) TOKEN: asenkron oku
-          final token = await CacheManager().readString('token');
-          if (token != null && token.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer $token';
+          await _ensureAppVersionLoaded();
+          if (_appVersion != null) {
+            options.headers['x-app-version'] = _appVersion;
           }
-          options.extra['stopwatch'] = Stopwatch()..start();
 
+          // Bu client referansını retry için ekstra'ya koyuyoruz
+          options.extra['__client__'] = _dio;
+
+          // Süre ölçümü ve Sentry Span
+          options.extra['stopwatch'] = Stopwatch()..start();
           final parentSpan = Sentry.getSpan();
           ISentrySpan span;
           if (parentSpan != null) {
@@ -81,7 +78,6 @@ class HttpService implements IHttpService {
               description: '${options.method} ${options.uri.path}',
             );
           } else {
-            // Aksi hâlde yeni bir transaction başlat
             final ctx = SentryTransactionContext(
               '${options.method} ${options.uri.path}',
               'http.client',
@@ -89,7 +85,8 @@ class HttpService implements IHttpService {
             span = Sentry.startTransactionWithContext(ctx);
           }
           options.extra['sentry_span'] = span;
-          return handler.next(options);
+
+          handler.next(options);
         },
         onResponse: (response, handler) async {
           final stopwatch =
@@ -115,15 +112,18 @@ class HttpService implements IHttpService {
             await span.finish();
           }
 
-          return handler.next(response);
+          handler.next(response);
         },
         onError: (DioException e, handler) async {
           final stopwatch = e.requestOptions.extra['stopwatch'] as Stopwatch?;
           stopwatch?.stop();
+
           final span = e.requestOptions.extra['sentry_span'] as ISentrySpan?;
-          span?.throwable = e;
-          span?.status = SpanStatus.internalError();
-          await span?.finish();
+          if (span != null) {
+            span.throwable = e;
+            span.status = SpanStatus.internalError();
+            await span.finish();
+          }
 
           AnalyticsService().logException(
             e,
@@ -136,31 +136,27 @@ class HttpService implements IHttpService {
               'response': e.response?.data?.toString(),
             },
           );
-
-          switch (e.response?.statusCode) {
-            case 401:
-              LoginStatusService().logout();
-              break;
-            case 400:
-              if (e.response is Response &&
-                  (e.response!.data["statusEnum"] == "MINIMUM_APP_VERSION" ||
-                      e.response!.data["statusEnum"] ==
-                          "WRONG_VERSION_NUMBER_FORMAT")) {
-                NavigationService.ns.gotoForceUpdate();
-              }
-              break;
-            default:
+          if (e.response?.statusCode == 400) {
+            final data = e.response?.data;
+            if (data is Map &&
+                (data["statusEnum"] == "MINIMUM_APP_VERSION" ||
+                    data["statusEnum"] == "WRONG_VERSION_NUMBER_FORMAT")) {
+              NavigationService.ns.gotoForceUpdate();
+            }
           }
-          return handler.next(e);
+          handler.next(e);
         },
       ),
     );
+
+    _dio.interceptors.add(interceptor);
 
     _dio.interceptors.add(
       LogInterceptor(requestBody: true, responseBody: true),
     );
   }
 
+  // ----- Ortak yardımcılar -----
   void updateLanguageHeader(String languageCode) {
     _dio.options.headers['Accept-Language'] = languageCode;
   }
@@ -198,7 +194,6 @@ class HttpService implements IHttpService {
     try {
       final response = await requestFunction();
       final apiResponse = ApiResponse<T>.fromJson(response.data, fromJson);
-
       if (apiResponse.success) {
         return apiResponse;
       } else {
@@ -226,7 +221,6 @@ class HttpService implements IHttpService {
     try {
       final response = await requestFunction();
       final apiResponse = ApiListResponse<T>.fromJson(response.data, fromJson);
-
       if (apiResponse.success ?? false) {
         return apiResponse;
       } else {
