@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kiosk/product/auth/hospital_login/view/hospital_login_view.dart';
+import 'package:kiosk/product/auth/login/view/hospital_login_view.dart';
 
 import 'features/utility/app_initialize.dart';
+import 'features/utility/navigation_service.dart';
+import 'features/utility/route_generator.dart';
 
 Future<void> main() async {
   await AppInitialize.initialize();
@@ -17,6 +19,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
       home: const HospitalLoginView(),
+      onGenerateRoute: RouteGenerator.generateRoutes,
+      navigatorKey: NavigationService.ns.navigatorKey,
+      navigatorObservers: [NavigationService.ns],
     );
   }
 }

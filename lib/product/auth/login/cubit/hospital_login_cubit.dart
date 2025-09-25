@@ -19,6 +19,7 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
   Future<void> postUserLoginCubit({
     required String username,
     required String password,
+    int kioskDeviceId = 1,
   }) async {
     final u = username.trim();
     final p = password;
@@ -36,13 +37,15 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
 
     try {
-      final resp = await service.postLogin(u, p);
+      final resp = await service.postLogin(u, p, kioskDeviceId);
 
-      if (resp.success && (resp.data?.accessToken != null)) {
-        final access = resp.data!.accessToken!;
-        final refresh = resp.data?.refreshToken;
+      if (resp.success && (resp.data?.tokens?.accessToken != null)) {
+        final access = resp.data?.tokens?.accessToken;
+        final refresh = resp.data?.tokens?.refreshToken;
 
-        await CacheManager().writeString('token', access);
+        final kioskDeviceId = 1;
+
+        await CacheManager().writeString('token', access!);
         if (refresh != null) {
           await CacheManager().writeString('refreshToken', refresh);
         }
@@ -53,6 +56,7 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
             accessToken: access,
             refreshToken: refresh,
             message: resp.message,
+            kioskDeviceId: kioskDeviceId,
           ),
         );
       } else {
@@ -64,7 +68,6 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
         );
       }
     } on NetworkException catch (e) {
-      // ---- HER KOD İÇİN AYRI EMIT + EARLY RETURN
       if (e.statusCode == 404) {
         safeEmit(
           state.copyWith(
@@ -169,7 +172,6 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
         );
       }
     } on NetworkException catch (e) {
-      // ---- HER KOD İÇİN AYRI EMIT + EARLY RETURN
       if (e.statusCode == 404) {
         safeEmit(
           state.copyWith(

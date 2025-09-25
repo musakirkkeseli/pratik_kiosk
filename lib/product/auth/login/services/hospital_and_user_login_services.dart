@@ -10,11 +10,16 @@ class HospitalAndUserLoginServices extends IhospitalAndUserLoginServices {
   Future<ApiResponse<HospitalLoginModel>> postLogin(
     String userName,
     String password,
+    int kioskDeviceId,
   ) async {
     return http.request<HospitalLoginModel>(
       requestFunction: () => http.post(
         hospitalLogin,
-        data: {'username': userName, 'password': password},
+        data: {
+          'username': userName,
+          'password': password,
+          'kiosk_device_id': kioskDeviceId,
+        },
       ),
       fromJson: (json) =>
           HospitalLoginModel.fromJson(json as Map<String, dynamic>),

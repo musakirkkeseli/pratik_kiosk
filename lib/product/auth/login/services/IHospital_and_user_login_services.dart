@@ -16,6 +16,7 @@ abstract class IhospitalAndUserLoginServices {
   Future<ApiResponse<HospitalLoginModel>> postLogin(
     String userName,
     String password,
+    int kioskDeviceId,
   );
   Future<ApiResponse<UserLoginModel>> postLoginByTc(String tc);
 }
@@ -27,7 +28,7 @@ extension IhospitalAndUserLoginServicesExtension
   String get rawValue {
     switch (this) {
       case IhospitalAndUserLoginServicesPath.hospitalLogin:
-        return '/kiosk_fake_api.php';
+        return '/api/auth/login';
       case IhospitalAndUserLoginServicesPath.userLogin:
         return '/kioskFakeLogin.php';
     }

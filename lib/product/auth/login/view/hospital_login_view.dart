@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:kiosk/features/utility/enum/enum_general_state_status.dart';
-import 'package:kiosk/product/auth/hospital_login/view/widget/custom_hospital_login_textfield_widget.dart';
+import 'package:kiosk/features/utility/navigation_service.dart';
+import 'package:kiosk/product/auth/login/view/widget/custom_hospital_login_textfield_widget.dart';
 
 import '../../../../core/utility/http_service.dart';
 import '../cubit/hospital_login_cubit.dart';
@@ -20,7 +21,7 @@ final TextEditingController userNameController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
 
 class _HospitalLoginViewState extends State<HospitalLoginView> {
-  bool _pushedPatient = false; // <-- eklendi
+  bool _pushedPatient = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,26 +30,18 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
         service: HospitalAndUserLoginServices(HttpService()),
       ),
       child: BlocConsumer<HospitalLoginCubit, HospitalLoginState>(
-        // <<< SADECE status değiştiğinde listener çalışsın
         listenWhen: (prev, curr) => prev.status != curr.status,
         listener: (context, state) async {
           switch (state.status) {
             case EnumGeneralStateStatus.success:
-              // <<< Yalnızca ilk kez push et
               if (_pushedPatient) return;
               _pushedPatient = true;
 
               if (!context.mounted) return;
-              await Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<HospitalLoginCubit>(),
-                    child: const PatientLoginView(),
-                  ),
-                ),
+              NavigationService.ns.routeTo(
+                "PatientLoginView",
+                arguments: context.read<HospitalLoginCubit>(),
               );
-
-              // Geri dönüldüğünde tekrar push etmesin
               _pushedPatient = false;
               break;
 
@@ -154,26 +147,15 @@ class _PatientLoginViewState extends State<PatientLoginView> {
       listenWhen: (prev, curr) => prev.tcStatus != curr.tcStatus,
       listener: (context, state) async {
         if (state.tcStatus == EnumGeneralStateStatus.success) {
-          // BAŞARILI POPUP
-          await showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: const Text('Başarılı'),
-              content: Text(state.message ?? 'TC doğrulandı.'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(), // dialog kapat
-                  child: const Text('Tamam'),
-                ),
-              ],
-            ),
-          );
-        } else if (state.tcStatus == EnumGeneralStateStatus.failure) {
-          final msg = state.message ?? 'TC doğrulama başarısız.';
-          if (!context.mounted) return;
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text(msg)));
+          ).showSnackBar(const SnackBar(content: Text('TC doğrulandı.')));
+        } else if (state.tcStatus == EnumGeneralStateStatus.failure) {
+          if (!context.mounted) return;
+          NavigationService.ns.routeTo(
+            "DateOfBirthWidget",
+            arguments: {"isPop": true},
+          );
         }
       },
       builder: (context, state) {
