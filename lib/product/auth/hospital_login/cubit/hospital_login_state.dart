@@ -6,8 +6,6 @@ class HospitalLoginState {
   final String? accessToken;
   final String? refreshToken;
   final EnumGeneralStateStatus tcStatus;
-  final String? tcFromApi;
-  final bool? tcVerified;
 
   const HospitalLoginState({
     this.status = EnumGeneralStateStatus.initial,
@@ -15,8 +13,6 @@ class HospitalLoginState {
     this.accessToken,
     this.refreshToken,
     this.tcStatus = EnumGeneralStateStatus.initial,
-    this.tcFromApi,
-    this.tcVerified,
   });
 
   HospitalLoginState copyWith({
@@ -25,8 +21,6 @@ class HospitalLoginState {
     String? accessToken,
     String? refreshToken,
     EnumGeneralStateStatus? tcStatus,
-    String? tcFromApi,
-    bool? tcVerified,
   }) {
     return HospitalLoginState(
       status: status ?? this.status,
@@ -34,8 +28,6 @@ class HospitalLoginState {
       accessToken: accessToken ?? this.accessToken,
       refreshToken: refreshToken ?? this.refreshToken,
       tcStatus: tcStatus ?? this.tcStatus,
-      tcFromApi: tcFromApi ?? this.tcFromApi,
-      tcVerified: tcVerified ?? this.tcVerified,
     );
   }
 }

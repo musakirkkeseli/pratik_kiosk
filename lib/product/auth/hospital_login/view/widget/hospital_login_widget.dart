@@ -44,7 +44,7 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
                   final isValid = _formKey.currentState?.validate() ?? false;
                   if (isValid) {
                     FocusScope.of(context).unfocus();
-                    context.read<HospitalLoginCubit>().postUserLoginCubit(
+                    context.read<HospitalLoginCubit>().postHospitalLoginCubit(
                       username: userNameController.text,
                       password: passwordController.text,
                     );

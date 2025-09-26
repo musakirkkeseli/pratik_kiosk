@@ -4,7 +4,7 @@ import 'package:kiosk/features/utility/enum/enum_textformfield.dart';
 
 import '../../../../../features/utility/const/constant_string.dart';
 import '../../../../../features/utility/custom_hospital_and_patient_login_textfield_widget.dart';
-import '../../../hospital_login/cubit/hospital_login_cubit.dart';
+import '../../cubit/patient_login_cubit.dart';
 
 class PatientLoginWidget extends StatefulWidget {
   const PatientLoginWidget({super.key});
@@ -40,7 +40,7 @@ class _PatientLoginWidgetState extends State<PatientLoginWidget> {
                 final isValid = _formKey.currentState?.validate() ?? false;
                 if (isValid) {
                   FocusScope.of(context).unfocus();
-                  context.read<HospitalLoginCubit>().verifyPatientTcCubit(
+                  context.read<PatientLoginCubit>().verifyPatientTcCubit(
                     tcNo: _tcController.text.trim(),
                   );
                 }

@@ -1,7 +1,7 @@
 import '../../../../core/utility/http_service.dart';
 import '../../../../features/model/api_response_model.dart';
+import '../../patient_login/model/patient_login_model.dart';
 import '../model/hospital_login_model.dart';
-import '../../patient_login/model/user_login_model.dart';
 import '../model/refresh_token_mode.dart';
 
 abstract class IHospitalAndUserLoginServices {
@@ -20,8 +20,10 @@ abstract class IHospitalAndUserLoginServices {
     String password,
     int kioskDeviceId,
   );
-  Future<ApiResponse<UserLoginModel>> postLoginByTc(String tc);
-  Future<ApiResponse<RefreshTokenResponseModel>> postRefreshToken(String refreshToken);
+  Future<ApiResponse<PatientLoginModel>> postLoginByTc(String tc);
+  Future<ApiResponse<RefreshTokenResponseModel>> postRefreshToken(
+    String refreshToken,
+  );
 }
 
 enum IHospitalAndUserLoginServicesPath {

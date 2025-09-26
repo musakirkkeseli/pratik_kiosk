@@ -1,9 +1,9 @@
-class UserLoginModel {
+class PatientLoginModel {
   String? tcNo;
 
-  UserLoginModel({this.tcNo});
+  PatientLoginModel({this.tcNo});
 
-  UserLoginModel.fromJson(Map<String, dynamic> json) {
+  PatientLoginModel.fromJson(Map<String, dynamic> json) {
     tcNo = json['tcNo'];
   }
 
