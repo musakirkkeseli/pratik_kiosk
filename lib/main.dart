@@ -1,17 +1,52 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kiosk/product/auth/login/view/hospital_login_view.dart';
+import 'package:provider/provider.dart';
 
+import 'core/utility/login_status_service.dart';
+import 'core/utility/network_status_service.dart';
 import 'features/utility/app_initialize.dart';
+import 'features/utility/const/constant_string.dart';
 import 'features/utility/navigation_service.dart';
 import 'features/utility/route_generator.dart';
+import 'product/auth/hospital_login/view/hospital_login_view.dart';
 
 Future<void> main() async {
   await AppInitialize.initialize();
-  runApp(const MyApp());
+  var connectivityResult = await (Connectivity().checkConnectivity());
+  runApp(
+    EasyLocalization(
+      supportedLocales: ConstantString.SUPPORTED_LOCALE,
+      path: ConstantString.LANG_PATH,
+      startLocale: ConstantString.TR_LOCALE,
+      child: MultiProvider(
+        providers: [
+          //kullanıcının uygulamayı kullanırken cihazın internete bağlılık durumunu dinleyen NetworkStatusService sınıfının durumunu tüm uygulamaya yayınlar
+          StreamProvider<NetworkStatus>(
+            create: (context) =>
+                NetworkStatusService().networkStatusController.stream,
+            initialData:
+                connectivityResult.contains(ConnectivityResult.mobile) ||
+                    connectivityResult.contains(ConnectivityResult.ethernet) ||
+                    connectivityResult.contains(ConnectivityResult.vpn) ||
+                    connectivityResult.contains(ConnectivityResult.wifi)
+                ? NetworkStatus.online
+                : NetworkStatus.offline,
+          ),
+          //kullanıcının uygulamayı kullanırken bir hesapla giriş yapılıp yapılmadığını dinleyen LoginStatusService sınıfının durumunu tüm uygulamaya yayınlar
+          StreamProvider<LoginStatus>(
+            create: (context) => LoginStatusService().controller.stream,
+            initialData: LoginStatus.offline,
+          ),
+        ],
+        child: MainApp(),
+      ),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {

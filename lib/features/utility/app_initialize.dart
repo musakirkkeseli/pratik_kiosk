@@ -2,7 +2,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../core/utility/analytics_service.dart';
-import '../../core/utility/http_service.dart';
 import 'const/environment.dart';
 
 final class AppInitialize {

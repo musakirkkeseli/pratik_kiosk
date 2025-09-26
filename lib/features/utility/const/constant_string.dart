@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'environment.dart';
+import 'locale_keys.g.dart';
 
 class ConstantString {
   static var backendUrl = Environment.backendUrl;
@@ -21,4 +22,10 @@ class ConstantString {
   static const turkish = "Türkçe";
   static const english = "English";
   static const arabic = "عربي";
+
+
+  String birthDate = "Doğum Tarihi";
+  String signIn = "Giriş Yap";
+  String patientLogin = "Hasta Girişi";
+  String hospitalLogin = "Hastane Girişi";
 }

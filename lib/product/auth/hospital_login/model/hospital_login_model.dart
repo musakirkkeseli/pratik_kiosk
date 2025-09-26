@@ -24,17 +24,10 @@ class Tokens {
 }
 
 class HospitalLoginModel {
-  String? accessToken;
-  String? refreshToken;
   int? kioskDeviceId;
   Tokens? tokens;
 
-  HospitalLoginModel({
-    this.accessToken,
-    this.refreshToken,
-    this.kioskDeviceId,
-    this.tokens,
-  });
+  HospitalLoginModel({this.kioskDeviceId, this.tokens});
 
   HospitalLoginModel.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic>? tokensMap;
@@ -50,13 +43,6 @@ class HospitalLoginModel {
       tokens = Tokens.fromJson(tokensMap);
     }
 
-    accessToken =
-        (json['access_token'] ?? json['accessToken'])?.toString() ??
-        tokens?.accessToken;
-    refreshToken =
-        (json['refresh_token'] ?? json['refreshToken'])?.toString() ??
-        tokens?.refreshToken;
-
     final kid = json['kioskDeviceId'];
     if (kid is int) {
       kioskDeviceId = kid;
@@ -67,8 +53,7 @@ class HospitalLoginModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['access_token'] = accessToken;
-    data['refresh_token'] = refreshToken;
+
     data['kioskDeviceId'] = kioskDeviceId;
     if (tokens != null) data['tokens'] = tokens!.toJson();
     return data;

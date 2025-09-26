@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../features/utility/app_storage.dart';
 import 'analytics_service.dart';
@@ -12,7 +11,7 @@ class LoginStatusService {
   /// Singleton instance
   static LoginStatusService? _instance;
 
-  final StreamController<LoginStatus> _controller =
+  final StreamController<LoginStatus> controller =
       StreamController<LoginStatus>.broadcast();
 
   /// Private constructor
@@ -20,22 +19,16 @@ class LoginStatusService {
     _loadInitialStatus();
   }
 
-  Stream<LoginStatus> get statusStream => _controller.stream;
+  Stream<LoginStatus> get statusStream => controller.stream;
 
   Future<void> _loadInitialStatus() async {
     final token = await AppStorage().getToken();
-    _controller.add(token == null ? LoginStatus.offline : LoginStatus.online);
+    controller.add(token == null ? LoginStatus.offline : LoginStatus.online);
   }
 
   /// Singleton erişimi (ilk seferde cubit verilebilir)
   factory LoginStatusService() {
     return _instance ??= LoginStatusService._internal();
-  }
-
-  LoginStatus getCurrentStatus() {
-    return Hive.box("userbox").get("token") == null
-        ? LoginStatus.offline
-        : LoginStatus.online;
   }
 
   Future<void> login({

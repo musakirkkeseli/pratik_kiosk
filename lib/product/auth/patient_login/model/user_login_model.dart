@@ -1,15 +1,15 @@
 class UserLoginModel {
-  String? tc;
+  String? tcNo;
 
-  UserLoginModel({this.tc});
+  UserLoginModel({this.tcNo});
 
   UserLoginModel.fromJson(Map<String, dynamic> json) {
-    tc = json['tc'];
+    tcNo = json['tcNo'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['tc'] = tc;
+    data['tcNo'] = tcNo;
     return data;
   }
 }

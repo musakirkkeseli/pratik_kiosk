@@ -15,12 +15,13 @@ dependencies:
 
   #state
   flutter_bloc: ^9.1.1
+  provider: ^6.1.1
   
   #service
   connectivity_plus: ^6.1.5
+  easy_localization: ^3.0.3
 
   #cache
-  hive_flutter: ^1.1.0
   shared_preferences: ^2.5.3
 
   # debug

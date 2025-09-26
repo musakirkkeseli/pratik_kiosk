@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 
-import 'http_service.dart';
-import 'cache_manager.dart';
-import 'login_status_service.dart';
+import '../../core/utility/http_service.dart';
+import '../../core/utility/cache_manager.dart';
+import '../../core/utility/login_status_service.dart';
 
 class UserHttpService extends HttpService {
   UserHttpService({
@@ -18,7 +18,6 @@ class UserHttpService extends HttpService {
             },
             onError: (DioException e, handler) async {
               if (e.response?.statusCode == 401) {
-                // Kullanıcı akışı: refresh yok → direkt çıkış
                 LoginStatusService().logout();
               }
               handler.next(e);

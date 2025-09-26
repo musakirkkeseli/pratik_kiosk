@@ -1,16 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:kiosk/core/utility/logger_service.dart';
 
-import 'http_service.dart';
-import 'cache_manager.dart';
-import '../../features/utility/const/constant_string.dart';
-import 'login_status_service.dart';
+import '../../core/utility/http_service.dart';
+import '../../core/utility/cache_manager.dart';
+import '../../product/auth/hospital_login/model/refresh_token_mode.dart';
+import 'const/constant_string.dart';
+import '../../core/utility/login_status_service.dart';
 
 class TenantHttpService extends HttpService {
   TenantHttpService()
     : super.withInterceptor(
         interceptor: InterceptorsWrapper(
           onRequest: (options, handler) async {
-            final token = await CacheManager().readString("accessTokenKey");
+            final token = await CacheManager().readString("accessToken");
             if (token != null &&
                 token.isNotEmpty &&
                 options.headers['Authorization'] == null) {
@@ -19,6 +21,8 @@ class TenantHttpService extends HttpService {
             handler.next(options);
           },
           onError: (DioException e, handler) async {
+            MyLog _refreshMylog = MyLog("TenantHttpService onError");
+
             final status = e.response?.statusCode;
             final alreadyRetried =
                 e.requestOptions.extra['__retried__'] == true;
@@ -28,14 +32,13 @@ class TenantHttpService extends HttpService {
             }
 
             try {
-              await _refreshTokenStatic(
-                refreshPath: "refreshPath",
-                accessTokenKey: "accessTokenKey",
-                refreshTokenKey: "refreshTokenKey",
+              await _refreshTokenStatic();
+              _refreshMylog.d("_refreshTokenStatic finish");
+              final newAccess = await CacheManager().readString(
+                "accessTokenKey",
               );
-
-              final newAccess = await CacheManager().readString("accessTokenKey");
               if (newAccess == null || newAccess.isEmpty) {
+                _refreshMylog.d("newAccess null");
                 LoginStatusService().logout();
                 return handler.next(e);
               }
@@ -70,6 +73,7 @@ class TenantHttpService extends HttpService {
                 responseDecoder: original.responseDecoder,
                 validateStatus: original.validateStatus,
               );
+              _refreshMylog.d("istek refresh");
 
               // Aynı client ile retry: client referansını common onRequest içine koymuştuk.
               final Dio client =
@@ -83,8 +87,11 @@ class TenantHttpService extends HttpService {
                   );
 
               final response = await client.fetch(retried);
+              _refreshMylog.d("istek finish ${response.data}");
+
               return handler.resolve(response);
             } catch (_) {
+              _refreshMylog.d("catch");
               LoginStatusService().logout();
               return handler.next(e);
             }
@@ -95,20 +102,14 @@ class TenantHttpService extends HttpService {
   // Aynı anda çoklu refresh’i engellemek için paylaşılan future
   static Future<void>? _refreshing;
 
-  static Future<void> _refreshTokenStatic({
-    required String refreshPath,
-    required String accessTokenKey,
-    required String refreshTokenKey,
-  }) async {
+  static Future<void> _refreshTokenStatic() async {
+    MyLog _refreshMylog = MyLog("_refreshTokenStatic");
     if (_refreshing != null) {
+      _refreshMylog.d("_refreshing not null");
       await _refreshing;
       return;
     }
-    _refreshing = _doRefresh(
-      refreshPath: refreshPath,
-      accessTokenKey: accessTokenKey,
-      refreshTokenKey: refreshTokenKey,
-    );
+    _refreshing = _doRefresh();
     try {
       await _refreshing;
     } finally {
@@ -116,13 +117,12 @@ class TenantHttpService extends HttpService {
     }
   }
 
-  static Future<void> _doRefresh({
-    required String refreshPath,
-    required String accessTokenKey,
-    required String refreshTokenKey,
-  }) async {
-    final refresh = await CacheManager().readString(refreshTokenKey);
+  static Future<void> _doRefresh() async {
+    MyLog _dorefreshMylog = MyLog("_doRefresh");
+    _dorefreshMylog.d("run");
+    final refresh = await CacheManager().readString("refreshTokenKey");
     if (refresh == null || refresh.isEmpty) {
+      _dorefreshMylog.d("refresh null");
       throw StateError('Refresh token yok');
     }
 
@@ -135,24 +135,27 @@ class TenantHttpService extends HttpService {
         receiveTimeout: const Duration(seconds: 20),
       ),
     );
+    _dorefreshMylog.d("created bare");
 
     final res = await bare.post(
-      refreshPath,
+      "/api/auth/refresh-token",
       data: {
-        'refresh_token': refresh, // backend’e göre alan adını uyarlayın
+        'refreshToken': refresh, // backend’e göre alan adını uyarlayın
       },
     );
+    _dorefreshMylog.d("response ${res.data}");
 
-    // Backend alan adlarını projeye göre düzenleyin
-    final newAccess = (res.data?['access_token'] as String?)?.trim();
-    final newRefresh =
-        (res.data?['refresh_token'] as String?)?.trim() ?? refresh;
+    RefreshTokenResponseModel? refreshTokenResponseModel =
+        RefreshTokenResponseModel.fromJson(res.data["data"]);
+    _dorefreshMylog.d("response ${refreshTokenResponseModel.toJson()}");
+    final newAccess = (refreshTokenResponseModel.accessToken);
+    final newRefresh = (refreshTokenResponseModel.refreshToken);
 
-    if (newAccess == null || newAccess.isEmpty) {
+    if ((newAccess ?? "").isEmpty && (newRefresh ?? "").isEmpty) {
       throw StateError('Access token güncellenemedi');
+    } else {
+      await CacheManager().writeString("accessTokenKey", newAccess ?? "");
+      await CacheManager().writeString("refreshTokenKey", newRefresh ?? "");
     }
-
-    await CacheManager().writeString(accessTokenKey, newAccess);
-    await CacheManager().writeString(refreshTokenKey, newRefresh);
   }
 }
