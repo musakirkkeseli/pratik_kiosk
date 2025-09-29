@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:kiosk/core/utility/logger_service.dart';
 
 import '../../core/utility/http_service.dart';
-import '../../core/utility/cache_manager.dart';
 import '../../product/auth/hospital_login/model/refresh_token_mode.dart';
 import 'const/constant_string.dart';
 import '../../core/utility/login_status_service.dart';
@@ -12,7 +11,7 @@ class TenantHttpService extends HttpService {
     : super.withInterceptor(
         interceptor: InterceptorsWrapper(
           onRequest: (options, handler) async {
-            final token = await CacheManager().readString("accessToken");
+            final token = LoginStatusService().accessToken;
             if (token != null &&
                 token.isNotEmpty &&
                 options.headers['Authorization'] == null) {
@@ -34,9 +33,7 @@ class TenantHttpService extends HttpService {
             try {
               await _refreshTokenStatic();
               _refreshMylog.d("_refreshTokenStatic finish");
-              final newAccess = await CacheManager().readString(
-                "accessTokenKey",
-              );
+              final newAccess = LoginStatusService().accessToken;
               if (newAccess == null || newAccess.isEmpty) {
                 _refreshMylog.d("newAccess null");
                 LoginStatusService().logout();
@@ -120,8 +117,9 @@ class TenantHttpService extends HttpService {
   static Future<void> _doRefresh() async {
     MyLog _dorefreshMylog = MyLog("_doRefresh");
     _dorefreshMylog.d("run");
-    final refresh = await CacheManager().readString("refreshTokenKey");
-    if (refresh == null || refresh.isEmpty) {
+    final refreshToken = LoginStatusService().refreshToken;
+    if (refreshToken == null || refreshToken.isEmpty) {
+      LoginStatusService().logout();
       _dorefreshMylog.d("refresh null");
       throw StateError('Refresh token yok');
     }
@@ -136,26 +134,34 @@ class TenantHttpService extends HttpService {
       ),
     );
     _dorefreshMylog.d("created bare");
+    try {
+      final res = await bare.post(
+        "/api/auth/refresh-token",
+        data: {
+          'refreshToken': refreshToken, // backend’e göre alan adını uyarlayın
+        },
+      );
+      _dorefreshMylog.d("response ${res.data}");
 
-    final res = await bare.post(
-      "/api/auth/refresh-token",
-      data: {
-        'refreshToken': refresh, // backend’e göre alan adını uyarlayın
-      },
-    );
-    _dorefreshMylog.d("response ${res.data}");
+      RefreshTokenResponseModel? refreshTokenResponseModel =
+          RefreshTokenResponseModel.fromJson(res.data["data"]);
+      _dorefreshMylog.d("response ${refreshTokenResponseModel.toJson()}");
+      final newAccess = (refreshTokenResponseModel.accessToken);
+      final newRefresh = (refreshTokenResponseModel.refreshToken);
 
-    RefreshTokenResponseModel? refreshTokenResponseModel =
-        RefreshTokenResponseModel.fromJson(res.data["data"]);
-    _dorefreshMylog.d("response ${refreshTokenResponseModel.toJson()}");
-    final newAccess = (refreshTokenResponseModel.accessToken);
-    final newRefresh = (refreshTokenResponseModel.refreshToken);
-
-    if ((newAccess ?? "").isEmpty && (newRefresh ?? "").isEmpty) {
-      throw StateError('Access token güncellenemedi');
-    } else {
-      await CacheManager().writeString("accessTokenKey", newAccess ?? "");
-      await CacheManager().writeString("refreshTokenKey", newRefresh ?? "");
+      if ((newAccess ?? "").isEmpty && (newRefresh ?? "").isEmpty) {
+        LoginStatusService().logout();
+        throw StateError('Access token güncellenemedi');
+      } else {
+        LoginStatusService().refreshTokens(
+          accessToken: newAccess ?? "",
+          refreshToken: newRefresh ?? "",
+        );
+      }
+    } catch (e) {
+      LoginStatusService().logout();
+      _dorefreshMylog.d("catch $e");
+      throw StateError('Token yenileme başarısız: $e');
     }
   }
 }
