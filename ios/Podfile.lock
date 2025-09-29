@@ -1,0 +1,61 @@
+PODS:
+  - connectivity_plus (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+  - Mixpanel-swift (5.1.0):
+    - Mixpanel-swift/Complete (= 5.1.0)
+  - Mixpanel-swift/Complete (5.1.0)
+  - mixpanel_flutter (2.4.4):
+    - Flutter
+    - Mixpanel-swift (= 5.1.0)
+  - package_info_plus (0.4.5):
+    - Flutter
+  - Sentry/HybridSDK (8.52.1)
+  - sentry_flutter (9.6.0):
+    - Flutter
+    - FlutterMacOS
+    - Sentry/HybridSDK (= 8.52.1)
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
+  - Flutter (from `Flutter`)
+  - mixpanel_flutter (from `.symlinks/plugins/mixpanel_flutter/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
+  - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+
+SPEC REPOS:
+  trunk:
+    - Mixpanel-swift
+    - Sentry
+
+EXTERNAL SOURCES:
+  connectivity_plus:
+    :path: ".symlinks/plugins/connectivity_plus/ios"
+  Flutter:
+    :path: Flutter
+  mixpanel_flutter:
+    :path: ".symlinks/plugins/mixpanel_flutter/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
+  sentry_flutter:
+    :path: ".symlinks/plugins/sentry_flutter/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+
+SPEC CHECKSUMS:
+  connectivity_plus: cb623214f4e1f6ef8fe7403d580fdad517d2f7dd
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  Mixpanel-swift: 7b26468fc0e2e521104e51d65c4bbf7cab8162f8
+  mixpanel_flutter: a0b6b937035899cd01951735ad5f87718b2ffee5
+  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
+  Sentry: 2cbbe3592f30050c60e916c63c7f5a2fa584005e
+  sentry_flutter: 9b1e3e6934cb7040ffb71383c95a35f73523180c
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+
+PODFILE CHECKSUM: 4305caec6b40dde0ae97be1573c53de1882a07e5
+
+COCOAPODS: 1.16.2
