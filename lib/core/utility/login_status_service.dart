@@ -1,17 +1,15 @@
 import 'dart:async';
 
-import '../../features/utility/app_storage.dart';
+import '../../features/utility/navigation_service.dart';
 import 'analytics_service.dart';
 
-import 'logger_service.dart';
-
-enum LoginStatus { online, offline, failed }
+enum LoginStatus { online, offline }
 
 class LoginStatusService {
   /// Singleton instance
   static LoginStatusService? _instance;
 
-  final StreamController<LoginStatus> controller =
+  final StreamController<LoginStatus> _controller =
       StreamController<LoginStatus>.broadcast();
 
   /// Private constructor
@@ -19,11 +17,18 @@ class LoginStatusService {
     _loadInitialStatus();
   }
 
-  Stream<LoginStatus> get statusStream => controller.stream;
+  String? _accessToken;
+  String? _refreshToken;
+
+  Stream<LoginStatus> get statusStream => _controller.stream;
+
+  String? get accessToken => _accessToken;
+  String? get refreshToken => _refreshToken;
 
   Future<void> _loadInitialStatus() async {
-    final token = await AppStorage().getToken();
-    controller.add(token == null ? LoginStatus.offline : LoginStatus.online);
+    _controller.add(
+      _accessToken == null ? LoginStatus.offline : LoginStatus.online,
+    );
   }
 
   /// Singleton erişimi (ilk seferde cubit verilebilir)
@@ -32,25 +37,24 @@ class LoginStatusService {
   }
 
   Future<void> login({
-    required String token,
-    required int userId,
-    required String cityName,
-    required String name,
-    required String phone,
+    required String accessToken,
+    required String refreshToken,
   }) async {
-    await AppStorage().saveToken(token);
-    AnalyticsService().identifyUser(userId.toString());
-    AnalyticsService().setUserProperties({
-      "Name": name,
-      "Phone": phone,
-      "Company City": cityName,
-      "Login Time": DateTime.now().toIso8601String(),
-    });
-    MyLog.debug("LoginStatusService login");
+    _accessToken = accessToken;
+    _refreshToken = refreshToken;
+    _controller.add(LoginStatus.online);
+  }
+
+  refreshTokens({required String accessToken, required String refreshToken}) {
+    _accessToken = accessToken;
+    _refreshToken = refreshToken;
   }
 
   Future<void> logout() async {
-    await AppStorage().getToken();
+    _accessToken = null;
+    _refreshToken = null;
     AnalyticsService().reset();
+    _controller.add(LoginStatus.offline);
+    NavigationService.ns.gotoMain();
   }
 }
