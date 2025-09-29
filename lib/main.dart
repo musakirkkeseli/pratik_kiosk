@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'core/utility/login_status_service.dart';
 import 'core/utility/network_status_service.dart';
+import 'core/utility/user_login_status_service.dart';
 import 'features/utility/app_initialize.dart';
 import 'features/utility/const/constant_string.dart';
 import 'features/utility/navigation_service.dart';
@@ -14,6 +15,7 @@ import 'product/auth/hospital_login/view/hospital_login_view.dart';
 Future<void> main() async {
   await AppInitialize.initialize();
   var connectivityResult = await (Connectivity().checkConnectivity());
+
   runApp(
     EasyLocalization(
       supportedLocales: ConstantString.SUPPORTED_LOCALE,
@@ -35,8 +37,12 @@ Future<void> main() async {
           ),
           //kullanıcının uygulamayı kullanırken bir hesapla giriş yapılıp yapılmadığını dinleyen LoginStatusService sınıfının durumunu tüm uygulamaya yayınlar
           StreamProvider<LoginStatus>(
-            create: (context) => LoginStatusService().controller.stream,
+            create: (_) => LoginStatusService().statusStream,
             initialData: LoginStatus.offline,
+          ),
+          StreamProvider<UserLoginStatus>(
+            create: (_) => UserLoginStatusService().statusStream,
+            initialData: UserLoginStatus.offline,
           ),
         ],
         child: MainApp(),
