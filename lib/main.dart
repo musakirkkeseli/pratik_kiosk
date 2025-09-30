@@ -1,11 +1,13 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kiosk/product/auth/patient_login/view/patient_login_view.dart';
 import 'package:provider/provider.dart';
 
 import 'core/utility/login_status_service.dart';
 import 'core/utility/network_status_service.dart';
 import 'core/utility/user_login_status_service.dart';
+import 'core/widget/login_aware_widget.dart';
 import 'features/utility/app_initialize.dart';
 import 'features/utility/const/constant_string.dart';
 import 'features/utility/navigation_service.dart';
@@ -35,7 +37,6 @@ Future<void> main() async {
                 ? NetworkStatus.online
                 : NetworkStatus.offline,
           ),
-          //kullanıcının uygulamayı kullanırken bir hesapla giriş yapılıp yapılmadığını dinleyen LoginStatusService sınıfının durumunu tüm uygulamaya yayınlar
           StreamProvider<LoginStatus>(
             create: (_) => LoginStatusService().statusStream,
             initialData: LoginStatus.offline,
@@ -59,7 +60,9 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: const HospitalLoginView(),
+      routes: {'/': (context) => LoginAwareWidget()},
+      initialRoute: '/',
+
       onGenerateRoute: RouteGenerator.generateRoutes,
       navigatorKey: NavigationService.ns.navigatorKey,
       navigatorObservers: [NavigationService.ns],
