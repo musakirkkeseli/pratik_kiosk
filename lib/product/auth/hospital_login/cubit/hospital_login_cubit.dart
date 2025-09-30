@@ -33,15 +33,16 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
         final access = tokens.accessToken;
         final refresh = tokens.refreshToken;
         if (access != null || refresh != null) {
-          LoginStatusService().login(
-            accessToken: access ?? "",
-            refreshToken: refresh ?? "",
-          );
+          _log.d("$access");
           safeEmit(
             state.copyWith(
               status: EnumGeneralStateStatus.success,
               message: resp.message,
             ),
+          );
+          LoginStatusService().login(
+            accessToken: access ?? "",
+            refreshToken: refresh ?? "",
           );
         } else {
           safeEmit(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/core/widget/loading_widget.dart';
 import 'package:kiosk/features/utility/enum/enum_general_state_status.dart';
-import 'package:kiosk/features/utility/navigation_service.dart';
 import 'package:kiosk/product/auth/hospital_login/view/widget/hospital_login_widget.dart';
 
 import '../../../../core/widget/snackbar_service.dart';
@@ -35,10 +34,6 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
               break;
             case EnumGeneralStateStatus.success:
               _hideLoading(context);
-              NavigationService.ns.routeTo(
-                "PatientLoginView",
-                arguments: context.read<HospitalLoginCubit>(),
-              );
             case EnumGeneralStateStatus.failure:
               _hideLoading(context);
               SnackbarService().showSnackBar(state.message ?? "");

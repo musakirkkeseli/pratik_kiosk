@@ -1,6 +1,5 @@
 import '../../../../features/model/api_response_model.dart';
 import '../model/hospital_login_model.dart';
-import '../../patient_login/model/patient_login_model.dart';
 import '../model/refresh_token_mode.dart';
 import 'IHospital_and_user_login_services.dart';
 
@@ -24,14 +23,6 @@ class HospitalAndUserLoginServices extends IHospitalAndUserLoginServices {
       ),
       fromJson: (json) =>
           HospitalLoginModel.fromJson(json as Map<String, dynamic>),
-    );
-  }
-
-  @override
-  Future<ApiResponse<PatientLoginModel>> postLoginByTc(String tcNo) {
-    return http.request<PatientLoginModel>(
-      requestFunction: () => http.post(userLogin, data: {'tcNo': tcNo}),
-      fromJson: (json) => PatientLoginModel.fromJson(json as Map<String, dynamic>),
     );
   }
 
