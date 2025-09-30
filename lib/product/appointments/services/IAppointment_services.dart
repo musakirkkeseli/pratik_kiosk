@@ -1,5 +1,5 @@
 import '../../../../core/utility/http_service.dart';
-import '../../../../features/model/api_response_model.dart';
+import '../../../features/model/api_list_response_model.dart';
 import '../model/appointments_model.dart';
 
 abstract class IAppointmentServices {
@@ -9,7 +9,7 @@ abstract class IAppointmentServices {
 
   final String appointment = IAppointmentServicesPath.appointment.rawValue;
 
-  Future<ApiResponse<List<AppointmentsModel>>> appointmentList();
+  Future<ApiListResponse<AppointmentsModel>> appointmentList();
 }
 
 enum IAppointmentServicesPath { appointment }

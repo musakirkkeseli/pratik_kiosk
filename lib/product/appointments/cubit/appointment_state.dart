@@ -1,28 +1,32 @@
 part of 'appointment_cubit.dart';
 
-enum AppointmentStatus { initial, loading, success, failure }
-
 @immutable
 class AppointmentSummary {
+  final EnumGeneralStateStatus status;
   final String? branchName;
   final String? doctorName;
-  const AppointmentSummary({this.branchName, this.doctorName});
+  const AppointmentSummary({
+    this.branchName,
+    this.doctorName,
+    this.status = EnumGeneralStateStatus.initial,
+  });
 }
 
 @immutable
 class AppointmentState {
-  final AppointmentStatus status;
-  final List<AppointmentSummary> data; // success'ta branchName + doctorName listesi
-  final String? message;               // failure için hata mesajı (opsiyonel)
+  final EnumGeneralStateStatus status;
+  final List<AppointmentSummary>
+  data; // success'ta branchName + doctorName listesi
+  final String? message; // failure için hata mesajı (opsiyonel)
 
   const AppointmentState({
-    this.status = AppointmentStatus.initial,
+    this.status = EnumGeneralStateStatus.initial,
     this.data = const [],
     this.message,
   });
 
   AppointmentState copyWith({
-    AppointmentStatus? status,
+    EnumGeneralStateStatus? status,
     List<AppointmentSummary>? data,
     String? message,
   }) {
