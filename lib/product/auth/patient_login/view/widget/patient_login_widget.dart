@@ -40,9 +40,13 @@ class _PatientLoginWidgetState extends State<PatientLoginWidget> {
                 final isValid = _formKey.currentState?.validate() ?? false;
                 if (isValid) {
                   FocusScope.of(context).unfocus();
-                  context.read<PatientLoginCubit>().verifyPatientTcCubit(
-                    tcNo: _tcController.text.trim(),
-                  );
+                  final state = context.read<PatientLoginCubit>().state;
+
+                  state.authType == AuthType.login
+                      ? context.read<PatientLoginCubit>().userLogin(
+                          tcNo: _tcController.text.trim(),
+                        )
+                      : null;
                 }
               },
               label: Text(ConstantString().signIn),
