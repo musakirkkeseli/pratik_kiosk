@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiosk/product/appointments/view/appointments_view.dart';
 
 import '../../product/auth/hospital_login/cubit/hospital_login_cubit.dart';
 import '../../product/auth/patient_login/view/widget/date_of_birth_widget.dart';
@@ -12,6 +13,12 @@ class RouteGenerator {
         // final args = settings.arguments as Map? ?? {};
         return MaterialPageRoute(
           builder: (context) => DateOfBirthWidget(),
+          settings: RouteSettings(name: settings.name),
+        );
+      case "AppointmentsView":
+        // final args = settings.arguments as Map? ?? {};
+        return MaterialPageRoute(
+          builder: (context) => AppointmentsView(),
           settings: RouteSettings(name: settings.name),
         );
       case "PatientLoginView":

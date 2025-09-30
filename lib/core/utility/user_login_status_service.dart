@@ -44,13 +44,14 @@ class UserLoginStatusService {
   }) async {
     _accessToken = accessToken;
     _controller.add(UserLoginStatus.online);
-    AnalyticsService().identifyUser(userId.toString());
-    AnalyticsService().setUserProperties({
-      "Name": name,
-      "Phone": phone,
-      "Company City": cityName,
-      "Login Time": DateTime.now().toIso8601String(),
-    });
+
+    // AnalyticsService().identifyUser(userId.toString());
+    // AnalyticsService().setUserProperties({
+    //   "Name": name,
+    //   "Phone": phone,
+    //   "Company City": cityName,
+    //   "Login Time": DateTime.now().toIso8601String(),
+    // });
     MyLog.debug("UserLoginStatusService login");
   }
 

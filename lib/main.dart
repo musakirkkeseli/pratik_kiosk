@@ -1,7 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kiosk/product/auth/patient_login/view/patient_login_view.dart';
 import 'package:provider/provider.dart';
 
 import 'core/utility/login_status_service.dart';
@@ -12,7 +11,6 @@ import 'features/utility/app_initialize.dart';
 import 'features/utility/const/constant_string.dart';
 import 'features/utility/navigation_service.dart';
 import 'features/utility/route_generator.dart';
-import 'product/auth/hospital_login/view/hospital_login_view.dart';
 
 Future<void> main() async {
   await AppInitialize.initialize();
