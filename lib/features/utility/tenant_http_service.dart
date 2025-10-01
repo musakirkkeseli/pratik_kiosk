@@ -136,7 +136,7 @@ class TenantHttpService extends HttpService {
     _dorefreshMylog.d("created bare");
     try {
       final res = await bare.post(
-        "/api/auth/refresh-token",
+        "/auth/refresh-token",
         data: {
           'refreshToken': refreshToken, // backend’e göre alan adını uyarlayın
         },
