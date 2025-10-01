@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kiosk/core/widget/snackbar_service.dart';
 import 'package:provider/provider.dart';
 
 import 'core/utility/login_status_service.dart';
@@ -9,6 +10,7 @@ import 'core/utility/user_login_status_service.dart';
 import 'core/widget/login_aware_widget.dart';
 import 'features/utility/app_initialize.dart';
 import 'features/utility/const/constant_string.dart';
+import 'features/utility/inactivity_controller.dart';
 import 'features/utility/navigation_service.dart';
 import 'features/utility/route_generator.dart';
 
@@ -43,6 +45,12 @@ Future<void> main() async {
             create: (_) => UserLoginStatusService().statusStream,
             initialData: UserLoginStatus.offline,
           ),
+          ChangeNotifierProvider(
+            create: (_) => InactivityController(
+              totalTimeout: const Duration(seconds: 45),
+              warningBefore: const Duration(seconds: 15),
+            ),
+          ),
         ],
         child: MainApp(),
       ),
@@ -55,14 +63,20 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(),
-      debugShowCheckedModeBanner: false,
-      routes: {'/': (context) => LoginAwareWidget()},
-      initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoutes,
-      navigatorKey: NavigationService.ns.navigatorKey,
-      navigatorObservers: [NavigationService.ns],
+    final inactivity = context.watch<InactivityController>();
+    return Listener(
+      behavior: HitTestBehavior.translucent,
+      onPointerDown: (_) => inactivity.bump(),
+      child: MaterialApp(
+        scaffoldMessengerKey: SnackbarService().key,
+        theme: ThemeData(),
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: RouteGenerator.generateRoutes,
+        navigatorKey: NavigationService.ns.navigatorKey,
+        navigatorObservers: [NavigationService.ns],
+        routes: {'/': (context) => LoginAwareWidget()},
+        initialRoute: '/',
+      ),
     );
   }
 }
