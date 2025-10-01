@@ -32,10 +32,10 @@ extension IHospitalAndUserLoginServicesExtension
   String get rawValue {
     switch (this) {
       case IHospitalAndUserLoginServicesPath.hospitalLogin:
-        return '/api/auth/login';
+        return '/auth/login';
 
       case IHospitalAndUserLoginServicesPath.refreshToken:
-        return '/api/auth/refresh-token';
+        return '/auth/refresh-token';
     }
   }
 }

@@ -35,8 +35,8 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
             case EnumGeneralStateStatus.success:
               _hideLoading(context);
             case EnumGeneralStateStatus.failure:
-              _hideLoading(context);
-              SnackbarService().showSnackBar(state.message ?? "");
+              // _hideLoading(context);
+              // SnackbarService().showSnackBar(state.message ?? "");
             default:
               break;
           }
