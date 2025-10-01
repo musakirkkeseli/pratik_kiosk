@@ -7,7 +7,7 @@ import 'package:kiosk/features/utility/user_http_service.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../cubit/doctor_search_cubit.dart';
 import '../service/doctor_search_service.dart';
-import 'widget/section_search_body_widget.dart';
+import 'widget/doctors_search_body_widget.dart';
 
 class DoctorSearchView extends StatefulWidget {
   final int sectionId;
