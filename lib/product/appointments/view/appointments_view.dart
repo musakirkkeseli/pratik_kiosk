@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/features/utility/user_http_service.dart';
 import 'package:kiosk/product/appointments/services/appointment_services.dart';
 
-import '../../../core/utility/user_login_status_service.dart';
+import '../../../features/utility/const/constant_color.dart';
+import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../cubit/appointment_cubit.dart';
+import '../model/appointments_model.dart';
 
 class AppointmentsView extends StatefulWidget {
   const AppointmentsView({super.key});
@@ -22,36 +23,69 @@ class _AppointmentsViewState extends State<AppointmentsView> {
       create: (context) =>
           AppointmentCubit(service: AppointmentServices(UserHttpService()))
             ..fetchAppointments(),
-      child: Scaffold(
-        appBar: AppBar(title: const Text("Randevular")),
-        body: BlocBuilder<AppointmentCubit, AppointmentState>(
-          builder: (context, state) {
-            switch (state.status) {
-              case EnumGeneralStateStatus.loading:
-                return const Center(child: CircularProgressIndicator());
-              case EnumGeneralStateStatus.success:
-                if (state.data.isEmpty) {
-                  Text("succes");
-                  context.read<AppointmentCubit>().fetchAppointments();
-                }
-                UserLoginStatusService().logout();
-                return ListView.separated(
-                  itemCount: state.data.length,
-                  separatorBuilder: (_, __) => const Divider(height: 1),
-                  itemBuilder: (_, i) {
-                    final AppointmentSummary appointmentSummary = state.data[i];
-                    return ListTile(
-                      title: Text(appointmentSummary.branchName ?? '-'),
-                      subtitle: Text(appointmentSummary.doctorName ?? '-'),
-                    );
-                  },
-                );
-              default:
-                return Center(child: Text("asdadasd"));
-            }
-          },
-        ),
+      child: BlocBuilder<AppointmentCubit, AppointmentState>(
+        builder: (context, state) {
+          return Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.90,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: ConstColor.primaryColor),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        ConstantString().appointments,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Divider(
+                        thickness: 1,
+                        height: 2, 
+                        color: ConstColor.primaryColor,
+                      ),
+                      _body(state),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
+  }
+
+  _body(AppointmentState state) {
+    switch (state.status) {
+      case EnumGeneralStateStatus.loading:
+        return const Center(child: CircularProgressIndicator());
+      case EnumGeneralStateStatus.success:
+        List<AppointmentsModel> appointmentList = state.data;
+        return Expanded(
+          child: ListView.separated(
+            itemCount: appointmentList.length,
+            separatorBuilder: (_, __) => const Divider(height: 1),
+            itemBuilder: (_, i) {
+              final AppointmentsModel appointment = appointmentList[i];
+              return ListTile(
+                title: Text(appointment.branchName ?? '-'),
+                subtitle: Text(appointment.doctorName ?? '-'),
+              );
+            },
+          ),
+        );
+      default:
+        return Center(
+          child: Text(state.message ?? ConstantString().notFoundAppointment),
+        );
+    }
   }
 }

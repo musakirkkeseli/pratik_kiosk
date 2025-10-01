@@ -1,23 +1,9 @@
 part of 'appointment_cubit.dart';
 
-@immutable
-class AppointmentSummary {
-  final EnumGeneralStateStatus status;
-  final String? branchName;
-  final String? doctorName;
-  const AppointmentSummary({
-    this.branchName,
-    this.doctorName,
-    this.status = EnumGeneralStateStatus.initial,
-  });
-}
-
-@immutable
 class AppointmentState {
   final EnumGeneralStateStatus status;
-  final List<AppointmentSummary>
-  data; // success'ta branchName + doctorName listesi
-  final String? message; // failure için hata mesajı (opsiyonel)
+  final List<AppointmentsModel> data; // doğrudan model listesi
+  final String? message; // failure için hata mesajı
 
   const AppointmentState({
     this.status = EnumGeneralStateStatus.initial,
@@ -27,7 +13,7 @@ class AppointmentState {
 
   AppointmentState copyWith({
     EnumGeneralStateStatus? status,
-    List<AppointmentSummary>? data,
+    List<AppointmentsModel>? data,
     String? message,
   }) {
     return AppointmentState(

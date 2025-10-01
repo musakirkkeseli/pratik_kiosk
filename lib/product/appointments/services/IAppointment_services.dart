@@ -18,7 +18,7 @@ extension IAppointmentServicesExtension on IAppointmentServicesPath {
   String get rawValue {
     switch (this) {
       case IAppointmentServicesPath.appointment:
-        return '/api/appointments/list';
+        return '/appointments/list';
     }
   }
 }

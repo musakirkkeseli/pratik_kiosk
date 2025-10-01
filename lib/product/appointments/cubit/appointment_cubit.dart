@@ -1,6 +1,6 @@
 import 'package:kiosk/core/utility/logger_service.dart';
-import 'package:meta/meta.dart';
 
+import '../../../core/exception/network_exception.dart';
 import '../../../core/utility/base_cubit.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../model/appointments_model.dart';
@@ -12,36 +12,31 @@ class AppointmentCubit extends BaseCubit<AppointmentState> {
   final AppointmentServices service;
 
   AppointmentCubit({required this.service}) : super(const AppointmentState());
-
   Future<void> fetchAppointments() async {
-    safeEmit(
-      state.copyWith(status: EnumGeneralStateStatus.loading, message: null),
-    );
+    safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
     try {
       final res = await service.appointmentList();
-      final summaries = (res.data ?? <AppointmentsModel>[])
-          .map(
-            (e) => AppointmentSummary(
-              branchName: e.branchName,
-              doctorName: e.doctorName,
-            ),
-          )
-          .toList();
-      MyLog.debug("appointments: ${res.data}");
+      final data = res.data ?? <AppointmentsModel>[];
+
+      MyLog.debug("appointments: $data");
 
       safeEmit(
-        state.copyWith(status: EnumGeneralStateStatus.success, data: summaries),
+        state.copyWith(status: EnumGeneralStateStatus.success, data: data),
+      );
+    } on NetworkException catch (e) {
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: e.message,
+        ),
       );
     } catch (e) {
       safeEmit(
         state.copyWith(
           status: EnumGeneralStateStatus.failure,
-          message: e.toString(),
-          data: const [],
+          message: 'Beklenmeyen hata: $e',
         ),
       );
     }
   }
-
-  void clear() => safeEmit(const AppointmentState());
 }
