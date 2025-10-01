@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
 
   #state
-  flutter_bloc: ^9.1.1
+  flutter_bloc: ^8.1.3
   provider: ^6.1.1
   
   #service
@@ -26,6 +26,7 @@ dependencies:
 
   # debug
   logger: ^2.5.0
+
 
   # analysis
   mixpanel_flutter: ^2.4.4

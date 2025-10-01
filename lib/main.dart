@@ -60,7 +60,6 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {'/': (context) => LoginAwareWidget()},
       initialRoute: '/',
-
       onGenerateRoute: RouteGenerator.generateRoutes,
       navigatorKey: NavigationService.ns.navigatorKey,
       navigatorObservers: [NavigationService.ns],
