@@ -1,44 +1,49 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:pratik_section_search/cubit/section_search_cubit.dart';
-// import 'package:pratik_section_search/model/section_model.dart';
-// import 'package:pratik_section_search/pratik_section_search.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiosk/core/widget/loading_widget.dart';
+import 'package:kiosk/features/utility/enum/enum_general_state_status.dart';
+import 'package:kiosk/features/utility/user_http_service.dart';
 
-// import '../../../core/widget/loading_widget.dart';
-// import '../../../features/utility/const/constant_string.dart';
+import '../../../features/utility/const/constant_string.dart';
+import '../cubit/section_search_cubit.dart';
+import '../service/section_search_service.dart';
+import 'widget/section_search_body_widget.dart';
 
-// class SectionSearchPage extends StatelessWidget {
-//   final int? branchId;
-//   const SectionSearchPage({super.key, this.branchId});
+class SectionSearchView extends StatefulWidget {
+  const SectionSearchView({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return PratikSectionSearch(
-//       backendUrl: ConstantString.backendUrl,
-//       language: "ConstAppFunc.currentLanguage(context)",
-//       branchId: branchId,
-//       hospitalListId: "context.read<SelectHospitalCubit>().hospitalListId()",
-//       baseViewBuilder: (BuildContext context, Widget child) {
-//         return Scaffold(
-//           appBar: AppBar(title: Text("Bölüm Seçimi")),
-//           body: child,
-//         );
-//       },
-//       loadingView: const LoadingWidget(),
-//       successViewBuilder: (BuildContext context, SectionSearchComplated state) {
-//         // return SectionSearchBodyWidget(
-//         //   sectionListModel: state.sectionListModel ?? SectionListModel(),
-//         //   branchId: branchId,
-//         // );
-//       },
-//       errorViewBuilder: const AppErrorWidget(),
-//     );
-//   }
+  @override
+  State<SectionSearchView> createState() => _SectionSearchViewState();
+}
 
-//   // _appbar(BuildContext context) {
-//   //   return CustomAppBar(
-//   //       title: branchId is int
-//   //           ? ConstantString().branchs
-//   //           : ConstantString().sections);
-//   // }
-// }
+class _SectionSearchViewState extends State<SectionSearchView> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<SectionSearchCubit>(
+      create: (context) =>
+          SectionSearchCubit(service: SectionSearchService(UserHttpService()))
+            ..fetchSections(),
+      child: BlocBuilder<SectionSearchCubit, SectionSearchState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(title: Text(ConstantString().home)),
+            body: _bodyFunc(state, context),
+          );
+        },
+      ),
+    );
+  }
+
+  _bodyFunc(SectionSearchState state, BuildContext context) {
+    switch (state.status) {
+      case EnumGeneralStateStatus.loading:
+        return LoadingWidget();
+      case EnumGeneralStateStatus.success:
+        return SectionSearchBodyWidget(sectionItemList: state.data);
+      default:
+        return Center(
+          child: Text(state.message ?? ConstantString().errorOccurred),
+        );
+    }
+  }
+}

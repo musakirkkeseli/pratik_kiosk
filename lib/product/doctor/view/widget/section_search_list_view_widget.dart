@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../../doctor/view/doctors_view.dart';
-import '../../model/section_model.dart';
+import '../../model/doctor_model.dart';
 
-class SectionSearchListViewWidget extends StatelessWidget {
-  final List<SectionItems> sectionItemList;
-  const SectionSearchListViewWidget({super.key, required this.sectionItemList});
+class DoctorListTileWidget extends StatelessWidget {
+  final List<DoctorItems> doctorItemList;
+  const DoctorListTileWidget({super.key, required this.doctorItemList});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: sectionItemList.length,
+      itemCount: doctorItemList.length,
       itemBuilder: (context, index) {
-        SectionItems section = sectionItemList[index];
+        DoctorItems section = doctorItemList[index];
         return Column(
           children: [
             ListTile(
@@ -22,10 +21,10 @@ class SectionSearchListViewWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      section.sectionName ==
+                      section.doctorName ==
                               "ConstantString().otherBranches.locale"
                           ? "ConstantString().nutritionAndDietetics.locale"
-                          : section.sectionName ?? "",
+                          : section.doctorName ?? "",
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -37,13 +36,13 @@ class SectionSearchListViewWidget extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        DoctorSearchView(sectionId: section.sectionId ?? 0),
-                  ),
-                );
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => DoctorSearchPage(
+                //               departmanId: section.sectionId,
+                //               departmanName: section.sectionName,
+                //             )));
               },
             ),
             const Divider(),
