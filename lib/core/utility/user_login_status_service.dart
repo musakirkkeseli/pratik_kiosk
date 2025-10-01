@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:provider/provider.dart';
+
+import '../../features/utility/inactivity_controller.dart';
 import '../../features/utility/navigation_service.dart';
 import 'analytics_service.dart';
 import 'logger_service.dart';
@@ -44,7 +47,7 @@ class UserLoginStatusService {
   }) async {
     _accessToken = accessToken;
     _controller.add(UserLoginStatus.online);
-
+    _inactivityStartSafe();
     // AnalyticsService().identifyUser(userId.toString());
     // AnalyticsService().setUserProperties({
     //   "Name": name,
@@ -63,6 +66,29 @@ class UserLoginStatusService {
     _accessToken = null;
     AnalyticsService().reset();
     _controller.add(UserLoginStatus.offline);
+    _inactivityStopSafe();
     NavigationService.ns.gotoMain();
+  }
+
+  void _inactivityStartSafe() {
+    final ctx = NavigationService.ns.navigatorKey.currentContext;
+    if (ctx == null) return;
+    try {
+      ctx.read<InactivityController>().start();
+      MyLog.debug("InactivityController.start() called");
+    } catch (e) {
+      MyLog.debug("Inactivity start failed: $e");
+    }
+  }
+
+  void _inactivityStopSafe() {
+    final ctx = NavigationService.ns.navigatorKey.currentContext;
+    if (ctx == null) return;
+    try {
+      ctx.read<InactivityController>().stop();
+      MyLog.debug("InactivityController.stop() called");
+    } catch (e) {
+      MyLog.debug("Inactivity stop failed: $e");
+    }
   }
 }
