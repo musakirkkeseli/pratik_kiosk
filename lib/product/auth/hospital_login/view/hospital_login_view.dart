@@ -6,6 +6,7 @@ import 'package:kiosk/product/auth/hospital_login/view/widget/hospital_login_wid
 
 import '../../../../core/widget/snackbar_service.dart';
 import '../../../../features/utility/const/constant_string.dart';
+import '../../../../features/utility/navigation_service.dart';
 import '../../../../features/utility/tenant_http_service.dart';
 import '../cubit/hospital_login_cubit.dart';
 import '../services/hospital_and_user_login_services.dart';
@@ -35,8 +36,10 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
             case EnumGeneralStateStatus.success:
               _hideLoading(context);
             case EnumGeneralStateStatus.failure:
-              // _hideLoading(context);
-              // SnackbarService().showSnackBar(state.message ?? "");
+              _hideLoading(context);
+              SnackbarService().showSnackBar(
+                state.message ?? ConstantString().errorOccurred,
+              );
             default:
               break;
           }
@@ -61,6 +64,6 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
   }
 
   void _hideLoading(BuildContext context) {
-    Navigator.of(context, rootNavigator: true).pop();
+    NavigationService.ns.goBack();
   }
 }
