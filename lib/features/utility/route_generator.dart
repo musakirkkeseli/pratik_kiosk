@@ -3,25 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/product/appointments/view/appointments_view.dart';
 
 import '../../product/auth/hospital_login/cubit/hospital_login_cubit.dart';
-import '../../product/auth/patient_login/view/widget/date_of_birth_widget.dart';
-import '../../product/auth/patient_login/view/patient_login_view.dart';
+import '../../product/auth/patient_login/view/patient_view.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoutes(RouteSettings settings) {
     switch (settings.name) {
-      case "DateOfBirthWidget":
-        // final args = settings.arguments as Map? ?? {};
-        return MaterialPageRoute(
-          builder: (context) => DateOfBirthWidget(),
-          settings: RouteSettings(name: settings.name),
-        );
       case "AppointmentsView":
         // final args = settings.arguments as Map? ?? {};
         return MaterialPageRoute(
           builder: (context) => AppointmentsView(),
           settings: RouteSettings(name: settings.name),
         );
-      case "PatientLoginView":
+      case "PatientView":
         final cubit = settings.arguments as HospitalLoginCubit?;
         if (cubit == null) {
           return MaterialPageRoute(
@@ -31,7 +24,7 @@ class RouteGenerator {
         }
         return MaterialPageRoute(
           builder: (_) =>
-              BlocProvider.value(value: cubit, child: const PatientLoginView()),
+              BlocProvider.value(value: cubit, child: const PatientView()),
           settings: RouteSettings(name: settings.name),
         );
 
