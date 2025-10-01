@@ -30,4 +30,6 @@ class ConstantString {
   String logout = "Çıkış";
   String home = "Ana Sayfa";
   String selectBranch = "Bölüm Seçiniz";
+  String branchs = "Bölümler";
+  String selectDoctor = "Doktor Seçiniz";
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../features/utility/const/constant_color.dart';
+import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/navigation_service.dart';
 
 class SectionButtonWidget extends StatefulWidget {
@@ -26,7 +27,7 @@ class _SectionButtonWidgetState extends State<SectionButtonWidget> {
             border: Border.all(color: ConstColor.primaryColor, width: 1),
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-          child: Center(child: Text("Bölümler")),
+          child: Center(child: Text(ConstantString().branchs)),
         ),
       ),
     );
