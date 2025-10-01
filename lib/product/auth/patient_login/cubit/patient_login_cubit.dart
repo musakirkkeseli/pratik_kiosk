@@ -143,4 +143,7 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
       );
     }
   }
+  void setAuthType(AuthType type) {
+  emit(state.copyWith(authType: type));
+}
 }

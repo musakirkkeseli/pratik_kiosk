@@ -23,7 +23,15 @@ class _PatientLoginWidgetState extends State<PatientLoginWidget> {
   @override
   void dispose() {
     _tcController.dispose();
+    _birthDayController.dispose();
+
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _tcController.addListener(() => setState(() {}));
   }
 
   @override
@@ -44,27 +52,51 @@ class _PatientLoginWidgetState extends State<PatientLoginWidget> {
                 type: EnumTextformfield.birthday,
               ),
 
-            ElevatedButton.icon(
-              onPressed: () {
-                final isValid = _formKey.currentState?.validate() ?? false;
-                if (isValid) {
-                  FocusScope.of(context).unfocus();
-                  final state = context.read<PatientLoginCubit>().state;
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    final isValid = _formKey.currentState?.validate() ?? false;
+                    if (isValid) {
+                      FocusScope.of(context).unfocus();
+                      final state = context.read<PatientLoginCubit>().state;
 
-                  state.authType == AuthType.login
-                      ? context.read<PatientLoginCubit>().userLogin(
-                          tcNo: _tcController.text.trim(),
-                        )
-                      : context.read<PatientLoginCubit>().userRegister(
-                          patientRegisterRequestModel:
-                              PatientRegisterRequestModel(
-                                tcNo: _tcController.text.trim(),
-                                birthDate: _birthDayController.text.trim(),
-                              ),
+                      state.authType == AuthType.login
+                          ? context.read<PatientLoginCubit>().userLogin(
+                              tcNo: _tcController.text.trim(),
+                            )
+                          : context.read<PatientLoginCubit>().userRegister(
+                              patientRegisterRequestModel:
+                                  PatientRegisterRequestModel(
+                                    tcNo: _tcController.text.trim(),
+                                    birthDate: _birthDayController.text.trim(),
+                                  ),
+                            );
+                    }
+                  },
+                  label: Text(ConstantString().signIn),
+                ),
+                if (_tcController.text.trim().isNotEmpty)
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      final state = context.read<PatientLoginCubit>().state;
+
+                      FocusScope.of(context).unfocus();
+                      _formKey.currentState?.reset();
+                      _tcController.clear();
+                      _birthDayController.clear();
+
+                      if (state.authType == AuthType.register) {
+                        context.read<PatientLoginCubit>().setAuthType(
+                          AuthType.login,
                         );
-                }
-              },
-              label: Text(ConstantString().signIn),
+                      }
+                    },
+                    icon: const Icon(Icons.clear),
+                    label: const Text("Temizle"),
+                  ),
+              ],
             ),
           ],
         ),
