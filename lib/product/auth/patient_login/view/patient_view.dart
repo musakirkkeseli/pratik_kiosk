@@ -5,47 +5,39 @@ import 'package:kiosk/product/auth/patient_login/services/patient_services.dart'
 import '../../../../core/widget/snackbar_service.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/enum/enum_general_state_status.dart';
-import '../../../../features/utility/navigation_service.dart';
 import '../../../../features/utility/tenant_http_service.dart';
 import '../cubit/patient_login_cubit.dart';
 import 'widget/patient_login_widget.dart';
 
-class PatientLoginView extends StatefulWidget {
-  const PatientLoginView({super.key});
+class PatientView extends StatefulWidget {
+  const PatientView({super.key});
 
   @override
-  State<PatientLoginView> createState() => _PatientLoginViewState();
+  State<PatientView> createState() => _PatientViewState();
 }
 
-class _PatientLoginViewState extends State<PatientLoginView> {
+class _PatientViewState extends State<PatientView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<PatientLoginCubit>(
       create: (context) =>
           PatientLoginCubit(service: PatientServices(TenantHttpService())),
       child: BlocConsumer<PatientLoginCubit, PatientLoginState>(
-        listenWhen: (prev, curr) => prev.tcStatus != curr.tcStatus,
+        listenWhen: (prev, curr) => prev.status != curr.status,
         listener: (context, state) async {
-          if (state.tcStatus == EnumGeneralStateStatus.success) {
-            // TC kayıtlı → AppointmentView’a yönlendir
-            // NavigationService.ns.routeTo("AppointmentsView");
-            // ScaffoldMessenger.of(
-            //   context,
-            // ).showSnackBar(const SnackBar(content: Text('TC doğrulandı.')));
-          } else if (state.tcStatus == EnumGeneralStateStatus.failure) {
-            if (state.authType == AuthType.register) {
-              NavigationService.ns.routeTo("DateOfBirthWidget");
-            } else {
+          switch (state.status) {
+            case EnumGeneralStateStatus.failure:
               SnackbarService().showSnackBar(
                 state.message ?? ConstantString().errorOccurred,
               );
-            }
+              break;
+            default:
           }
         },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(title: Text(ConstantString().patientLogin)),
-            body: PatientLoginWidget(),
+            body: PatientLoginWidget(authType: state.authType),
           );
         },
       ),

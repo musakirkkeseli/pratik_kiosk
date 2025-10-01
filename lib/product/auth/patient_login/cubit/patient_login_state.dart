@@ -5,23 +5,23 @@ enum AuthType { register, login }
 class PatientLoginState {
   final String? message;
   final AuthType authType;
-  final EnumGeneralStateStatus tcStatus;
+  final EnumGeneralStateStatus status;
 
   const PatientLoginState({
     this.message,
     this.authType = AuthType.login,
-    this.tcStatus = EnumGeneralStateStatus.initial,
+    this.status = EnumGeneralStateStatus.initial,
   });
 
   PatientLoginState copyWith({
     String? message,
     AuthType? authType,
-    EnumGeneralStateStatus? tcStatus,
+    EnumGeneralStateStatus? status,
   }) {
     return PatientLoginState(
       message: message ?? this.message,
       authType: authType ?? this.authType,
-      tcStatus: tcStatus ?? this.tcStatus,
+      status: status ?? this.status,
     );
   }
 }
