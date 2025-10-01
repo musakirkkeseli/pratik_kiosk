@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../features/utility/const/constant_color.dart';
-import '../../../section/view/section_view.dart';
+import '../../../../features/utility/navigation_service.dart';
 
 class SectionButtonWidget extends StatefulWidget {
   const SectionButtonWidget({super.key});
@@ -17,10 +17,7 @@ class _SectionButtonWidgetState extends State<SectionButtonWidget> {
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SectionSearchView()),
-          );
+          NavigationService.ns.routeTo("SectionSearchView");
         },
         child: Container(
           width: MediaQuery.of(context).size.width * 0.90,

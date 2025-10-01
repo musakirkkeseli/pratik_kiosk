@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kiosk/features/utility/navigation_service.dart';
 
-import '../../../doctor/view/doctors_view.dart';
 import '../../model/section_model.dart';
 
 class SectionSearchListViewWidget extends StatelessWidget {
@@ -37,12 +37,9 @@ class SectionSearchListViewWidget extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        DoctorSearchView(sectionId: section.sectionId ?? 0),
-                  ),
+                NavigationService.ns.routeTo(
+                  "DoctorSearchView",
+                  arguments: {"sectionId": section.sectionId ?? 0},
                 );
               },
             ),
