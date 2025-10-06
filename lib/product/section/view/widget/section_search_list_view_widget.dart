@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kiosk/features/utility/navigation_service.dart';
+import 'package:provider/provider.dart';
 
+import '../../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
 import '../../model/section_model.dart';
 
 class SectionSearchListViewWidget extends StatelessWidget {
@@ -37,10 +38,7 @@ class SectionSearchListViewWidget extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                NavigationService.ns.routeTo(
-                  "DoctorSearchView",
-                  arguments: {"sectionId": section.sectionId ?? 0},
-                );
+               context.read<PatientRegistrationProceduresCubit>().selectSection(section);
               },
             ),
             const Divider(),

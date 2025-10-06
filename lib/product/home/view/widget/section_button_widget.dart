@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
+import '../../../../features/utility/enum/enum_patient_registration_procedures.dart';
 import '../../../../features/utility/navigation_service.dart';
 
 class SectionButtonWidget extends StatefulWidget {
@@ -18,7 +19,13 @@ class _SectionButtonWidgetState extends State<SectionButtonWidget> {
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-          NavigationService.ns.routeTo("SectionSearchView");
+          NavigationService.ns.routeTo(
+            "PatientRegistrationProceduresView",
+            arguments: {
+              "startStep": EnumPatientRegistrationProcedures.section,
+              "showBack": true,
+            },
+          );
         },
         child: Container(
           width: MediaQuery.of(context).size.width * 0.90,
@@ -27,7 +34,7 @@ class _SectionButtonWidgetState extends State<SectionButtonWidget> {
             border: Border.all(color: ConstColor.primaryColor, width: 1),
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-          child: Center(child: Text(ConstantString().branchs)),
+          child: Center(child: Text(ConstantString().branches)),
         ),
       ),
     );

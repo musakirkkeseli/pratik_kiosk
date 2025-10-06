@@ -25,10 +25,7 @@ class _SectionSearchViewState extends State<SectionSearchView> {
             ..fetchSections(),
       child: BlocBuilder<SectionSearchCubit, SectionSearchState>(
         builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(title: Text(ConstantString().home)),
-            body: _bodyFunc(state, context),
-          );
+          return _bodyFunc(state, context);
         },
       ),
     );
