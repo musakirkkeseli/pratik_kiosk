@@ -26,7 +26,10 @@ dependencies:
 
   # debug
   logger: ^2.5.0
-
+  
+  #design
+  timelines_plus: ^1.0.7
+  lottie: ^3.3.2
 
   # analysis
   mixpanel_flutter: ^2.4.4
@@ -38,6 +41,7 @@ dependencies:
 
   # http
   dio: ^5.9.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -51,5 +55,6 @@ flutter:
 
   assets:
     - .env
-  #   - assets/lang/
+    - assets/lang/
+    - assets/gif/
   #   - assets/images/
