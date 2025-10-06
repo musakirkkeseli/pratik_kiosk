@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:kiosk/features/utility/custom_extension.dart';
 
 import 'environment.dart';
+import 'locale_keys.g.dart';
 
 class ConstantString {
   static var backendUrl = Environment.backendUrl;
-  String errorOccurred = "errorOccurred";
-  String notFoundAppointment = "Randebu Bulunmamaktadır";
 
   // Localization
   // ignore: constant_identifier_names
@@ -21,15 +21,22 @@ class ConstantString {
   static const turkish = "Türkçe";
   static const english = "English";
   static const arabic = "عربي";
+  static const loadingGif = "assets/gif/loading.gif";
+  static const posGif = "assets/gif/pos_gif.json";
+  static const healthGif = "assets/gif/health_gif.json";
 
-  String birthDate = "Doğum Tarihi";
-  String signIn = "Giriş Yap";
-  String patientLogin = "Hasta Girişi";
-  String hospitalLogin = "Hastane Girişi";
-  String appointments = "Randevular";
-  String logout = "Çıkış";
-  String home = "Ana Sayfa";
-  String selectBranch = "Bölüm Seçiniz";
-  String branchs = "Bölümler";
-  String selectDoctor = "Doktor Seçiniz";
+  String birthDate = LocaleKeys.birthDate.locale;
+  String signIn = LocaleKeys.signIn.locale;
+  String patientLogin = LocaleKeys.patientLogin.locale;
+  String hospitalLogin = LocaleKeys.hospitalLogin.locale;
+  String appointments = LocaleKeys.appointments.locale;
+  String logout = LocaleKeys.logout.locale;
+  String homePageTitle = LocaleKeys.homePageTitle.locale;
+  String selectBranch = LocaleKeys.selectBranch.locale;
+  String branches = LocaleKeys.branches.locale;
+  String selectDoctor = LocaleKeys.selectDoctor.locale;
+  String errorOccurred = LocaleKeys.errorOccurred.locale;
+  String noAppointments = LocaleKeys.noAppointments.locale;
+  String internetConnectionError = LocaleKeys.internetConnectionError.locale;
+  String checkInternetConnection = LocaleKeys.checkInternetConnection.locale;
 }

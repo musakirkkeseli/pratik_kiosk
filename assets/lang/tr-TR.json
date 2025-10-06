@@ -1,0 +1,16 @@
+{
+  "birthDate": "Doğum Tarihi",
+  "signIn": "Giriş Yap",
+  "patientLogin": "Hasta Girişi",
+  "hospitalLogin": "Hastane Girişi",
+  "appointments": "Randevular",
+  "logout": "Çıkış",
+  "homePageTitle": "Ana Sayfa",
+  "selectBranch": "Bölüm Seçiniz",
+  "branches": "Bölümler",
+  "selectDoctor": "Doktor Seçiniz",
+  "errorOccurred": "Bir hata oluştu",
+  "noAppointments": "Randevu Bulunmamaktadır",
+  "internetConnectionError": "İnternet bağlantısı hatası",
+  "checkInternetConnection": "Uygulamayı kullanmaya devam edebilmek için lütfen internet bağlantınızı kontrol edin."
+}

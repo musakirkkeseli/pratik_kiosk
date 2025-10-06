@@ -1,0 +1,16 @@
+{
+  "birthDate": "تاريخ الميلاد",
+  "signIn": "تسجيل الدخول",
+  "patientLogin": "دخول المريض",
+  "hospitalLogin": "تسجيل دخول المستشفى",
+  "appointments": "المواعيد",
+  "logout": "تسجيل الخروج",
+  "homePageTitle": "الرئيسية",
+  "selectBranch": "اختر القسم",
+  "branches": "الأقسام",
+  "selectDoctor": "اختر الطبيب",
+  "errorOccurred": "حدث خطأ",
+  "noAppointments": "لا توجد مواعيد",
+  "internetConnectionError": "خطأ في الاتصال بالإنترنت",
+  "checkInternetConnection": "يرجى التحقق من اتصال الإنترنت الخاص بك للمتابعة في استخدام التطبيق."
+}

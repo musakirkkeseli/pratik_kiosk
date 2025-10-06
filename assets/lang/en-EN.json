@@ -1,0 +1,16 @@
+{
+  "birthDate": "Birth Date",
+  "signIn": "Sign In",
+  "patientLogin": "Patient Login",
+  "hospitalLogin": "Hospital Login",
+  "appointments": "Appointments",
+  "logout": "Log Out",
+  "homePageTitle": "Home",
+  "selectBranch": "Select Department",
+  "branches": "Departments",
+  "selectDoctor": "Select Doctor",
+  "errorOccurred": "An error occurred",
+  "noAppointments": "No appointments found",
+  "internetConnectionError": "Internet connection error",
+  "checkInternetConnection": "Please check your internet connection to continue using the application."
+}
