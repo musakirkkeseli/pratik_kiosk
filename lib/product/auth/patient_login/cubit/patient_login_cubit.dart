@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../../../core/exception/network_exception.dart';
 import '../../../../core/utility/base_cubit.dart';
 import '../../../../core/utility/logger_service.dart';
@@ -143,7 +145,53 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
       );
     }
   }
+
   void setAuthType(AuthType type) {
-  emit(state.copyWith(authType: type));
-}
+    emit(state.copyWith(authType: type));
+  }
+
+  static const int _initialSeconds = 30;
+  Timer? _timer;
+
+  void onChanged(String value) {
+    if (value.isEmpty) {
+      _stopTimer();
+      emit(state.copyWith(counter: null));
+      return;
+    }
+    // en az bir karakter varsa her değişimde reset
+    _startOrResetTimer();
+  }
+
+  void _startOrResetTimer() {
+    _timer?.cancel();
+    emit(state.copyWith(counter: _initialSeconds));
+    _timer = Timer.periodic(const Duration(seconds: 1), (t) {
+      final counter = state.counter;
+      MyLog.debug("counter: $counter");
+      if (counter <= 1) {
+        _stopTimer();
+        emit(state.copyWith(counter: 0));
+        return;
+      }
+      emit(state.copyWith(counter: counter - 1));
+    });
+  }
+
+  void _stopTimer() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  /// Dışarıdan manuel kapatma isterse
+  void stopCounter() {
+    _stopTimer();
+    emit(state.copyWith(counter: null));
+  }
+
+  @override
+  Future<void> close() {
+    _stopTimer();
+    return super.close();
+  }
 }
