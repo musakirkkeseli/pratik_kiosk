@@ -56,10 +56,17 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
 
   void _showLoading(BuildContext context) {
     showDialog(
+      useSafeArea: false,
+
       context: context,
       barrierDismissible: false,
       barrierColor: Colors.black45,
-      builder: (_) => const LoadingWidget(),
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        insetPadding: EdgeInsets.zero, 
+        child: const SizedBox.expand(child: Center(child: LoadingWidget())),
+      ),
     );
   }
 

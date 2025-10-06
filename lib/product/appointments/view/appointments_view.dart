@@ -84,7 +84,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
         );
       default:
         return Center(
-          child: Text(state.message ?? ConstantString().notFoundAppointment),
+          child: Text(state.message ?? ConstantString().noAppointments),
         );
     }
   }
