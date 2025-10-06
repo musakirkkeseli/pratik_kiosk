@@ -3,14 +3,12 @@ import 'package:kiosk/features/utility/enum/enum_textformfield.dart';
 
 class CustomHospitalAndPatientLoginTextfieldWidget extends StatelessWidget {
   final EnumTextformfield type;
-
   final TextEditingController controller;
-
+  final void Function(String)? onChanged;
   const CustomHospitalAndPatientLoginTextfieldWidget({
     super.key,
-
     required this.controller,
-
+    this.onChanged,
     required this.type,
   });
 
@@ -24,6 +22,7 @@ class CustomHospitalAndPatientLoginTextfieldWidget extends StatelessWidget {
       inputFormatters: type.inputFormatters,
       maxLength: type.maxLength,
       validator: type.validator,
+      onChanged: onChanged,
     );
   }
 }
