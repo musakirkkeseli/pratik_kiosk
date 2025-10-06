@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
 import '../../model/doctor_model.dart';
 
 class DoctorListTileWidget extends StatelessWidget {
   final List<DoctorItems> doctorItemList;
-  const DoctorListTileWidget({super.key, required this.doctorItemList});
+  const DoctorListTileWidget({
+    super.key,
+    required this.doctorItemList,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +41,7 @@ class DoctorListTileWidget extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => DoctorSearchPage(
-                //               departmanId: section.sectionId,
-                //               departmanName: section.sectionName,
-                //             )));
+               context.read<PatientRegistrationProceduresCubit>().selectDoctor(section);
               },
             ),
             const Divider(),

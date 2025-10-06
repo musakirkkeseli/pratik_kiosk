@@ -27,10 +27,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
       )..fetchDoctors(),
       child: BlocBuilder<DoctorSearchCubit, DoctorSearchState>(
         builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(title: Text(ConstantString().home)),
-            body: _bodyFunc(state, context),
-          );
+          return _bodyFunc(state, context);
         },
       ),
     );
