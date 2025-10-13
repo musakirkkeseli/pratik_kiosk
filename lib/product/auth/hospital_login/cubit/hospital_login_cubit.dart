@@ -1,10 +1,11 @@
-// ignore: depend_on_referenced_packages
 import 'package:kiosk/features/utility/enum/enum_general_state_status.dart';
 
 import '../../../../core/exception/network_exception.dart';
 import '../../../../core/utility/base_cubit.dart';
+import '../../../../core/utility/dynamic_theme_provider.dart';
 import '../../../../core/utility/logger_service.dart';
 import '../../../../core/utility/login_status_service.dart';
+import '../model/config_response_model.dart';
 import '../model/hospital_login_model.dart';
 import '../services/hospital_and_user_login_services.dart';
 
@@ -42,11 +43,11 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
               message: resp.message,
             ),
           );
-          config();
-                    await LoginStatusService().login(
+          await LoginStatusService().saveToken(
             accessToken: access ?? "",
             refreshToken: refresh ?? "",
           );
+          config();
         } else {
           safeEmit(
             state.copyWith(
@@ -82,43 +83,26 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
 
   Future<void> config() async {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
-
     try {
       final resp = await service.getConfig();
 
-      if (resp.success) {
+      if (resp.success && resp.data is ConfigResponseModel) {
         safeEmit(
           state.copyWith(
             status: EnumGeneralStateStatus.success,
             message: resp.message,
+            primaryColor: resp.data!.color!.primaryColor ?? "",
           ),
         );
+        DynamicThemeProvider().updateTheme(resp.data ?? ConfigResponseModel());
+        await LoginStatusService().login();
       } else {
-        safeEmit(
-          state.copyWith(
-            status: EnumGeneralStateStatus.failure,
-            message: resp.message,
-          ),
-        );
+        LoginStatusService().logout();
       }
-    } on NetworkException catch (e) {
-      safeEmit(
-        state.copyWith(
-          status: EnumGeneralStateStatus.failure,
-          message: e.message,
-        ),
-      );
+    } on NetworkException {
+      LoginStatusService().logout();
     } catch (e) {
-      safeEmit(
-        state.copyWith(
-          status: EnumGeneralStateStatus.failure,
-          message: 'Beklenmeyen hata: $e',
-        ),
-      );
+      LoginStatusService().logout();
     }
-  }
-
-  void continueToLogin() {
-    safeEmit(state.copyWith(loginStatus: EnumHospitalLoginStatus.login));
   }
 }
