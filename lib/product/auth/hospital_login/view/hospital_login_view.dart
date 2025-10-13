@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/core/widget/loading_widget.dart';
 import 'package:kiosk/features/utility/enum/enum_general_state_status.dart';
 import 'package:kiosk/product/auth/hospital_login/view/widget/hospital_login_widget.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../core/utility/dynamic_theme_provider.dart';
 import '../../../../core/widget/snackbar_service.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/navigation_service.dart';
@@ -62,7 +64,7 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
         return HospitalLoginWidget();
       case EnumHospitalLoginStatus.config:
         final hex = state.primaryColor;
-        final parsedColor = _parseHexColor(hex);
+        final themeProvider = Provider.of<DynamicThemeProvider>(context);
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -74,42 +76,23 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 16),
-              if (hex != null) Text('Gelen Renk: $hex'),
+              if (hex != null)
+                Text(
+                  'Gelen Renk: ${themeProvider.themeData.primaryColor.value.toRadixString(16).padLeft(8, '0').toUpperCase()}',
+                ),
               const SizedBox(height: 12),
-              if (parsedColor != null)
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: parsedColor,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.black12),
-                  ),
-                )
-              else
-                const Text('Geçerli bir renk dönmedi.'),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () =>
-                    context.read<HospitalLoginCubit>().continueToLogin(),
-                child: const Text('Devam Et'),
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  color: themeProvider.themeData.primaryColor,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.black12),
+                ),
               ),
             ],
           ),
         );
-    }
-  }
-
-  Color? _parseHexColor(String? hex) {
-    if (hex == null || hex.isEmpty) return null;
-    var value = hex.trim();
-    if (value.startsWith('#')) value = value.substring(1);
-    if (value.length == 6) value = 'FF$value';
-    try {
-      final intColor = int.parse(value, radix: 16);
-      return Color(intColor);
-    } catch (_) {
-      return null;
     }
   }
 
@@ -129,10 +112,10 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
     );
   }
 
-void _hideLoading(BuildContext context) {
-  // Navigator yığında gerçekten bir sayfa varsa kapat
-  if (Navigator.canPop(context)) {
-    NavigationService.ns.goBack();
+  void _hideLoading(BuildContext context) {
+    // Navigator yığında gerçekten bir sayfa varsa kapat
+    if (Navigator.canPop(context)) {
+      NavigationService.ns.goBack();
+    }
   }
-}
 }
