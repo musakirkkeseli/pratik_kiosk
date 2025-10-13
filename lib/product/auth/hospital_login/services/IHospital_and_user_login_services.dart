@@ -1,5 +1,6 @@
 import '../../../../core/utility/http_service.dart';
 import '../../../../features/model/api_response_model.dart';
+import '../model/config_response_model.dart';
 import '../model/hospital_login_model.dart';
 import '../model/refresh_token_mode.dart';
 
@@ -16,7 +17,7 @@ abstract class IHospitalAndUserLoginServices {
   final String refreshTokenPath =
       IHospitalAndUserLoginServicesPath.refreshToken.rawValue;
 
-  Future<ApiResponse<HospitalLoginModel>> getConfig();
+  Future<ApiResponse<ConfigResponseModel>> getConfig();
 
   Future<ApiResponse<HospitalLoginModel>> postLogin(
     String userName,

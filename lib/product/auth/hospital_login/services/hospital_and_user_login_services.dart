@@ -1,4 +1,5 @@
 import '../../../../features/model/api_response_model.dart';
+import '../model/config_response_model.dart';
 import '../model/hospital_login_model.dart';
 import '../model/refresh_token_mode.dart';
 import 'IHospital_and_user_login_services.dart';
@@ -27,14 +28,14 @@ class HospitalAndUserLoginServices extends IHospitalAndUserLoginServices {
   }
 
   @override
-  Future<ApiResponse<HospitalLoginModel>> getConfig() async {
-    return http.request<HospitalLoginModel>(
+  Future<ApiResponse<ConfigResponseModel>> getConfig() async {
+    return http.request<ConfigResponseModel>(
       requestFunction: () => http.get(
         hospitalConfigPath,
 
       ),
       fromJson: (json) =>
-          HospitalLoginModel.fromJson(json as Map<String, dynamic>),
+          ConfigResponseModel.fromJson(json as Map<String, dynamic>),
     );
   }
 
