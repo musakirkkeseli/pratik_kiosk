@@ -36,13 +36,18 @@ class LoginStatusService {
     return _instance ??= LoginStatusService._internal();
   }
 
-  Future<void> login({
+  Future<void> saveToken({
     required String accessToken,
     required String refreshToken,
   }) async {
     _accessToken = accessToken;
     _refreshToken = refreshToken;
-    _controller.add(LoginStatus.online);
+  }
+
+  Future<void> login() async {
+    if (_accessToken is String && _refreshToken is String) {
+      _controller.add(LoginStatus.online);
+    }
   }
 
   refreshTokens({required String accessToken, required String refreshToken}) {
