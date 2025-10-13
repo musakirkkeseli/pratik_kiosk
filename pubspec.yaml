@@ -30,6 +30,7 @@ dependencies:
   #design
   timelines_plus: ^1.0.7
   lottie: ^3.3.2
+  animated_flip_counter: ^0.3.4
 
   # analysis
   mixpanel_flutter: ^2.4.4

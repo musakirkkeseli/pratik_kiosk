@@ -34,13 +34,16 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
         final refresh = tokens.refreshToken;
         if (access != null || refresh != null) {
           _log.d("$access");
+
           safeEmit(
             state.copyWith(
               status: EnumGeneralStateStatus.success,
+              loginStatus: EnumHospitalLoginStatus.config,
               message: resp.message,
             ),
           );
-          LoginStatusService().login(
+          config();
+                    await LoginStatusService().login(
             accessToken: access ?? "",
             refreshToken: refresh ?? "",
           );
@@ -75,5 +78,47 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
         ),
       );
     }
+  }
+
+  Future<void> config() async {
+    safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
+
+    try {
+      final resp = await service.getConfig();
+
+      if (resp.success) {
+        safeEmit(
+          state.copyWith(
+            status: EnumGeneralStateStatus.success,
+            message: resp.message,
+          ),
+        );
+      } else {
+        safeEmit(
+          state.copyWith(
+            status: EnumGeneralStateStatus.failure,
+            message: resp.message,
+          ),
+        );
+      }
+    } on NetworkException catch (e) {
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: e.message,
+        ),
+      );
+    } catch (e) {
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: 'Beklenmeyen hata: $e',
+        ),
+      );
+    }
+  }
+
+  void continueToLogin() {
+    safeEmit(state.copyWith(loginStatus: EnumHospitalLoginStatus.login));
   }
 }

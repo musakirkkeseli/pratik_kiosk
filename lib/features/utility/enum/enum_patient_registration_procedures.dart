@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 import '../../../product/ patient_registration_procedures/model/patient_registration_procedures_request_model.dart';
 import '../../../product/doctor/view/doctors_view.dart';
 import '../../../product/patient_transaction/view/patient_transaction_view.dart';
+import '../../../product/payment_screen/view/payment_view.dart';
 import '../../../product/section/view/section_view.dart';
-import '../const/constant_string.dart';
 
 enum EnumPatientRegistrationProcedures {
   section,
@@ -36,17 +35,11 @@ extension EnumNavigationWidgetExtension on EnumPatientRegistrationProcedures {
       case EnumPatientRegistrationProcedures.section:
         return SectionSearchView();
       case EnumPatientRegistrationProcedures.doctor:
-        return DoctorSearchView(sectionId: model.departmentId ?? 0);
+        return DoctorSearchView(sectionId: model.branchId ?? 0);
       case EnumPatientRegistrationProcedures.patientTransaction:
         return PatientTransactionView();
       case EnumPatientRegistrationProcedures.payment:
-        return Center(child: Column(
-          children: [
-            Text("Ödeme Ekranı"),
-            Lottie.asset(ConstantString.posGif),
-             Text("Ödeme Bekleniyor"),
-          ],
-        ));
+        return PaymentView();
     }
   }
 }

@@ -14,7 +14,7 @@ class HospitalAndUserLoginServices extends IHospitalAndUserLoginServices {
   ) async {
     return http.request<HospitalLoginModel>(
       requestFunction: () => http.post(
-        hospitalLogin,
+          hospitalLoginPath,
         data: {
           'username': userName,
           'password': password,
@@ -26,12 +26,26 @@ class HospitalAndUserLoginServices extends IHospitalAndUserLoginServices {
     );
   }
 
-    @override
-    Future<ApiResponse<RefreshTokenResponseModel>> postRefreshToken(String refreshToken) {
-      return http.request<RefreshTokenResponseModel>(
-        requestFunction: () => http.post(refreshTokenPath),
-        fromJson: (json) =>
-            RefreshTokenResponseModel.fromJson(json as Map<String, dynamic>),
-      );
-    }
+  @override
+  Future<ApiResponse<HospitalLoginModel>> getConfig() async {
+    return http.request<HospitalLoginModel>(
+      requestFunction: () => http.get(
+        hospitalConfigPath,
+
+      ),
+      fromJson: (json) =>
+          HospitalLoginModel.fromJson(json as Map<String, dynamic>),
+    );
   }
+
+  @override
+  Future<ApiResponse<RefreshTokenResponseModel>> postRefreshToken(
+    String refreshToken,
+  ) {
+    return http.request<RefreshTokenResponseModel>(
+      requestFunction: () => http.post(refreshTokenPath),
+      fromJson: (json) =>
+          RefreshTokenResponseModel.fromJson(json as Map<String, dynamic>),
+    );
+  }
+}

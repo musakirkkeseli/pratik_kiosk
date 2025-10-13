@@ -8,11 +8,15 @@ abstract class IHospitalAndUserLoginServices {
 
   IHospitalAndUserLoginServices(this.http);
 
-  final String hospitalLogin =
+  final String hospitalConfigPath =
+      IHospitalAndUserLoginServicesPath.hospitalConfig.rawValue;
+  final String hospitalLoginPath =
       IHospitalAndUserLoginServicesPath.hospitalLogin.rawValue;
 
   final String refreshTokenPath =
       IHospitalAndUserLoginServicesPath.refreshToken.rawValue;
+
+  Future<ApiResponse<HospitalLoginModel>> getConfig();
 
   Future<ApiResponse<HospitalLoginModel>> postLogin(
     String userName,
@@ -25,7 +29,11 @@ abstract class IHospitalAndUserLoginServices {
   );
 }
 
-enum IHospitalAndUserLoginServicesPath { hospitalLogin, refreshToken }
+enum IHospitalAndUserLoginServicesPath {
+  hospitalLogin,
+  refreshToken,
+  hospitalConfig,
+}
 
 extension IHospitalAndUserLoginServicesExtension
     on IHospitalAndUserLoginServicesPath {
@@ -36,6 +44,9 @@ extension IHospitalAndUserLoginServicesExtension
 
       case IHospitalAndUserLoginServicesPath.refreshToken:
         return '/auth/refresh-token';
+
+      case IHospitalAndUserLoginServicesPath.hospitalConfig:
+        return '/hospital/config';
     }
   }
 }

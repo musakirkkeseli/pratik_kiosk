@@ -11,6 +11,7 @@ import '../../../../features/utility/enum/enum_textformfield.dart';
 import '../../../../features/utility/tenant_http_service.dart';
 import '../cubit/patient_login_cubit.dart';
 import '../model/patient_register_request_model.dart';
+import '../../../../features/widget/inactivity_warning_dialog.dart';
 
 class PatientView extends StatefulWidget {
   final AuthType? authType;
@@ -25,6 +26,7 @@ class _PatientViewState extends State<PatientView> {
   final TextEditingController _tcController = TextEditingController();
   final TextEditingController _birthDayController = TextEditingController();
   bool _dialogOpen = false;
+  bool _suppressWarning = false; // Devam Et sonrası popup yeniden açılmasın
 
   @override
   void dispose() {
@@ -52,10 +54,10 @@ class _PatientViewState extends State<PatientView> {
               prev.status != EnumGeneralStateStatus.failure &&
               curr.status == EnumGeneralStateStatus.failure;
           final enteredWarning =
-              (prev.counter > 10) && (curr.counter <= 10) && (curr.counter > 0);
+              (prev.counter > 15) && (curr.counter <= 15) && (curr.counter > 0);
 
           final leftWarningWhileOpen =
-              (_dialogOpen) && (prev.counter <= 10) && (curr.counter > 10);
+              (_dialogOpen) && (prev.counter <= 15) && (curr.counter > 15);
 
           return counterControl ||
               failureTransition ||
@@ -66,20 +68,26 @@ class _PatientViewState extends State<PatientView> {
           MyLog.debug("listener counter: ${state.counter}");
 
           if (state.counter == 0) {
-            _clean();
+            _clean(context);
             context.read<PatientLoginCubit>().stopCounter();
             SnackbarService().showSnackBar(
               'Süre doldu. Lütfen tekrar deneyin.',
             );
+            _suppressWarning = false; // süre bitti, bayrağı sıfırla
           }
-          if (state.counter > 0 && state.counter <= 10 && !_dialogOpen) {
+          if (state.counter > 0 &&
+              state.counter <= 15 &&
+              !_dialogOpen &&
+              !_suppressWarning) {
             _showTimeDialog(context);
           }
 
           // Sayaç tekrar 10’un üstüne çıktıysa popup’ı kapat
-          if (_dialogOpen && state.counter > 10) {
+          if (_dialogOpen && state.counter > 15) {
             Navigator.of(context, rootNavigator: true).maybePop();
             _dialogOpen = false;
+            _suppressWarning =
+                false; // güvenli eşik üstünde, tekrar gösterilebilir
           }
 
           switch (state.status) {
@@ -151,7 +159,7 @@ class _PatientViewState extends State<PatientView> {
                         if (_tcController.text.trim().isNotEmpty)
                           ElevatedButton.icon(
                             onPressed: () {
-                              _clean();
+                              _clean(context);
                             },
                             icon: const Icon(Icons.clear),
                             label: const Text("Temizle"),
@@ -168,14 +176,17 @@ class _PatientViewState extends State<PatientView> {
     );
   }
 
-  _clean() {
-    FocusScope.of(context).unfocus();
+  _clean(BuildContext ctx) {
+    FocusScope.of(ctx).unfocus();
     _formKey.currentState?.reset();
     _tcController.clear();
     _birthDayController.clear();
-    if (widget.authType == AuthType.register) {
-      context.read<PatientLoginCubit>().setAuthType(AuthType.login);
+    final cubit = ctx.read<PatientLoginCubit>();
+    MyLog.debug("_clean çalıştı, current authType: ${widget.authType}");
+    if (widget.authType != AuthType.login) {
+      cubit.setAuthType(AuthType.login);
     }
+    _suppressWarning = false; // temizlemede sıfırla
   }
 
   void _showTimeDialog(BuildContext context) {
@@ -185,36 +196,29 @@ class _PatientViewState extends State<PatientView> {
       context: context,
       barrierDismissible: false,
       useRootNavigator: false,
-      builder: (dialogCtx) {
+      builder: (context) {
         return BlocProvider.value(
           value: cubit,
           child: BlocBuilder<PatientLoginCubit, PatientLoginState>(
-            builder: (_, s) {
+            builder: (dialogCtx, s) {
               final remaining = s.counter;
-              return AlertDialog(
-                title: const Text('Süre bitiyor'),
-                content: Text('Kalan süre: ${remaining}s'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      context.read<PatientLoginCubit>().onChanged('force');
+              return InactivityWarningDialog(
+                remaining: Duration(seconds: remaining),
+                secondaryLabel: 'Kapat',
+                onContinue: () {
+                  dialogCtx.read<PatientLoginCubit>().stopCounter();
 
-                      Navigator.of(dialogCtx).pop();
-                      _dialogOpen = false;
-                    },
-                    child: const Text('Devam Et'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.read<PatientLoginCubit>().stopCounter();
-                      Navigator.of(dialogCtx).pop();
-                      _dialogOpen = false;
-
-                      _clean();
-                    },
-                    child: const Text('Kapat'),
-                  ),
-                ],
+                  dialogCtx.read<PatientLoginCubit>().onChanged('force');
+                  Navigator.of(dialogCtx).pop();
+                  _dialogOpen = false;
+                  _suppressWarning = true;
+                },
+                // onLogout: () {
+                //   dialogCtx.read<PatientLoginCubit>().stopCounter();
+                //   Navigator.of(dialogCtx).pop();
+                //   _dialogOpen = false;
+                //   _suppressWarning = true;
+                // },
               );
             },
           ),

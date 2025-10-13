@@ -35,11 +35,13 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
               break;
             case EnumGeneralStateStatus.success:
               _hideLoading(context);
+              break;
             case EnumGeneralStateStatus.failure:
               _hideLoading(context);
               SnackbarService().showSnackBar(
                 state.message ?? ConstantString().errorOccurred,
               );
+              break;
             default:
               break;
           }
@@ -47,11 +49,68 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(title: Text(ConstantString().hospitalLogin)),
-            body: HospitalLoginWidget(),
+            body: _body(context, state),
           );
         },
       ),
     );
+  }
+
+  Widget _body(BuildContext context, HospitalLoginState state) {
+    switch (state.loginStatus) {
+      case EnumHospitalLoginStatus.login:
+        return HospitalLoginWidget();
+      case EnumHospitalLoginStatus.config:
+        final hex = state.primaryColor;
+        final parsedColor = _parseHexColor(hex);
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Configuration Screen',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 16),
+              if (hex != null) Text('Gelen Renk: $hex'),
+              const SizedBox(height: 12),
+              if (parsedColor != null)
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: parsedColor,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.black12),
+                  ),
+                )
+              else
+                const Text('Geçerli bir renk dönmedi.'),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () =>
+                    context.read<HospitalLoginCubit>().continueToLogin(),
+                child: const Text('Devam Et'),
+              ),
+            ],
+          ),
+        );
+    }
+  }
+
+  Color? _parseHexColor(String? hex) {
+    if (hex == null || hex.isEmpty) return null;
+    var value = hex.trim();
+    if (value.startsWith('#')) value = value.substring(1);
+    if (value.length == 6) value = 'FF$value';
+    try {
+      final intColor = int.parse(value, radix: 16);
+      return Color(intColor);
+    } catch (_) {
+      return null;
+    }
   }
 
   void _showLoading(BuildContext context) {
@@ -64,13 +123,16 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
       builder: (_) => Dialog(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        insetPadding: EdgeInsets.zero, 
+        insetPadding: EdgeInsets.zero,
         child: const SizedBox.expand(child: Center(child: LoadingWidget())),
       ),
     );
   }
 
-  void _hideLoading(BuildContext context) {
+void _hideLoading(BuildContext context) {
+  // Navigator yığında gerçekten bir sayfa varsa kapat
+  if (Navigator.canPop(context)) {
     NavigationService.ns.goBack();
   }
+}
 }

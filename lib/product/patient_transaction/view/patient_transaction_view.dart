@@ -25,10 +25,7 @@ class PatientTransactionView extends StatelessWidget {
       )..fetchAssociations(),
       child: BlocBuilder<PatientTransactionCubit, PatientTransactionState>(
         builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(title: Text(ConstantString().homePageTitle)),
-            body: _bodyFunc(state, context),
-          );
+          return Scaffold(body: _bodyFunc(state, context));
         },
       ),
     );

@@ -159,7 +159,6 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
       emit(state.copyWith(counter: null));
       return;
     }
-    // en az bir karakter varsa her değişimde reset
     _startOrResetTimer();
   }
 

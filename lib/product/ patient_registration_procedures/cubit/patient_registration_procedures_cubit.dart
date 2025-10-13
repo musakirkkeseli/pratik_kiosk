@@ -12,20 +12,23 @@ part 'patient_registration_procedures_state.dart';
 class PatientRegistrationProceduresCubit
     extends BaseCubit<PatientRegistrationProceduresState> {
   final EnumPatientRegistrationProcedures startStep;
+  final PatientRegistrationProceduresRequestModel? model;
 
-  PatientRegistrationProceduresCubit({required this.startStep})
-    : super(
-        PatientRegistrationProceduresState(
-          currentStep: startStep,
-          model: PatientRegistrationProceduresRequestModel(),
-        ),
-      );
+  PatientRegistrationProceduresCubit({
+    required this.startStep,
+    required this.model,
+  }) : super(
+         PatientRegistrationProceduresState(
+           currentStep: startStep,
+           model: model ?? PatientRegistrationProceduresRequestModel(),
+         ),
+       );
 
   void selectSection(SectionItems section) {
     if (section.sectionId != null && section.sectionName != null) {
       final updatedModel = state.model;
-      updatedModel.departmentId = section.sectionId;
-      updatedModel.departmentName = section.sectionName;
+      updatedModel.branchId = section.sectionId;
+      updatedModel.branchName = section.sectionName;
       emit(state.copyWith(model: updatedModel));
       nextStep();
     }
@@ -35,6 +38,7 @@ class PatientRegistrationProceduresCubit
     if (section.doctorId != null && section.doctorName != null) {
       final updatedModel = state.model;
       updatedModel.doctorId = section.doctorId;
+      updatedModel.departmentId = section.departmentId;
       updatedModel.doctorName = section.doctorName;
       emit(state.copyWith(model: updatedModel));
       nextStep();
@@ -53,7 +57,7 @@ class PatientRegistrationProceduresCubit
 
   void createNewPatientTransaction() {
     emit(state.copyWith(status: EnumGeneralStateStatus.loading));
-    Future.delayed(const Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 5), () {
       emit(state.copyWith(status: EnumGeneralStateStatus.success));
       nextStep();
     });
@@ -67,6 +71,39 @@ class PatientRegistrationProceduresCubit
         state.copyWith(
           currentStep:
               EnumPatientRegistrationProcedures.values[currentStep.index + 1],
+        ),
+      );
+    }
+  }
+
+  void previousStep() {
+    final currentStep = state.currentStep;
+    final model = state.model;
+
+    switch (state.currentStep) {
+      case EnumPatientRegistrationProcedures.section:
+        break;
+      case EnumPatientRegistrationProcedures.doctor:
+        model.branchId = null;
+        model.branchName = null;
+        emit(state.copyWith(model: model));
+        break;
+      case EnumPatientRegistrationProcedures.patientTransaction:
+        model.doctorId = null;
+        model.doctorName = null;
+        emit(state.copyWith(model: model));
+        break;
+      case EnumPatientRegistrationProcedures.payment:
+        model.associationId = null;
+        model.associationName = null;
+        emit(state.copyWith(model: model));
+        break;
+    }
+    if (currentStep.index > 0) {
+      emit(
+        state.copyWith(
+          currentStep:
+              EnumPatientRegistrationProcedures.values[currentStep.index - 1],
         ),
       );
     }

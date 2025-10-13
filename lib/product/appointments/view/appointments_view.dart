@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/features/utility/user_http_service.dart';
 import 'package:kiosk/product/appointments/services/appointment_services.dart';
 
+import '../../ patient_registration_procedures/model/patient_registration_procedures_request_model.dart';
 import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
+import '../../../features/utility/enum/enum_patient_registration_procedures.dart';
+import '../../../features/utility/navigation_service.dart';
 import '../cubit/appointment_cubit.dart';
 import '../model/appointments_model.dart';
 
@@ -48,7 +51,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                       ),
                       Divider(
                         thickness: 1,
-                        height: 2, 
+                        height: 2,
                         color: ConstColor.primaryColor,
                       ),
                       _body(state),
@@ -76,6 +79,22 @@ class _AppointmentsViewState extends State<AppointmentsView> {
             itemBuilder: (_, i) {
               final AppointmentsModel appointment = appointmentList[i];
               return ListTile(
+                onTap: () {
+                  NavigationService.ns.routeTo(
+                    "PatientRegistrationProceduresView",
+                    arguments: {
+                      "startStep":
+                          EnumPatientRegistrationProcedures.patientTransaction,
+                      "model": PatientRegistrationProceduresRequestModel(
+                        branchId: int.tryParse(appointment.branchID ?? ""),
+                        departmentId: int.tryParse(appointment.departmentID ?? ""),
+                        branchName: appointment.branchName,
+                        doctorId: int.tryParse(appointment.doctorID ?? ""),
+                        doctorName: appointment.doctorName,
+                      ),
+                    },
+                  );
+                },
                 title: Text(appointment.branchName ?? '-'),
                 subtitle: Text(appointment.doctorName ?? '-'),
               );

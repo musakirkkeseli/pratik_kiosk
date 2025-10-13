@@ -23,7 +23,7 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (context) => PatientRegistrationProceduresView(
             startStep: args["startStep"],
-            showBack: args["showBack"],
+            model: args["model"],
           ),
           settings: RouteSettings(name: settings.name),
         );

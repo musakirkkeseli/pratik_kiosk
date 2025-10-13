@@ -23,7 +23,6 @@ class _SectionButtonWidgetState extends State<SectionButtonWidget> {
             "PatientRegistrationProceduresView",
             arguments: {
               "startStep": EnumPatientRegistrationProcedures.section,
-              "showBack": true,
             },
           );
         },
