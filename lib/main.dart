@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kiosk/core/widget/snackbar_service.dart';
 import 'package:provider/provider.dart';
 
+import 'core/utility/dynamic_theme_provider.dart';
 import 'core/utility/login_status_service.dart';
 import 'core/utility/network_status_service.dart';
 import 'core/utility/user_login_status_service.dart';
@@ -51,6 +52,7 @@ Future<void> main() async {
               warningBefore: const Duration(seconds: 15),
             ),
           ),
+          ChangeNotifierProvider(create: (_) => DynamicThemeProvider()),
         ],
         child: MainApp(),
       ),
@@ -64,12 +66,13 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final inactivity = context.watch<InactivityController>();
+    final themeProvider = Provider.of<DynamicThemeProvider>(context);
     return Listener(
       behavior: HitTestBehavior.translucent,
       onPointerDown: (_) => inactivity.bump(),
       child: MaterialApp(
         scaffoldMessengerKey: SnackbarService().key,
-        theme: ThemeData(),
+        theme: themeProvider.themeData,
         debugShowCheckedModeBanner: false,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
