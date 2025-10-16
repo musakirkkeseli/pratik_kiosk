@@ -19,13 +19,15 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
   final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(12.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+    return Scaffold(
+      appBar: AppBar(title: Text(ConstantString().hospitalLogin)),
+      body: Padding(
+        padding: EdgeInsets.all(12.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
             CustomHospitalAndPatientLoginTextfieldWidget(
               type: EnumTextformfield.hospitalUserName,
               controller: userNameController,
@@ -55,6 +57,7 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
             ),
           ],
         ),
+      ),
       ),
     );
   }
