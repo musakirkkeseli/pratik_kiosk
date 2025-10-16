@@ -241,7 +241,10 @@ class PatientRegistrationProceduresView extends StatelessWidget {
                                   size: 22,
                                   color: Theme.of(context).primaryColor,
                                 ),
-                                if (state.currentStep.index > 0) ...[
+                                if (state.currentStep == startStep) ...[
+                                  const SizedBox(width: 6),
+                                  Text(ConstantString().homePageTitle),
+                                ] else if (state.currentStep.index > 0) ...[
                                   const SizedBox(width: 6),
                                   Text(
                                     EnumPatientRegistrationProcedures
