@@ -16,7 +16,7 @@ class AppDialog {
         backgroundColor: Colors.transparent,
         child: WillPopScope(
           child: Center(
-            child: Lottie.asset(ConstantString.healthGif, width: 150),
+            child: Lottie.asset(ConstantString.healthGif, width: 150, ),
           ),
           onWillPop: () async => false,
         ),
