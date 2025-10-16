@@ -24,6 +24,9 @@ class ConstantString {
   static const loadingGif = "assets/gif/loading.gif";
   static const posGif = "assets/gif/pos_gif.json";
   static const healthGif = "assets/gif/health_gif.json";
+  static const configLoading = "assets/gif/config_loading.json";
+  static const settingsGif = "assets/gif/settings_gif.json";
+
 
   String birthDate = LocaleKeys.birthDate.locale;
   String signIn = LocaleKeys.signIn.locale;
