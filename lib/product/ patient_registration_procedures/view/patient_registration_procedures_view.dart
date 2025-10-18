@@ -1,10 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/features/utility/enum/enum_patient_registration_procedures.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 import '../../../features/utility/enum/enum_general_state_status.dart';
+
 import '../../../features/utility/navigation_service.dart';
 import '../../../features/widget/app_dialog.dart';
 import '../cubit/patient_registration_procedures_cubit.dart';
@@ -37,18 +37,16 @@ class PatientRegistrationProceduresView extends StatelessWidget {
             PatientRegistrationProceduresCubit,
             PatientRegistrationProceduresState
           >(
-            listenWhen: (previous, current) =>
-                previous.status != current.status,
             listener: (context, state) {
               switch (state.status) {
                 case EnumGeneralStateStatus.loading:
-                  AppDialog(context).loadingDialog();
+                  // AppDialog(context).loadingDialog();
                   break;
                 case EnumGeneralStateStatus.success:
-                  NavigationService.ns.goBack();
+                  // NavigationService.ns.goBack();
                   break;
                 case EnumGeneralStateStatus.failure:
-                  NavigationService.ns.goBack();
+                  // NavigationService.ns.goBack();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(state.message ?? 'Error')),
                   );
@@ -67,7 +65,7 @@ class PatientRegistrationProceduresView extends StatelessWidget {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             SizedBox(
-                              height: 100,
+                              height: 150,
                               width: double.infinity,
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
@@ -156,9 +154,7 @@ class PatientRegistrationProceduresView extends StatelessWidget {
                                         final label =
                                             EnumPatientRegistrationProcedures
                                                 .values[index]
-                                                .label
-                                                .tr();
-
+                                                .label;
                                         final baseStyle =
                                             textTheme.labelMedium ??
                                             const TextStyle(fontSize: 12);
@@ -168,7 +164,6 @@ class PatientRegistrationProceduresView extends StatelessWidget {
                                               : FontWeight.w400,
                                           color: reached ? aColor : Colors.grey,
                                         );
-
                                         final content = Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -206,67 +201,69 @@ class PatientRegistrationProceduresView extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                InkWell(
+                                  customBorder: const CircleBorder(),
+                                  onTap: () {
+                                    if (state.currentStep == startStep) {
+                                      if (Navigator.of(context).canPop()) {
+                                        Navigator.of(context).pop();
+                                      }
+                                    } else {
+                                      context
+                                          .read<
+                                            PatientRegistrationProceduresCubit
+                                          >()
+                                          .previousStep();
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.arrow_back,
+                                          size: 22,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        if (state.currentStep == startStep) ...[
+                                          const SizedBox(width: 6),
+                                          Text(ConstantString().homePageTitle),
+                                        ] else if (state.currentStep.index >
+                                            0) ...[
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            EnumPatientRegistrationProcedures
+                                                .values[state
+                                                        .currentStep
+                                                        .index -
+                                                    1]
+                                                .label,
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                if (state.currentStep ==
+                                    EnumPatientRegistrationProcedures.payment)
+                                  _LogoutButton(
+                                    onPressed: () =>
+                                        UserLoginStatusService().logout(),
+                                  ),
+                              ],
+                            ),
                             infoWidget("Bölüm", state.model.branchName),
                             infoWidget("Doktor", state.model.doctorName),
-                            infoWidget("Sigorta", state.model.associationName),
+                            infoWidget("Sigorta", state.model.assocationName),
                             Expanded(
                               child: state.currentStep.widget(state.model),
                             ),
                           ],
                         ),
                       ),
-                      Positioned(
-                        top: 90,
-                        left: 8,
-                        child: InkWell(
-                          customBorder: const CircleBorder(),
-                          onTap: () {
-                            if (state.currentStep == startStep) {
-                              if (Navigator.of(context).canPop()) {
-                                Navigator.of(context).pop();
-                              }
-                            } else {
-                              context
-                                  .read<PatientRegistrationProceduresCubit>()
-                                  .previousStep();
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.arrow_back,
-                                  size: 22,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                if (state.currentStep == startStep) ...[
-                                  const SizedBox(width: 6),
-                                  Text(ConstantString().homePageTitle),
-                                ] else if (state.currentStep.index > 0) ...[
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    EnumPatientRegistrationProcedures
-                                        .values[state.currentStep.index - 1]
-                                        .label,
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      if (state.currentStep ==
-                          EnumPatientRegistrationProcedures.payment)
-                        Positioned(
-                          top: 90,
-                          right: 8,
-                          child: _LogoutButton(
-                            onPressed: () => UserLoginStatusService().logout(),
-                          ),
-                        ),
                     ],
                   ),
                 ),

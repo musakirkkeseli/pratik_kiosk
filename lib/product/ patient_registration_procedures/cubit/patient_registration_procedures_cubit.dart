@@ -1,9 +1,12 @@
-import 'package:kiosk/features/utility/enum/enum_general_state_status.dart';
+import 'package:kiosk/core/utility/logger_service.dart';
 
 import '../../../core/utility/base_cubit.dart';
+import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/enum/enum_patient_registration_procedures.dart';
 import '../../doctor/model/doctor_model.dart';
-import '../../patient_transaction/model/Patient_transaction_request_model.dart';
+import '../../mandatory/model/patient_mandatory_model.dart';
+import '../../patient_transaction/model/association_model.dart';
+import '../../patient_transaction/model/insurance_model.dart';
 import '../../section/model/section_model.dart';
 import '../model/patient_registration_procedures_request_model.dart';
 
@@ -23,6 +26,8 @@ class PatientRegistrationProceduresCubit
            model: model ?? PatientRegistrationProceduresRequestModel(),
          ),
        );
+
+  final MyLog _log = MyLog('PatientRegistrationProceduresCubit');
 
   void selectSection(SectionItems section) {
     if (section.sectionId != null && section.sectionName != null) {
@@ -45,19 +50,41 @@ class PatientRegistrationProceduresCubit
     }
   }
 
-  void selectAssociation(AssociationsModel section) {
-    if (section.associationId != null && section.associationName != null) {
+  void selectAssociation(AssocationModel section) {
+    if (section.assocationId != null && section.assocationName != null) {
       final updatedModel = state.model;
-      updatedModel.associationId = section.associationId;
-      updatedModel.associationName = section.associationName;
+      updatedModel.assocationId = section.assocationId ?? "";
+      updatedModel.assocationName = section.assocationName;
+      updatedModel.gssAssocationId = section.gssAssocationId ?? "";
       emit(state.copyWith(model: updatedModel));
-      createNewPatientTransaction();
+      nextStep();
     }
+  }
+
+  void selectAssociationWithInsurance(
+    AssocationModel section,
+    InsuranceModel insurance,
+  ) {
+    if (section.assocationId != null && section.assocationName != null) {
+      final updatedModel = state.model;
+      updatedModel.assocationId = section.assocationId ?? "";
+      updatedModel.assocationName = section.assocationName;
+      updatedModel.gssAssocationId = section.gssAssocationId ?? "";
+      emit(state.copyWith(model: updatedModel));
+      nextStep();
+    }
+  }
+
+  void mandatoryCheck(List<PatientMandatoryModel> mandatoryModelList) {
+    for (var element in mandatoryModelList) {
+      _log.d('mandatoryCheck - ${element.targetFieldName} : ${element.value}');
+    }
+    createNewPatientTransaction();
   }
 
   void createNewPatientTransaction() {
     emit(state.copyWith(status: EnumGeneralStateStatus.loading));
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 2), () {
       emit(state.copyWith(status: EnumGeneralStateStatus.success));
       nextStep();
     });
@@ -94,9 +121,13 @@ class PatientRegistrationProceduresCubit
         emit(state.copyWith(model: model));
         break;
       case EnumPatientRegistrationProcedures.payment:
-        model.associationId = null;
-        model.associationName = null;
+        model.assocationId = null;
+        model.assocationName = null;
         emit(state.copyWith(model: model));
+        break;
+      case EnumPatientRegistrationProcedures.mandatory:
+        break;
+      case EnumPatientRegistrationProcedures.price:
         break;
     }
     if (currentStep.index > 0) {
