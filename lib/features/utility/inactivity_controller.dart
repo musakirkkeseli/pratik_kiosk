@@ -1,8 +1,6 @@
-// lib/core/inactivity_controller.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:kiosk/core/utility/logger_service.dart';
-import '../widget/inactivity_warning_dialog.dart';
 
 import '../../core/utility/user_login_status_service.dart';
 import 'navigation_service.dart';
@@ -93,34 +91,34 @@ class InactivityController extends ChangeNotifier {
     } catch (_) {}
   }
 
-  void _showWarningDialog(Duration remaining) {
-    final ctx = navigatorKey.currentContext;
-    if (ctx == null) return;
-    _dialogShown = true;
+  // void _showWarningDialog(Duration remaining) {
+  //   final ctx = navigatorKey.currentContext;
+  //   if (ctx == null) return;
+  //   _dialogShown = true;
 
-    showDialog(
-      context: ctx,
-      barrierDismissible: false,
-      builder: (c) => InactivityWarningDialog(
-        remaining: remaining,
-        onContinue: () {
-          MyLog.debug("'onContinue basıldı'");
+  //   showDialog(
+  //     context: ctx,
+  //     barrierDismissible: false,
+  //     builder: (c) => InactivityWarningDialog(
+  //       remaining: remaining,
+  //       onContinue: () {
+  //         MyLog.debug("'onContinue basıldı'");
 
-          Navigator.of(c).pop();
-          _dialogShown = false;
-          bump(); // devam et
-        },
-        onLogout: () async {
-          MyLog.debug("'onLogout basıldı'");
-          Navigator.of(c).pop();
-          _dialogShown = false;
-          phase = InactivityPhase.cleaning;
-          notifyListeners();
-          await _performCleanup();
-        },
-      ),
-    );
-  }
+  //         Navigator.of(c).pop();
+  //         _dialogShown = false;
+  //         bump(); // devam et
+  //       },
+  //       onLogout: () async {
+  //         MyLog.debug("'onLogout basıldı'");
+  //         Navigator.of(c).pop();
+  //         _dialogShown = false;
+  //         phase = InactivityPhase.cleaning;
+  //         notifyListeners();
+  //         await _performCleanup();
+  //       },
+  //     ),
+  //   );
+  // }
 
   void _hideWarningIfAny() {
     if (!_dialogShown) return;
@@ -138,5 +136,3 @@ class InactivityController extends ChangeNotifier {
     super.dispose();
   }
 }
-
-// CircularCountdown moved to features/widget/circular_countdown.dart

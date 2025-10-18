@@ -21,9 +21,7 @@ class _SectionButtonWidgetState extends State<SectionButtonWidget> {
         onTap: () {
           NavigationService.ns.routeTo(
             "PatientRegistrationProceduresView",
-            arguments: {
-              "startStep": EnumPatientRegistrationProcedures.section,
-            },
+            arguments: {"startStep": EnumPatientRegistrationProcedures.section},
           );
         },
         child: Container(

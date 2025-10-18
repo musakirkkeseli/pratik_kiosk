@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:kiosk/features/utility/const/constant_string.dart';
 
 import '../../../product/ patient_registration_procedures/model/patient_registration_procedures_request_model.dart';
 import '../../../product/doctor/view/doctors_view.dart';
+import '../../../product/mandatory/model/mandatory_request_model.dart';
+import '../../../product/mandatory/view/mandatory_view.dart';
 import '../../../product/patient_transaction/view/patient_transaction_view.dart';
 import '../../../product/payment_screen/view/payment_view.dart';
+import '../../../product/price_details/view/price_details_view.dart';
 import '../../../product/section/view/section_view.dart';
 
 enum EnumPatientRegistrationProcedures {
   section,
   doctor,
   patientTransaction,
+  mandatory,
+  price,
   payment,
 }
 
@@ -18,13 +24,17 @@ extension EnumPatientRegistrationProceduresExtension
   String get label {
     switch (this) {
       case EnumPatientRegistrationProcedures.section:
-        return 'Bölüm Seçimi';
+        return ConstantString().sectionSelection;
       case EnumPatientRegistrationProcedures.doctor:
-        return 'Doktor Seçimi';
+        return ConstantString().selectDoctor;
       case EnumPatientRegistrationProcedures.patientTransaction:
-        return 'Hasta İşlemleri';
+        return ConstantString().patientTransaction;
+      case EnumPatientRegistrationProcedures.mandatory:
+        return ConstantString().mandatoryFields;
+      case EnumPatientRegistrationProcedures.price:
+        return ConstantString().priceInformation;
       case EnumPatientRegistrationProcedures.payment:
-        return 'Ödeme';
+        return ConstantString().payment;
     }
   }
 }
@@ -38,6 +48,15 @@ extension EnumNavigationWidgetExtension on EnumPatientRegistrationProcedures {
         return DoctorSearchView(sectionId: model.branchId ?? 0);
       case EnumPatientRegistrationProcedures.patientTransaction:
         return PatientTransactionView();
+      case EnumPatientRegistrationProcedures.mandatory:
+        return MandatoryView(
+          mandatoryRequestModel: MandatoryRequestModel(
+            assocationId: model.assocationId,
+            insuranceTypeId: model.insuredTypeId,
+          ),
+        );
+      case EnumPatientRegistrationProcedures.price:
+        return PriceView();
       case EnumPatientRegistrationProcedures.payment:
         return PaymentView();
     }

@@ -22,8 +22,9 @@ class _ConfigWidgetState extends State<ConfigWidget> {
                 tileMode: TileMode.mirror,
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xfff44336), Color(0xff2196f3)],
-                stops: [0, 1],
+                colors: [Colors.red, Colors.white, Colors.red],
+                // colors: [Color(0xfff44336), Color(0xff2196f3)],
+                // stops: [0, 1],
               ),
               backgroundBlendMode: BlendMode.srcOver,
             ),
@@ -49,14 +50,14 @@ class _ConfigWidgetState extends State<ConfigWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-               Lottie.asset(
+              Lottie.asset(
                 ConstantString.settingsGif,
                 width: 120,
                 height: 120,
                 fit: BoxFit.cover,
                 repeat: true,
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
               Text(
                 'Ayarlar Uygulanıyor...',
                 style: TextStyle(
