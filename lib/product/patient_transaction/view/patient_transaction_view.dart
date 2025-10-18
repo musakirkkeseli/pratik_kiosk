@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:kiosk/features/utility/user_http_service.dart';
-import 'package:kiosk/features/utility/const/constant_string.dart';
-import 'package:kiosk/features/utility/enum/enum_general_state_status.dart';
-
-import 'package:kiosk/product/patient_transaction/cubit/patient_transaction_cubit.dart';
-import 'package:kiosk/product/patient_transaction/cubit/patient_transaction_state.dart';
-import 'package:kiosk/product/patient_transaction/model/Patient_transaction_request_model.dart';
-import 'package:kiosk/product/patient_transaction/service/patient_transaction_service.dart';
-
-import 'package:kiosk/core/widget/loading_widget.dart';
+import 'package:kiosk/features/utility/navigation_service.dart';
 
 import '../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
+import '../../../core/utility/logger_service.dart';
+import '../../../core/widget/loading_widget.dart';
+import '../../../features/utility/const/constant_string.dart';
+import '../../../features/utility/enum/enum_general_state_status.dart';
+import '../../../features/utility/user_http_service.dart';
+import '../cubit/patient_transaction_cubit.dart';
+import '../model/association_model.dart';
+import '../service/patient_transaction_service.dart';
 
 class PatientTransactionView extends StatelessWidget {
   const PatientTransactionView({super.key});
@@ -37,7 +35,7 @@ class PatientTransactionView extends StatelessWidget {
         return const LoadingWidget();
 
       case EnumGeneralStateStatus.success:
-        final List<AssociationsModel> items = state.data;
+        final List<AssocationModel> items = state.data;
         if (items.isEmpty) {
           return Center(child: Text(ConstantString().noAppointments));
         }
@@ -48,16 +46,84 @@ class PatientTransactionView extends StatelessWidget {
           itemBuilder: (_, i) {
             final item = items[i];
             return ListTile(
-              title: Text(item.associationName ?? '-'),
+              title: Text(item.assocationName ?? '-'),
               onTap: () {
-                context
-                    .read<PatientRegistrationProceduresCubit>()
-                    .selectAssociation(
-                      AssociationsModel(
-                        associationId: item.associationId,
-                        associationName: item.associationName,
-                      ),
-                    );
+                MyLog("11gssAssocationId: ${item.gssAssocationId}");
+                if (item.gssAssocationId == "1") {
+                  Navigator.of(context).push(
+                    RawDialogRoute(
+                      pageBuilder: (dialogcontext, animation, secondaryAnimation) {
+                        return Center(
+                          child: Material(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: IconButton(
+                                      icon: const Icon(Icons.close),
+                                      onPressed: () {
+                                        NavigationService.ns.goBack();
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    ConstantString().associationGssInfoMessage,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  state.insuranceData.isNotEmpty
+                                      ? ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: state.insuranceData.length,
+                                          itemBuilder: (_, index) {
+                                            final insuranceItem =
+                                                state.insuranceData[index];
+                                            return ListTile(
+                                              onTap: () {
+                                                NavigationService.ns.goBack();
+                                                context
+                                                    .read<
+                                                      PatientRegistrationProceduresCubit
+                                                    >()
+                                                    .selectAssociationWithInsurance(
+                                                      AssocationModel(
+                                                        assocationId:
+                                                            item.assocationId,
+                                                        assocationName:
+                                                            item.assocationName,
+                                                      ),
+                                                      insuranceItem,
+                                                    );
+                                              },
+                                              title: Text(
+                                                insuranceItem.insuredTypeName ??
+                                                    '',
+                                              ),
+                                            );
+                                          },
+                                        )
+                                      : Text(ConstantString().errorOccurred),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  context
+                      .read<PatientRegistrationProceduresCubit>()
+                      .selectAssociation(
+                        AssocationModel(
+                          assocationId: item.assocationId,
+                          assocationName: item.assocationName,
+                        ),
+                      );
+                }
               },
             );
           },
