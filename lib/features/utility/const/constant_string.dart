@@ -27,7 +27,6 @@ class ConstantString {
   static const configLoading = "assets/gif/config_loading.json";
   static const settingsGif = "assets/gif/settings_gif.json";
 
-
   String birthDate = LocaleKeys.birthDate.locale;
   String signIn = LocaleKeys.signIn.locale;
   String patientLogin = LocaleKeys.patientLogin.locale;
@@ -42,4 +41,14 @@ class ConstantString {
   String noAppointments = LocaleKeys.noAppointments.locale;
   String internetConnectionError = LocaleKeys.internetConnectionError.locale;
   String checkInternetConnection = LocaleKeys.checkInternetConnection.locale;
+  String associationGssInfoMessage = "Lütfen Çalışma durumu seçiniz.";
+  String fieldRequired = "Boş Bırakılamaz.";
+  String minLengthError = "Minimum karakter:";
+  String priceInformation = "Fiyat Bilgisi";
+  String sectionSelection = "Bölüm Seçimi";
+  String doctorSelection = "Doktor Seçimi";
+  String patientTransaction = "Hasta İşlemleri";
+  String mandatoryFields = "Zorunlu Alanlar";
+  String payment = "Ödeme";
+  String paymentAction = "Ödeme Yap";
 }
