@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,8 +16,12 @@ class HospitalLoginWidget extends StatefulWidget {
 
 class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController userNameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController userNameController = kReleaseMode
+      ? TextEditingController()
+      : TextEditingController(text: "buhara");
+  final TextEditingController passwordController = kReleaseMode
+      ? TextEditingController()
+      : TextEditingController(text: "buhara");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,36 +33,36 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-            CustomHospitalAndPatientLoginTextfieldWidget(
-              type: EnumTextformfield.hospitalUserName,
-              controller: userNameController,
-            ),
-            const SizedBox(height: 16.0),
-            CustomHospitalAndPatientLoginTextfieldWidget(
-              type: EnumTextformfield.hospitalUserPassword,
-
-              controller: passwordController,
-            ),
-            const SizedBox(height: 16.0),
-            SizedBox(
-              height: 48,
-              child: ElevatedButton(
-                onPressed: () {
-                  final isValid = _formKey.currentState?.validate() ?? false;
-                  if (isValid) {
-                    FocusScope.of(context).unfocus();
-                    context.read<HospitalLoginCubit>().postHospitalLoginCubit(
-                      username: userNameController.text,
-                      password: passwordController.text,
-                    );
-                  }
-                },
-                child: Text(ConstantString().signIn),
+              CustomHospitalAndPatientLoginTextfieldWidget(
+                type: EnumTextformfield.hospitalUserName,
+                controller: userNameController,
               ),
-            ),
-          ],
+              const SizedBox(height: 16.0),
+              CustomHospitalAndPatientLoginTextfieldWidget(
+                type: EnumTextformfield.hospitalUserPassword,
+
+                controller: passwordController,
+              ),
+              const SizedBox(height: 16.0),
+              SizedBox(
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: () {
+                    final isValid = _formKey.currentState?.validate() ?? false;
+                    if (isValid) {
+                      FocusScope.of(context).unfocus();
+                      context.read<HospitalLoginCubit>().postHospitalLoginCubit(
+                        username: userNameController.text,
+                        password: passwordController.text,
+                      );
+                    }
+                  },
+                  child: Text(ConstantString().signIn),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

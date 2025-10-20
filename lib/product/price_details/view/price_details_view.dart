@@ -1,24 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kiosk/features/utility/user_http_service.dart';
-import 'package:kiosk/product/price_details/service/price_details_service.dart';
 
 import '../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
-import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
+import '../../../features/utility/navigation_service.dart';
+import '../../../features/utility/user_http_service.dart';
+import '../../../features/widget/app_dialog.dart';
 import '../cubit/price_details_cubit.dart';
+import '../service/price_details_service.dart';
+import 'widget/price_success_widget.dart';
 
 class PriceView extends StatelessWidget {
-  const PriceView({super.key});
+  final String patientId;
+  const PriceView({super.key, required this.patientId});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PriceDetailsCubit(
         service: PriceDetailsService(UserHttpService()),
-        patientId: "4352273",
+        patientId: patientId, //"4352273"
       )..fetchPatientPrice(),
-      child: BlocBuilder<PriceDetailsCubit, PriceDetailsState>(
+      child: BlocConsumer<PriceDetailsCubit, PriceDetailsState>(
+        listenWhen: (prev, curr) => prev.status != curr.status,
+        listener: (context, state) async {
+          switch (state.status) {
+            case EnumGeneralStateStatus.failure:
+              await context
+                  .read<PatientRegistrationProceduresCubit>()
+                  .patientTransactionCancel();
+              NavigationService.ns.goBack();
+              AppDialog(context).infoDialog(
+                "Kayıt İşlemi Başarısız Oldu",
+                "Lütfen bankoya müracaat edin",
+              );
+              break;
+            default:
+          }
+        },
         builder: (context, state) {
           return _body(state, context);
         },
@@ -28,26 +47,13 @@ class PriceView extends StatelessWidget {
 
   _body(PriceDetailsState state, BuildContext context) {
     switch (state.status) {
-      case EnumGeneralStateStatus.loading:
-        return Center(child: CircularProgressIndicator());
       case EnumGeneralStateStatus.success:
-        return Center(
-          child: Column(
-            children: [
-              Text(ConstantString().priceInformation),
-              Text(state.patientTranscationProcessList!.processName ?? "-"),
-              Text(state.patientTranscationProcessList!.patientPrice ?? "-"),
-              ElevatedButton(
-                onPressed: () {
-                  context.read<PatientRegistrationProceduresCubit>().nextStep();
-                },
-                child: Text(ConstantString().paymentAction),
-              ),
-            ],
-          ),
+        return PriceSuccessWidget(
+          patientTranscationDetList: state.patientTranscationDet ?? [],
+          patientTranscationProcessList: state.patientTranscationProcessList,
         );
       default:
-        return Center(child: Text(ConstantString().errorOccurred));
+        return Center(child: CircularProgressIndicator());
     }
   }
 }

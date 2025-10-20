@@ -5,7 +5,7 @@ import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../model/mandatory_request_model.dart';
 import '../model/mandatory_response_model.dart';
-import '../model/patient_mandatory_model.dart';
+import '../../../features/model/patient_mandatory_model.dart';
 import '../service/IMandatoryService.dart';
 
 part 'mandatory_state.dart';

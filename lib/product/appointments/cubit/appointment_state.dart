@@ -2,11 +2,11 @@ part of 'appointment_cubit.dart';
 
 class AppointmentState {
   final EnumGeneralStateStatus status;
-  final List<AppointmentsModel> data; // doğrudan model listesi
-  final String? message; // failure için hata mesajı
+  final List<AppointmentsModel> data;
+  final String? message;
 
   const AppointmentState({
-    this.status = EnumGeneralStateStatus.initial,
+    this.status = EnumGeneralStateStatus.loading,
     this.data = const [],
     this.message,
   });

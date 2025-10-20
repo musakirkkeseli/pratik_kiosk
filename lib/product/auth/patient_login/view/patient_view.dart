@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/product/auth/patient_login/services/patient_services.dart';
@@ -23,7 +24,9 @@ class PatientView extends StatefulWidget {
 
 class _PatientViewState extends State<PatientView> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _tcController = TextEditingController();
+  final TextEditingController _tcController = kReleaseMode
+      ? TextEditingController()
+      : TextEditingController(text: "37135120204");
   final TextEditingController _birthDayController = TextEditingController();
   bool _dialogOpen = false;
   bool _suppressWarning = false; // Devam Et sonrası popup yeniden açılmasın

@@ -2,7 +2,7 @@ part of 'patient_registration_procedures_cubit.dart';
 
 class PatientRegistrationProceduresState {
   final EnumPatientRegistrationProcedures currentStep;
-  final PatientRegistrationProceduresRequestModel model;
+  final PatientRegistrationProceduresModel model;
   final EnumGeneralStateStatus status;
   final String? message;
 
@@ -15,7 +15,7 @@ class PatientRegistrationProceduresState {
 
   PatientRegistrationProceduresState copyWith({
     EnumPatientRegistrationProcedures? currentStep,
-    PatientRegistrationProceduresRequestModel? model,
+    PatientRegistrationProceduresModel? model,
     EnumGeneralStateStatus? status,
     String? message,
   }) {

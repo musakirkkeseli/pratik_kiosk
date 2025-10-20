@@ -85,7 +85,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                     arguments: {
                       "startStep":
                           EnumPatientRegistrationProcedures.patientTransaction,
-                      "model": PatientRegistrationProceduresRequestModel(
+                      "model": PatientRegistrationProceduresModel(
                         branchId: int.tryParse(appointment.branchID ?? ""),
                         departmentId: int.tryParse(appointment.departmentID ?? ""),
                         branchName: appointment.branchName,

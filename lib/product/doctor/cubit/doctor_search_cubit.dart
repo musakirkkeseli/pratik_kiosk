@@ -3,12 +3,12 @@ import '../../../core/utility/base_cubit.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../model/doctor_model.dart';
-import '../service/doctor_search_service.dart';
+import '../service/IDoctorSearchService.dart';
 
 part 'doctor_search_state.dart';
 
 class DoctorSearchCubit extends BaseCubit<DoctorSearchState> {
-  final DoctorSearchService service;
+  final IDoctorSearchService service;
   final int sectionId;
 
   DoctorSearchCubit({required this.service, required this.sectionId})

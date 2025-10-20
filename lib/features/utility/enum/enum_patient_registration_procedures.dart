@@ -16,11 +16,8 @@ enum EnumPatientRegistrationProcedures {
   patientTransaction,
   mandatory,
   price,
-  payment,
-}
+  payment;
 
-extension EnumPatientRegistrationProceduresExtension
-    on EnumPatientRegistrationProcedures {
   String get label {
     switch (this) {
       case EnumPatientRegistrationProcedures.section:
@@ -37,10 +34,18 @@ extension EnumPatientRegistrationProceduresExtension
         return ConstantString().payment;
     }
   }
-}
 
-extension EnumNavigationWidgetExtension on EnumPatientRegistrationProcedures {
-  Widget widget(PatientRegistrationProceduresRequestModel model) {
+  bool get isGoBack {
+    switch (this) {
+      case EnumPatientRegistrationProcedures.price:
+      case EnumPatientRegistrationProcedures.payment:
+        return false;
+      default:
+        return true;
+    }
+  }
+
+  Widget widget(PatientRegistrationProceduresModel model) {
     switch (this) {
       case EnumPatientRegistrationProcedures.section:
         return SectionSearchView();
@@ -56,7 +61,7 @@ extension EnumNavigationWidgetExtension on EnumPatientRegistrationProcedures {
           ),
         );
       case EnumPatientRegistrationProcedures.price:
-        return PriceView();
+        return PriceView(patientId: model.patientId ?? "");
       case EnumPatientRegistrationProcedures.payment:
         return PaymentView();
     }

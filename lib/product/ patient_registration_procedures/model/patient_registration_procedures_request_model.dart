@@ -1,4 +1,4 @@
-class PatientRegistrationProceduresRequestModel {
+class PatientRegistrationProceduresModel {
   int? doctorId;
   String? doctorName;
   int? branchId;
@@ -9,7 +9,8 @@ class PatientRegistrationProceduresRequestModel {
   String? gssAssocationId;
   String? insuredTypeId;
   String? insuredTypeName;
-  PatientRegistrationProceduresRequestModel({
+  String? patientId;
+  PatientRegistrationProceduresModel({
     this.doctorId,
     this.doctorName,
     this.branchId,
@@ -20,6 +21,7 @@ class PatientRegistrationProceduresRequestModel {
     this.gssAssocationId,
     this.insuredTypeId,
     this.insuredTypeName,
+    this.patientId,
   });
 
   Map<String, dynamic> toJson() {

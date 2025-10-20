@@ -7,13 +7,13 @@ import '../../../../core/utility/logger_service.dart';
 import '../../../../core/utility/login_status_service.dart';
 import '../model/config_response_model.dart';
 import '../model/hospital_login_model.dart';
-import '../services/hospital_and_user_login_services.dart';
+import '../services/IHospital_and_user_login_services.dart';
 
 part 'hospital_login_state.dart';
 
 class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
   final int kioskDeviceId;
-  final HospitalAndUserLoginServices service;
+  final IHospitalAndUserLoginServices service;
   HospitalLoginCubit({required this.service, required this.kioskDeviceId})
     : super(const HospitalLoginState());
 

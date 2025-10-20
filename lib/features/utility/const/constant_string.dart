@@ -46,9 +46,13 @@ class ConstantString {
   String minLengthError = "Minimum karakter:";
   String priceInformation = "Fiyat Bilgisi";
   String sectionSelection = "Bölüm Seçimi";
+  String section = "Bölüm";
   String doctorSelection = "Doktor Seçimi";
+  String doctor = "Doktor";
   String patientTransaction = "Hasta İşlemleri";
   String mandatoryFields = "Zorunlu Alanlar";
   String payment = "Ödeme";
   String paymentAction = "Ödeme Yap";
+  String total = "Toplam:";
+  String insurance = "Sigorta";
 }

@@ -3,12 +3,12 @@ import '../../../core/utility/base_cubit.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../model/section_model.dart';
-import '../service/section_search_service.dart';
+import '../service/ISectionSearchService.dart';
 
 part 'section_search_state.dart';
 
 class SectionSearchCubit extends BaseCubit<SectionSearchState> {
-  final SectionSearchService service;
+  final ISectionSearchService service;
 
   SectionSearchCubit({required this.service})
     : super(const SectionSearchState());

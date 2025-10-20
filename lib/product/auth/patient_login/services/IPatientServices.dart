@@ -3,13 +3,13 @@ import '../../../../features/model/api_response_model.dart';
 import '../model/patient_register_request_model.dart';
 import '../model/patient_response_model.dart';
 
-abstract class IpatientServices {
+abstract class IPatientServices {
   final IHttpService http;
 
-  IpatientServices(this.http);
+  IPatientServices(this.http);
 
-  final String userLogin = IpatientServicesPath.userLogin.rawValue;
-  final String userRegister = IpatientServicesPath.userRegister.rawValue;
+  final String userLogin = IPatientServicesPath.userLogin.rawValue;
+  final String userRegister = IPatientServicesPath.userRegister.rawValue;
 
   Future<ApiResponse<PatientResponseModel>> postUserLogin(String tc);
   Future<ApiResponse<PatientResponseModel>> postUserRegister(
@@ -17,14 +17,14 @@ abstract class IpatientServices {
   );
 }
 
-enum IpatientServicesPath { userLogin, userRegister }
+enum IPatientServicesPath { userLogin, userRegister }
 
-extension IHospitalAndUserLoginServicesExtension on IpatientServicesPath {
+extension IHospitalAndUserLoginServicesExtension on IPatientServicesPath {
   String get rawValue {
     switch (this) {
-      case IpatientServicesPath.userLogin:
+      case IPatientServicesPath.userLogin:
         return '/user-auth/login';
-      case IpatientServicesPath.userRegister:
+      case IPatientServicesPath.userRegister:
         return '/user-auth/register';
     }
   }

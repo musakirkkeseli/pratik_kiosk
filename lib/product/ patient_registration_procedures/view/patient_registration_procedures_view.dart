@@ -5,16 +5,16 @@ import 'package:timelines_plus/timelines_plus.dart';
 
 import '../../../features/utility/enum/enum_general_state_status.dart';
 
-import '../../../features/utility/navigation_service.dart';
-import '../../../features/widget/app_dialog.dart';
+import '../../../features/utility/user_http_service.dart';
 import '../cubit/patient_registration_procedures_cubit.dart';
 import '../../../core/utility/user_login_status_service.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../model/patient_registration_procedures_request_model.dart';
+import '../service/patient_registration_procedures_service.dart';
 
 class PatientRegistrationProceduresView extends StatelessWidget {
   final EnumPatientRegistrationProcedures startStep;
-  final PatientRegistrationProceduresRequestModel? model;
+  final PatientRegistrationProceduresModel? model;
   const PatientRegistrationProceduresView({
     super.key,
     required this.startStep,
@@ -29,6 +29,7 @@ class PatientRegistrationProceduresView extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => PatientRegistrationProceduresCubit(
+        service: PatientRegistrationProceduresService(UserHttpService()),
         startStep: startStep,
         model: model,
       ),
@@ -201,63 +202,22 @@ class PatientRegistrationProceduresView extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                InkWell(
-                                  customBorder: const CircleBorder(),
-                                  onTap: () {
-                                    if (state.currentStep == startStep) {
-                                      if (Navigator.of(context).canPop()) {
-                                        Navigator.of(context).pop();
-                                      }
-                                    } else {
-                                      context
-                                          .read<
-                                            PatientRegistrationProceduresCubit
-                                          >()
-                                          .previousStep();
-                                    }
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.arrow_back,
-                                          size: 22,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        if (state.currentStep == startStep) ...[
-                                          const SizedBox(width: 6),
-                                          Text(ConstantString().homePageTitle),
-                                        ] else if (state.currentStep.index >
-                                            0) ...[
-                                          const SizedBox(width: 6),
-                                          Text(
-                                            EnumPatientRegistrationProcedures
-                                                .values[state
-                                                        .currentStep
-                                                        .index -
-                                                    1]
-                                                .label,
-                                          ),
-                                        ],
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                if (state.currentStep ==
-                                    EnumPatientRegistrationProcedures.payment)
-                                  _LogoutButton(
-                                    onPressed: () =>
-                                        UserLoginStatusService().logout(),
-                                  ),
-                              ],
+                            _ButtonBar(
+                              currentStep: state.currentStep,
+                              startStep: startStep,
                             ),
-                            infoWidget("Bölüm", state.model.branchName),
-                            infoWidget("Doktor", state.model.doctorName),
-                            infoWidget("Sigorta", state.model.assocationName),
+                            infoWidget(
+                              ConstantString().section,
+                              state.model.branchName,
+                            ),
+                            infoWidget(
+                              ConstantString().doctor,
+                              state.model.doctorName,
+                            ),
+                            infoWidget(
+                              ConstantString().insurance,
+                              state.model.assocationName,
+                            ),
                             Expanded(
                               child: state.currentStep.widget(state.model),
                             ),
@@ -284,22 +244,73 @@ class PatientRegistrationProceduresView extends StatelessWidget {
   }
 }
 
-class _LogoutButton extends StatelessWidget {
-  const _LogoutButton({required this.onPressed});
-  final VoidCallback onPressed;
+class _ButtonBar extends StatelessWidget {
+  final EnumPatientRegistrationProcedures startStep;
+  final EnumPatientRegistrationProcedures currentStep;
+  const _ButtonBar({required this.currentStep, required this.startStep});
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: const Icon(Icons.logout, size: 18),
-      label: Text(ConstantString().logout),
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      ),
+    return Row(
+      children: [
+        currentStep.isGoBack
+            ? InkWell(
+                customBorder: const CircleBorder(),
+                onTap: () {
+                  if (currentStep == startStep) {
+                    if (Navigator.of(context).canPop()) {
+                      Navigator.of(context).pop();
+                    }
+                  } else {
+                    context
+                        .read<PatientRegistrationProceduresCubit>()
+                        .previousStep();
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.arrow_back,
+                        size: 22,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      if (currentStep == startStep) ...[
+                        const SizedBox(width: 6),
+                        Text(ConstantString().homePageTitle),
+                      ] else if (currentStep.index > 0) ...[
+                        const SizedBox(width: 6),
+                        Text(
+                          EnumPatientRegistrationProcedures
+                              .values[currentStep.index - 1]
+                              .label,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              )
+            : SizedBox(),
+        if (!(currentStep.isGoBack))
+          ElevatedButton.icon(
+            onPressed: () => UserLoginStatusService().logout(),
+            icon: const Icon(Icons.logout, size: 18),
+            label: Text(ConstantString().logout),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              textStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

@@ -1,17 +1,16 @@
-import 'package:kiosk/product/patient_transaction/model/association_model.dart';
-import 'package:kiosk/product/patient_transaction/service/patient_transaction_service.dart';
-
 import '../../../core/exception/network_exception.dart';
 import '../../../core/utility/base_cubit.dart';
 import '../../../core/utility/logger_service.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
+import '../model/association_model.dart';
 import '../model/insurance_model.dart';
+import '../service/IPatientTransactionService.dart';
 
 part 'patient_transaction_state.dart';
 
 class PatientTransactionCubit extends BaseCubit<PatientTransactionState> {
-  final PatientTransactionService service;
+  final IPatientTransactionService service;
   PatientTransactionCubit({required this.service})
     : super(PatientTransactionState());
 

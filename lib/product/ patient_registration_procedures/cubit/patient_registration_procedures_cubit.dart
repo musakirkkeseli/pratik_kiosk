@@ -1,29 +1,36 @@
-import 'package:kiosk/core/utility/logger_service.dart';
-
+import '../../../core/exception/network_exception.dart';
 import '../../../core/utility/base_cubit.dart';
+import '../../../core/utility/logger_service.dart';
+import '../../../features/model/api_response_model.dart';
+import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/enum/enum_patient_registration_procedures.dart';
 import '../../doctor/model/doctor_model.dart';
-import '../../mandatory/model/patient_mandatory_model.dart';
+import '../../../features/model/patient_mandatory_model.dart';
 import '../../patient_transaction/model/association_model.dart';
 import '../../patient_transaction/model/insurance_model.dart';
 import '../../section/model/section_model.dart';
 import '../model/patient_registration_procedures_request_model.dart';
+import '../model/patient_transaction_create_request_model.dart';
+import '../model/patient_transaction_create_response_model.dart';
+import '../service/IPatientRegistrationProceduresService.dart';
 
 part 'patient_registration_procedures_state.dart';
 
 class PatientRegistrationProceduresCubit
     extends BaseCubit<PatientRegistrationProceduresState> {
+  final IPatientRegistrationProceduresService service;
   final EnumPatientRegistrationProcedures startStep;
-  final PatientRegistrationProceduresRequestModel? model;
+  final PatientRegistrationProceduresModel? model;
 
   PatientRegistrationProceduresCubit({
+    required this.service,
     required this.startStep,
     required this.model,
   }) : super(
          PatientRegistrationProceduresState(
            currentStep: startStep,
-           model: model ?? PatientRegistrationProceduresRequestModel(),
+           model: model ?? PatientRegistrationProceduresModel(),
          ),
        );
 
@@ -76,18 +83,80 @@ class PatientRegistrationProceduresCubit
   }
 
   void mandatoryCheck(List<PatientMandatoryModel> mandatoryModelList) {
-    for (var element in mandatoryModelList) {
-      _log.d('mandatoryCheck - ${element.targetFieldName} : ${element.value}');
-    }
-    createNewPatientTransaction();
+    patientTransactionCreate(mandatoryModelList);
   }
 
-  void createNewPatientTransaction() {
-    emit(state.copyWith(status: EnumGeneralStateStatus.loading));
-    Future.delayed(const Duration(seconds: 2), () {
-      emit(state.copyWith(status: EnumGeneralStateStatus.success));
-      nextStep();
-    });
+  Future<void> patientTransactionCreate(
+    List<PatientMandatoryModel> mandatoryModelList,
+  ) async {
+    PatientRegistrationProceduresModel model = state.model;
+    try {
+      // final res = await service.postPatientTransactionCreate(
+      //   PatientTransactionCreateRequestModel(
+      //     associationId: int.tryParse(model.assocationId ?? ""),
+      //     departmentId: model.departmentId,
+      //     doctorId: model.doctorId,
+      //     mandatoryFields: mandatoryModelList,
+      //   ),
+      // );
+      final res = ApiResponse<PatientTransactionCreateResponseModel>(
+        success: true,
+        data: PatientTransactionCreateResponseModel(patientId: "4352273"),
+        message: "",
+      );
+      if (res.success &&
+          res.data is PatientTransactionCreateResponseModel &&
+          res.data!.patientId is String) {
+        model.patientId = res.data!.patientId ?? "";
+        emit(
+          state.copyWith(status: EnumGeneralStateStatus.success, model: model),
+        );
+        nextStep();
+      } else {
+        safeEmit(
+          state.copyWith(
+            status: EnumGeneralStateStatus.failure,
+            message: res.message,
+          ),
+        );
+      }
+    } on NetworkException catch (e) {
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: e.message,
+        ),
+      );
+    } catch (e) {
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: ConstantString().errorOccurred,
+        ),
+      );
+    }
+  }
+
+  Future<void> patientTransactionCancel() async {
+    PatientRegistrationProceduresModel model = state.model;
+    model.patientId;
+    try {
+      previousStep();
+    } on NetworkException catch (e) {
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: e.message,
+        ),
+      );
+    } catch (e) {
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: ConstantString().errorOccurred,
+        ),
+      );
+    }
   }
 
   void nextStep() {

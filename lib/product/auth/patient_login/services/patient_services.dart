@@ -2,9 +2,9 @@ import '../../../../features/model/api_response_model.dart';
 
 import '../model/patient_register_request_model.dart';
 import '../model/patient_response_model.dart';
-import 'IPatient_services.dart';
+import 'IPatientServices.dart';
 
-class PatientServices extends IpatientServices {
+class PatientServices extends IPatientServices {
   PatientServices(super.http);
 
   @override

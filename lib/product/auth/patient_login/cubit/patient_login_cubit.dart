@@ -7,12 +7,12 @@ import '../../../../core/utility/user_login_status_service.dart';
 import '../../../../features/utility/enum/enum_general_state_status.dart';
 import '../model/patient_register_request_model.dart';
 import '../model/patient_response_model.dart';
-import '../services/patient_services.dart';
+import '../services/IPatientServices.dart';
 
 part 'patient_login_state.dart';
 
 class PatientLoginCubit extends BaseCubit<PatientLoginState> {
-  final PatientServices service;
+  final IPatientServices service;
   PatientLoginCubit({required this.service}) : super(PatientLoginState());
 
   final MyLog _log = MyLog('PatientLoginCubit');
