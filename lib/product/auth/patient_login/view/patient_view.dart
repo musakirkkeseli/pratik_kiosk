@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/icon_park_solid.dart';
 import 'package:kiosk/product/auth/patient_login/services/patient_services.dart';
 
 import '../../../../core/utility/logger_service.dart';
@@ -10,9 +12,12 @@ import '../../../../features/utility/custom_hospital_and_patient_login_textfield
 import '../../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../../features/utility/enum/enum_textformfield.dart';
 import '../../../../features/utility/tenant_http_service.dart';
+import '../../../../features/widget/custom_appbar.dart';
+import '../../../../features/widget/custom_button.dart';
 import '../cubit/patient_login_cubit.dart';
 import '../model/patient_register_request_model.dart';
 import '../../../../features/widget/inactivity_warning_dialog.dart';
+import 'widget/kiosk_card_widget.dart';
 
 class PatientView extends StatefulWidget {
   final AuthType? authType;
@@ -26,7 +31,7 @@ class _PatientViewState extends State<PatientView> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _tcController = kReleaseMode
       ? TextEditingController()
-      : TextEditingController(text: "37135120204");
+      : TextEditingController(text: "41467192600");
   final TextEditingController _birthDayController = TextEditingController();
   bool _dialogOpen = false;
   bool _suppressWarning = false; // Devam Et sonrası popup yeniden açılmasın
@@ -104,33 +109,46 @@ class _PatientViewState extends State<PatientView> {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(title: Text(ConstantString().patientLogin)),
-            body: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    CustomHospitalAndPatientLoginTextfieldWidget(
-                      type: EnumTextformfield.tc,
-                      controller: _tcController,
-                      onChanged: (String value) {
-                        context.read<PatientLoginCubit>().onChanged(value);
-                      },
-                    ),
-                    if (state.authType == AuthType.register)
-                      CustomHospitalAndPatientLoginTextfieldWidget(
-                        controller: _birthDayController,
-                        type: EnumTextformfield.birthday,
-                        onChanged: (String value) {
-                          context.read<PatientLoginCubit>().onChanged(value);
-                        },
-                      ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+            body: Column(
+              children: [
+              CustomAppBar(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 200.0,
+                    vertical: 20.0,
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      spacing: 30,
                       children: [
-                        ElevatedButton.icon(
+                        Text(ConstantString().enterYourTurkishIdNumber),
+                        CustomHospitalAndPatientLoginTextfieldWidget(
+                          type: EnumTextformfield.tc,
+                          controller: _tcController,
+                          onChanged: (String value) {
+                            context.read<PatientLoginCubit>().onChanged(value);
+                          },
+                        ),
+                        if (state.authType == AuthType.register) ...[
+                          CustomHospitalAndPatientLoginTextfieldWidget(
+                            controller: _birthDayController,
+                            type: EnumTextformfield.birthday,
+                            onChanged: (String value) {
+                              context.read<PatientLoginCubit>().onChanged(
+                                value,
+                              );
+                            },
+                          ),
+                        ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: const Divider(height: 24),
+                        ),
+                        CustomButton(
+                          width: MediaQuery.of(context).size.width * 0.60,
+                          height: MediaQuery.of(context).size.height * 0.07,
+                          label: ConstantString().signIn,
                           onPressed: () {
                             final isValid =
                                 _formKey.currentState?.validate() ?? false;
@@ -157,21 +175,44 @@ class _PatientViewState extends State<PatientView> {
                                         );
                             }
                           },
-                          label: Text(ConstantString().signIn),
                         ),
                         if (_tcController.text.trim().isNotEmpty)
-                          ElevatedButton.icon(
-                            onPressed: () {
+                          InkWell(
+                            onTap: () {
                               _clean(context);
                             },
-                            icon: const Icon(Icons.clear),
-                            label: const Text("Temizle"),
+                            child: Container(
+                              width: 200,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                                border: Border.all(
+                                  width: 1,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Iconify(IconParkSolid.clear_format),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width *
+                                        0.01,
+                                  ),
+                                  Text(ConstantString().clear),
+                                ],
+                              ),
+                            ),
                           ),
+                        KioskCardWidget(),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           );
         },

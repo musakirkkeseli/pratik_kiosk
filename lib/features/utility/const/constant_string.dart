@@ -26,6 +26,8 @@ class ConstantString {
   static const healthGif = "assets/gif/health_gif.json";
   static const configLoading = "assets/gif/config_loading.json";
   static const settingsGif = "assets/gif/settings_gif.json";
+  static const hospitalLogo = "assets/images/pratikLogo.png";
+  static const buharaLogo = "assets/images/buharaLogo.png";
 
   String birthDate = LocaleKeys.birthDate.locale;
   String signIn = LocaleKeys.signIn.locale;
@@ -55,4 +57,15 @@ class ConstantString {
   String paymentAction = "Ödeme Yap";
   String total = "Toplam:";
   String insurance = "Sigorta";
+  String loginWithTrIdNo = "T.C KİMLİK NO İLE GİRİŞ";
+  String enterYourTurkishIdNumber = "TC Kimlik Numaranızı Giriniz";
+  String clear = "Temizle";
+  String patientRegistration = "Hasta Kaydı";
+  String testQueue = "Tetkik Sırası";
+  String results = "Sonuçlar";
+  String appointmentRegistration = "Randevuna Kayıt Aç";
+  String registration = "Kayıt Aç";
+  String tests = "Tetkikler";
+  String completeRegistration = "Kaydı Tamamla";
+
 }

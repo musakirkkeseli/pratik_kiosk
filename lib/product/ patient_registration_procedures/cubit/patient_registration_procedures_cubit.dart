@@ -11,7 +11,6 @@ import '../../patient_transaction/model/association_model.dart';
 import '../../patient_transaction/model/insurance_model.dart';
 import '../../section/model/section_model.dart';
 import '../model/patient_registration_procedures_request_model.dart';
-import '../model/patient_transaction_create_request_model.dart';
 import '../model/patient_transaction_create_response_model.dart';
 import '../service/IPatientRegistrationProceduresService.dart';
 
@@ -34,7 +33,7 @@ class PatientRegistrationProceduresCubit
          ),
        );
 
-  final MyLog _log = MyLog('PatientRegistrationProceduresCubit');
+  // final MyLog _log = MyLog('PatientRegistrationProceduresCubit');
 
   void selectSection(SectionItems section) {
     if (section.sectionId != null && section.sectionName != null) {

@@ -32,6 +32,8 @@ dependencies:
   lottie: ^3.3.2
   animated_flip_counter: ^0.3.4
   simple_animations: ^3.0.2
+  iconify_flutter: ^0.0.7
+  hugeicons: ^1.1.1
 
 
 
@@ -61,4 +63,4 @@ flutter:
     - .env
     - assets/lang/
     - assets/gif/
-  #   - assets/images/
+    - assets/images/

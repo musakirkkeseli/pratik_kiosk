@@ -46,16 +46,33 @@ class _State extends State<MandatoryView> {
           key: _formKey,
           child: Column(
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    _formKey.currentState!.save();
-                    context
-                        .read<PatientRegistrationProceduresCubit>()
-                        .mandatoryCheck(state.patientMandatoryData);
-                  }
-                },
-                child: const Text('Devam Et'),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.02,
+                ),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      _formKey.currentState!.save();
+                      context
+                          .read<PatientRegistrationProceduresCubit>()
+                          .mandatoryCheck(state.patientMandatoryData);
+                    }
+                  },
+                  child: Text(ConstantString().completeRegistration),
+                ),
               ),
               ListView.builder(
                 shrinkWrap: true,

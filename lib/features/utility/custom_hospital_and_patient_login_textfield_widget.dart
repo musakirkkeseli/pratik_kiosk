@@ -14,15 +14,42 @@ class CustomHospitalAndPatientLoginTextfieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(labelText: type.label, hintText: type.hint),
-      obscureText: type.obscureText,
-      keyboardType: type.keyboardType,
-      inputFormatters: type.inputFormatters,
-      maxLength: type.maxLength,
-      validator: type.validator,
-      onChanged: onChanged,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          type.label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8.0),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: TextFormField(
+            controller: controller,
+            obscureText: type.obscureText,
+            keyboardType: type.keyboardType,
+            inputFormatters: type.inputFormatters,
+            maxLength: type.maxLength,
+            validator: type.validator,
+            onChanged: onChanged,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              focusedErrorBorder: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              counterText: '', // maxLength sayacını kaldırır
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
