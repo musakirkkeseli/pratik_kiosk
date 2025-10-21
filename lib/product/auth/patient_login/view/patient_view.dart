@@ -111,7 +111,7 @@ class _PatientViewState extends State<PatientView> {
           return Scaffold(
             body: Column(
               children: [
-              CustomAppBar(),
+                CustomAppBar(),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 200.0,
@@ -181,30 +181,21 @@ class _PatientViewState extends State<PatientView> {
                             onTap: () {
                               _clean(context);
                             },
-                            child: Container(
-                              width: 200,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                                border: Border.all(
-                                  width: 1,
-                                  color: Theme.of(context).primaryColor,
+                            child: OutlinedButton.icon(
+                              style: OutlinedButton.styleFrom(
+                                iconColor: Colors.red,
+                                foregroundColor: Colors.red,
+                                side: const BorderSide(
+                                  color: Colors.red,
+                                  width: 1.5,
                                 ),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Iconify(IconParkSolid.clear_format),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width *
-                                        0.01,
-                                  ),
-                                  Text(ConstantString().clear),
-                                ],
+                              onPressed: () {},
+                              icon: Iconify(
+                                IconParkSolid.clear_format,
+                                color: Colors.red,
                               ),
+                              label: Text(ConstantString().clear),
                             ),
                           ),
                         KioskCardWidget(),
