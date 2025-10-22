@@ -18,16 +18,23 @@ abstract class IPatientRegistrationProceduresService {
       IPatientRegistrationProceduresServicePath
           .patientTransactionRevenue
           .rawValue;
+  final String patientTransactionCancelPath =
+      IPatientRegistrationProceduresServicePath
+          .patientTransactionCancel
+          .rawValue;
 
   Future<ApiResponse<PatientTransactionCreateResponseModel>>
   postPatientTransactionCreate(PatientTransactionCreateRequestModel request);
   Future<ApiResponse<PatientTransactionRevenueResponseModel>>
   postPatientTransactionRevenue(PatientPriceDetailModel request);
+  Future<ApiResponse<PatientTransactionRevenueResponseModel>>
+  postPatientTransactionCancel(String patientId);
 }
 
 enum IPatientRegistrationProceduresServicePath {
   patientTransactionCreate,
   patientTransactionRevenue,
+  patientTransactionCancel,
 }
 
 //BaseUrl'nin sonuna Search sayfasının requesti için gelecek olan eklenti için oluşturuldu
@@ -39,6 +46,8 @@ extension IMandatoryServicePathExtension
         return '/patient-transaction/create';
       case IPatientRegistrationProceduresServicePath.patientTransactionRevenue:
         return '/patient-transaction/revenue';
+      case IPatientRegistrationProceduresServicePath.patientTransactionCancel:
+        return '/patient-transaction/cancel';
     }
   }
 }

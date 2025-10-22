@@ -165,49 +165,46 @@ class PatientRegistrationProceduresCubit
           state.copyWith(paymentResultType: EnumPaymentResultType.success),
         );
       } else {
+        patientTransactionCancel();
         safeEmit(
-          state.copyWith(
-            status: EnumGeneralStateStatus.failure,
-            message: res.message,
-          ),
+          state.copyWith(paymentResultType: EnumPaymentResultType.failure),
         );
       }
     } on NetworkException catch (e) {
+      _log.d("NetworkException $e");
+      patientTransactionCancel();
       safeEmit(
-        state.copyWith(
-          status: EnumGeneralStateStatus.failure,
-          message: e.message,
-        ),
+        state.copyWith(paymentResultType: EnumPaymentResultType.success),
       );
     } catch (e) {
+      patientTransactionCancel();
       safeEmit(
-        state.copyWith(
-          status: EnumGeneralStateStatus.failure,
-          message: ConstantString().errorOccurred,
-        ),
+        state.copyWith(paymentResultType: EnumPaymentResultType.success),
       );
     }
   }
 
   Future<void> patientTransactionCancel() async {
     PatientRegistrationProceduresModel model = state.model;
-    model.patientId;
-    try {
-      previousStep();
-    } on NetworkException catch (e) {
-      safeEmit(
-        state.copyWith(
-          status: EnumGeneralStateStatus.failure,
-          message: e.message,
-        ),
-      );
-    } catch (e) {
-      safeEmit(
-        state.copyWith(
-          status: EnumGeneralStateStatus.failure,
-          message: ConstantString().errorOccurred,
-        ),
-      );
+    String? patientId = model.patientId;
+    if (patientId is String) {
+      try {
+        final res = await service.postPatientTransactionCancel(patientId);
+      } on NetworkException catch (e) {
+        safeEmit(
+          state.copyWith(
+            status: EnumGeneralStateStatus.failure,
+            message: e.message,
+          ),
+        );
+      } catch (e) {
+        safeEmit(
+          state.copyWith(
+            status: EnumGeneralStateStatus.failure,
+            message: ConstantString().errorOccurred,
+          ),
+        );
+      }
     }
   }
 

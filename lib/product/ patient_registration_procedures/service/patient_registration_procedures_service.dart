@@ -34,4 +34,16 @@ class PatientRegistrationProceduresService
       ),
     );
   }
+
+  @override
+  Future<ApiResponse<PatientTransactionRevenueResponseModel>>
+  postPatientTransactionCancel(String patientId) async {
+    return http.request<PatientTransactionRevenueResponseModel>(
+      requestFunction: () =>
+          http.post(patientTransactionCancelPath, data: patientId),
+      fromJson: (json) => PatientTransactionRevenueResponseModel.fromJson(
+        json as Map<String, dynamic>,
+      ),
+    );
+  }
 }
