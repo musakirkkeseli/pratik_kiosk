@@ -23,7 +23,6 @@ class _PaymentViewState extends State<PaymentView> {
     final inactivity = context.read<InactivityController>();
     inactivity.bump(customTimeout: Duration(seconds: 50));
     Future.delayed(Duration(seconds: 5), () {
-      
       context
           .read<PatientRegistrationProceduresCubit>()
           .patientTransactionRevenue(widget.patientPriceDetailModel);
@@ -37,9 +36,8 @@ class _PaymentViewState extends State<PaymentView> {
       body: Column(
         spacing: 20,
         children: [
-
-          Center(child: Text("Ödeme Bekleniyor")),
-          Text("Lütfen POS cihazında ödeme işlemini gerçekleştiriniz"),
+          Center(child: Text(ConstantString().paymentPending)),
+          Text(ConstantString().paymentProcessing),
           Lottie.asset(
             ConstantString.paymentLoading,
             width: 150,
@@ -67,7 +65,6 @@ class _PaymentViewState extends State<PaymentView> {
               children: [Text("Ödenecek Tutar"), Text("1420,00 TL")],
             ),
           ),
-
         ],
       ),
     );

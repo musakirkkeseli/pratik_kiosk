@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/material_symbols.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 import '../../../../core/utility/user_login_status_service.dart';
@@ -231,20 +233,46 @@ class _ButtonBar extends StatelessWidget {
                 ),
               )
             : const SizedBox(),
+        Spacer(),
         if (!(currentStep.isGoBack))
-          ElevatedButton.icon(
-            onPressed: () => UserLoginStatusService().logout(),
-            icon: const Icon(Icons.logout, size: 18),
-            label: Text(ConstantString().logout),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              textStyle: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
+          SizedBox(
+            height: 50,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                foregroundColor: Theme.of(context).primaryColor,
+                elevation: 0,
+                side: BorderSide(
+                  color: Theme.of(context).primaryColor,
+                  width: 2,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 12,
+                ),
               ),
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+              onPressed: () {
+                UserLoginStatusService().logout();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Iconify(
+                    MaterialSymbols.exit_to_app,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  Text(
+                    ConstantString().logout,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

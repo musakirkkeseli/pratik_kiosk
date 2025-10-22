@@ -78,4 +78,7 @@ class ConstantString {
   String amount = "Tutar";
   String paymentSuccess = "Ödeme Başarılı";
   String paymentFailure = "Ödeme Başarısız";
+  String appointmentConfirmed = "Randevunuz onaylanmıştır";
+  String paymentPending = "Ödeme Bekleniyor";
+  String paymentProcessing = "Lütfen POS cihazında ödeme işlemini gerçekleştiriniz";
 }
