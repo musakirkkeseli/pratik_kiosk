@@ -182,7 +182,6 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
     _timer = null;
   }
 
-  /// Dışarıdan manuel kapatma isterse
   void stopCounter() {
     _stopTimer();
     emit(state.copyWith(counter: null));
