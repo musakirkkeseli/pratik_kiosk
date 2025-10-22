@@ -9,6 +9,7 @@ import '../../features/utility/navigation_service.dart';
 import '../exception/network_exception.dart';
 import 'analytics_service.dart';
 import 'base_dio_service.dart';
+import 'language_manager.dart';
 import 'logger_service.dart';
 
 abstract class IHttpService {
@@ -50,7 +51,10 @@ class HttpService implements IHttpService {
     _dio = Dio(
       BaseOptions(
         baseUrl: ConstantString.backendUrl,
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept-Language': LanguageManager.instance.languageCode,
+        },
         connectTimeout: connectTimeout,
         receiveTimeout: receiveTimeout,
       ),
