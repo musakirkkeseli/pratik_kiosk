@@ -81,4 +81,6 @@ class ConstantString {
   String appointmentConfirmed = "Randevunuz onaylanmıştır";
   String paymentPending = "Ödeme Bekleniyor";
   String paymentProcessing = "Lütfen POS cihazında ödeme işlemini gerçekleştiriniz";
+  String hour = "Saat";
+  String policlinic = "Polikinlik";
 }
