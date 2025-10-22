@@ -81,7 +81,7 @@ class _PatientViewState extends State<PatientView> {
             SnackbarService().showSnackBar(
               'Süre doldu. Lütfen tekrar deneyin.',
             );
-            _suppressWarning = false; // süre bitti, bayrağı sıfırla
+            _suppressWarning = false;
           }
           if (state.counter > 0 &&
               state.counter <= 15 &&
@@ -214,11 +214,10 @@ class _PatientViewState extends State<PatientView> {
     _tcController.clear();
     _birthDayController.clear();
     final cubit = ctx.read<PatientLoginCubit>();
-    MyLog.debug("_clean çalıştı, current authType: ${widget.authType}");
     if (widget.authType != AuthType.login) {
       cubit.setAuthType(AuthType.login);
     }
-    _suppressWarning = false; // temizlemede sıfırla
+    ctx.read<PatientLoginCubit>().stopCounter();
   }
 
   void _showTimeDialog(BuildContext context) {
