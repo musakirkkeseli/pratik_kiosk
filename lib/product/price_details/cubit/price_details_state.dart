@@ -2,29 +2,27 @@ part of 'price_details_cubit.dart';
 
 class PriceDetailsState {
   final EnumGeneralStateStatus status;
-  final List<GetPatientTranscationDet>? patientTranscationDet;
-  final GetPatientTranscationProcessList? patientTranscationProcessList;
+  final List<PaymentContent>? paymentContentList;
+  final PatientContent? patientContent;
   final String? message;
 
   const PriceDetailsState({
     this.status = EnumGeneralStateStatus.initial,
-    this.patientTranscationDet,
-    this.patientTranscationProcessList,
+    this.paymentContentList,
+    this.patientContent,
     this.message,
   });
 
   PriceDetailsState copyWith({
     EnumGeneralStateStatus? status,
-    List<GetPatientTranscationDet>? patientTranscationDet,
-    GetPatientTranscationProcessList? patientTranscationProcessList,
+    List<PaymentContent>? paymentContentList,
+    PatientContent? patientContent,
     String? message,
   }) {
     return PriceDetailsState(
       status: status ?? this.status,
-      patientTranscationDet:
-          patientTranscationDet ?? this.patientTranscationDet,
-      patientTranscationProcessList:
-          patientTranscationProcessList ?? this.patientTranscationProcessList,
+      paymentContentList: paymentContentList ?? this.paymentContentList,
+      patientContent: patientContent ?? this.patientContent,
       message: message,
     );
   }

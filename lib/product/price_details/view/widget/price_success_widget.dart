@@ -5,23 +5,24 @@ import 'package:iconify_flutter/icons/material_symbols.dart';
 import 'package:kiosk/features/widget/custom_button.dart';
 
 import '../../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
+import '../../../../features/model/patient_price_detail_model.dart';
 import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../model/price_model.dart';
 import 'price_info_card_widget.dart';
 
 class PriceSuccessWidget extends StatelessWidget {
-  final GetPatientTranscationProcessList? patientTranscationProcessList;
-  final List<GetPatientTranscationDet> patientTranscationDetList;
+  final List<PaymentContent> paymentContentList;
+  final PatientContent? patientContent;
   const PriceSuccessWidget({
     super.key,
-    required this.patientTranscationProcessList,
-    required this.patientTranscationDetList,
+    required this.paymentContentList,
+    required this.patientContent,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (patientTranscationProcessList is GetPatientTranscationProcessList) {
+    if (patientContent is PatientContent) {
       return Center(
         child: Column(
           spacing: 30,
@@ -102,17 +103,16 @@ class PriceSuccessWidget extends StatelessWidget {
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: patientTranscationDetList.length,
+                itemCount: paymentContentList.length,
                 itemBuilder: (context, index) {
-                  GetPatientTranscationDet patientTranscationDet =
-                      patientTranscationDetList[index];
+                  PaymentContent paymentContent = paymentContentList[index];
                   return Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.height * 0.01,
                       vertical: MediaQuery.of(context).size.width * 0.02,
                     ),
                     decoration: BoxDecoration(
-                      border: index < patientTranscationDetList.length - 1
+                      border: index < paymentContentList.length - 1
                           ? Border(
                               bottom: BorderSide(
                                 color: ConstColor.textfieldColor,
@@ -127,7 +127,7 @@ class PriceSuccessWidget extends StatelessWidget {
                         Expanded(
                           flex: 0,
                           child: Text(
-                            patientTranscationDet.associationName ?? "",
+                            paymentContent.paymentName ?? "",
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 14),
                           ),
@@ -138,7 +138,7 @@ class PriceSuccessWidget extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            patientTranscationDet.patTotalPrice ?? "-",
+                            paymentContent.price.toString(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 14,
@@ -161,7 +161,7 @@ class PriceSuccessWidget extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  "${ConstantString().totalAmount} : ${patientTranscationProcessList!.patientPrice ?? "-"}",
+                  "${ConstantString().totalAmount} : ${patientContent!.totalPrice ?? "-"}",
                   style: TextStyle(color: ConstColor.white),
                 ),
               ),

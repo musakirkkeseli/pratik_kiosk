@@ -1,6 +1,6 @@
 import '../../../core/utility/http_service.dart';
 import '../../../features/model/api_response_model.dart';
-import '../model/price_model.dart';
+import '../../../features/model/patient_price_detail_model.dart';
 
 abstract class IPriceDetailsService {
   final IHttpService http;
@@ -10,7 +10,7 @@ abstract class IPriceDetailsService {
   final String patientPricePath =
       IPriceDetailsServicePath.patientPrice.rawValue;
 
-  Future<ApiResponse<PatientPriceModel>> postPatientPrice(String patientId);
+  Future<ApiResponse<PatientPriceDetailModel>> postPatientPrice(String patientId);
 }
 
 enum IPriceDetailsServicePath { patientPrice }

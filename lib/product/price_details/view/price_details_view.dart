@@ -49,8 +49,8 @@ class PriceView extends StatelessWidget {
     switch (state.status) {
       case EnumGeneralStateStatus.success:
         return PriceSuccessWidget(
-          patientTranscationDetList: state.patientTranscationDet ?? [],
-          patientTranscationProcessList: state.patientTranscationProcessList,
+          paymentContentList: state.paymentContentList ?? [],
+          patientContent: state.patientContent,
         );
       default:
         return Center(child: CircularProgressIndicator());
