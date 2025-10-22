@@ -5,6 +5,7 @@ import 'package:kiosk/core/widget/snackbar_service.dart';
 import 'package:provider/provider.dart';
 
 import 'core/utility/dynamic_theme_provider.dart';
+import 'core/utility/language_manager.dart';
 import 'core/utility/login_status_service.dart';
 import 'core/utility/network_status_service.dart';
 import 'core/utility/user_login_status_service.dart';
@@ -67,6 +68,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final inactivity = context.watch<InactivityController>();
     final themeProvider = Provider.of<DynamicThemeProvider>(context);
+    LanguageManager.instance.setLocale(context.locale);
     return Listener(
       behavior: HitTestBehavior.translucent,
       onPointerDown: (_) => inactivity.bump(),
