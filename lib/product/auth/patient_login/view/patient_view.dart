@@ -177,26 +177,23 @@ class _PatientViewState extends State<PatientView> {
                           },
                         ),
                         if (_tcController.text.trim().isNotEmpty)
-                          InkWell(
-                            onTap: () {
+                          OutlinedButton.icon(
+                            style: OutlinedButton.styleFrom(
+                              iconColor: Colors.red,
+                              foregroundColor: Colors.red,
+                              side: const BorderSide(
+                                color: Colors.red,
+                                width: 1.5,
+                              ),
+                            ),
+                            onPressed: () {
                               _clean(context);
                             },
-                            child: OutlinedButton.icon(
-                              style: OutlinedButton.styleFrom(
-                                iconColor: Colors.red,
-                                foregroundColor: Colors.red,
-                                side: const BorderSide(
-                                  color: Colors.red,
-                                  width: 1.5,
-                                ),
-                              ),
-                              onPressed: () {},
-                              icon: Iconify(
-                                IconParkSolid.clear_format,
-                                color: Colors.red,
-                              ),
-                              label: Text(ConstantString().clear),
+                            icon: Iconify(
+                              IconParkSolid.clear_format,
+                              color: Colors.red,
                             ),
+                            label: Text(ConstantString().clear),
                           ),
                         KioskCardWidget(),
                       ],
