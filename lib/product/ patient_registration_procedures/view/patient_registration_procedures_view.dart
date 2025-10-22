@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/enum/enum_patient_registration_procedures.dart';
 import '../../../features/utility/enum/enum_payment_result_type.dart';
@@ -57,6 +58,7 @@ class PatientRegistrationProceduresView extends StatelessWidget {
     );
   }
 
+
   _body(BuildContext context, PatientRegistrationProceduresState state) {
     if (state.paymentResultType is EnumPaymentResultType) {
       return PaymentResultWidget(paymentResultType: state.paymentResultType!);
@@ -68,6 +70,7 @@ class PatientRegistrationProceduresView extends StatelessWidget {
       startStep: startStep,
       currentStep: state.currentStep,
       model: state.model,
+
     );
   }
 }

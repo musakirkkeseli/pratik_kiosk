@@ -26,10 +26,17 @@ class _HomeViewState extends State<HomeView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                "Hoşgeldiniz Sayın Musa Kırkkeseli",
-                style: TextStyle(color: Theme.of(context).primaryColor),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20.0,
+                  horizontal: 20.0,
+                ),
+                child: Text(
+                  "Hoşgeldiniz Sayın Musa Kırkkeseli",
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
               ),
+              Spacer(),
               IconButton(
                 onPressed: () {
                   changeLanguageSheet(context);
