@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kiosk/core/utility/logger_service.dart';
 
 import '../../core/utility/user_login_status_service.dart';
+import '../widget/inactivity_warning_dialog.dart';
 import 'navigation_service.dart';
 
 enum InactivityPhase { idle, warning, cleaning }
@@ -80,7 +81,7 @@ class InactivityController extends ChangeNotifier {
         !_dialogShown &&
         phase != InactivityPhase.cleaning) {
       phase = InactivityPhase.warning;
-      // _showWarningDialog(remaining);
+      _showWarningDialog(remaining);
       _notifyLater();
     }
   }
@@ -91,42 +92,47 @@ class InactivityController extends ChangeNotifier {
     } catch (_) {}
   }
 
-  // void _showWarningDialog(Duration remaining) {
-  //   final ctx = navigatorKey.currentContext;
-  //   if (ctx == null) return;
-  //   _dialogShown = true;
-
-  //   showDialog(
-  //     context: ctx,
-  //     barrierDismissible: false,
-  //     builder: (c) => InactivityWarningDialog(
-  //       remaining: remaining,
-  //       onContinue: () {
-  //         MyLog.debug("'onContinue basıldı'");
-
-  //         Navigator.of(c).pop();
-  //         _dialogShown = false;
-  //         bump(); // devam et
-  //       },
-  //       onLogout: () async {
-  //         MyLog.debug("'onLogout basıldı'");
-  //         Navigator.of(c).pop();
-  //         _dialogShown = false;
-  //         phase = InactivityPhase.cleaning;
-  //         notifyListeners();
-  //         await _performCleanup();
-  //       },
-  //     ),
-  //   );
-  // }
-
-  void _hideWarningIfAny() {
-    if (!_dialogShown) return;
+  void _showWarningDialog(Duration remaining) {
     final ctx = navigatorKey.currentContext;
-    if (ctx != null && Navigator.of(ctx).canPop()) {
-      Navigator.of(ctx).pop();
+    if (ctx == null) return;
+    _dialogShown = true;
+
+    showDialog(
+      context: ctx,
+      barrierDismissible: false,
+      builder: (c) => InactivityWarningDialog(
+        remaining: remaining,
+        onContinue: () {
+          MyLog.debug("'onContinue basıldı'");
+          Navigator.of(c).pop();
+          _dialogShown = false;
+          bump();
+        },
+        onLogout: () async {
+          MyLog.debug("'onLogout basıldı'");
+          Navigator.of(c).pop();
+          _dialogShown = false;
+          phase = InactivityPhase.cleaning;
+          notifyListeners();
+          await _performCleanup();
+        },
+      ),
+    );
+  }
+
+  void _hideWarningIfAny() async {
+    if (!_dialogShown) {
+      return;
+    } else {
+      await Future.delayed(Duration(milliseconds: 120));
+      if (_dialogShown) {
+        final ctx = navigatorKey.currentContext;
+        if (ctx != null && Navigator.of(ctx).canPop()) {
+          Navigator.of(ctx).pop();
+        }
+        _dialogShown = false;
+      }
     }
-    _dialogShown = false;
   }
 
   @override
