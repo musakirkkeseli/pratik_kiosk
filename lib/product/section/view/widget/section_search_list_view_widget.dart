@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
+import '../../../../features/widget/item_button.dart';
 import '../../model/section_model.dart';
 
 class SectionSearchListViewWidget extends StatelessWidget {
@@ -16,33 +17,16 @@ class SectionSearchListViewWidget extends StatelessWidget {
       itemCount: sectionItemList.length,
       itemBuilder: (context, index) {
         SectionItems section = sectionItemList[index];
-        return Column(
-          children: [
-            ListTile(
-              title: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      section.sectionName ==
-                              "ConstantString().otherBranches.locale"
-                          ? "ConstantString().nutritionAndDietetics.locale"
-                          : section.sectionName ?? "",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {
-               context.read<PatientRegistrationProceduresCubit>().selectSection(section);
-              },
-            ),
-            const Divider(),
-          ],
+        return ItemButton(
+          title: section.sectionName ==
+                  "ConstantString().otherBranches.locale"
+              ? "ConstantString().nutritionAndDietetics.locale"
+              : section.sectionName ?? "",
+          onTap: () {
+            context
+                .read<PatientRegistrationProceduresCubit>()
+                .selectSection(section);
+          },
         );
       },
     );

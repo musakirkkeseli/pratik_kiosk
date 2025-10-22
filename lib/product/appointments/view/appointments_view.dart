@@ -6,7 +6,9 @@ import 'package:kiosk/product/appointments/view/widget/appointment_card.dart';
 
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
-
+import '../../../features/utility/enum/enum_patient_registration_procedures.dart';
+import '../../../features/utility/navigation_service.dart';
+import '../../ patient_registration_procedures/model/patient_registration_procedures_request_model.dart';
 import '../cubit/appointment_cubit.dart';
 import '../model/appointments_model.dart';
 
@@ -48,6 +50,21 @@ class _AppointmentsViewState extends State<AppointmentsView> {
               departmentName: appointment.departmentName ?? "",
               appointmentTime: appointment.appointmentTime ?? "",
               doctorName: appointment.doctorName ?? "",
+              onTap: () {
+                NavigationService.ns.routeTo(
+                  "PatientRegistrationProceduresView",
+                  arguments: {
+                    "startStep": EnumPatientRegistrationProcedures.patientTransaction,
+                    "model": PatientRegistrationProceduresModel(
+                      branchId: int.tryParse(appointment.branchID ?? ""),
+                      departmentId: int.tryParse(appointment.departmentID ?? ""),
+                      branchName: appointment.branchName,
+                      doctorId: int.tryParse(appointment.doctorID ?? ""),
+                      doctorName: appointment.doctorName,
+                    ),
+                  },
+                );
+              },
             );
           },
         );

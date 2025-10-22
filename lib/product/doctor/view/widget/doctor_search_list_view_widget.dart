@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
+import '../../../../features/widget/item_button.dart';
 import '../../model/doctor_model.dart';
 
 class DoctorListTileWidget extends StatelessWidget {
@@ -18,34 +19,17 @@ class DoctorListTileWidget extends StatelessWidget {
       shrinkWrap: true,
       itemCount: doctorItemList.length,
       itemBuilder: (context, index) {
-        DoctorItems section = doctorItemList[index];
-        return Column(
-          children: [
-            ListTile(
-              title: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      section.doctorName ==
-                              "ConstantString().otherBranches.locale"
-                          ? "ConstantString().nutritionAndDietetics.locale"
-                          : section.doctorName ?? "",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {
-               context.read<PatientRegistrationProceduresCubit>().selectDoctor(section);
-              },
-            ),
-            const Divider(),
-          ],
+        DoctorItems doctor = doctorItemList[index];
+        return ItemButton(
+          title: doctor.doctorName ==
+                  "ConstantString().otherBranches.locale"
+              ? "ConstantString().nutritionAndDietetics.locale"
+              : doctor.doctorName ?? "",
+          onTap: () {
+            context
+                .read<PatientRegistrationProceduresCubit>()
+                .selectDoctor(doctor);
+          },
         );
       },
     );

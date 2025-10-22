@@ -8,6 +8,7 @@ import '../../../core/widget/loading_widget.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/user_http_service.dart';
+import '../../../features/widget/item_button.dart';
 import '../cubit/patient_transaction_cubit.dart';
 import '../model/association_model.dart';
 import '../service/patient_transaction_service.dart';
@@ -40,15 +41,20 @@ class PatientTransactionView extends StatelessWidget {
           return Center(child: Text(ConstantString().noAppointments));
         }
         return ListView.separated(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           itemCount: items.length,
-          separatorBuilder: (_, __) => const Divider(height: 1),
+          separatorBuilder: (_, __) => const SizedBox(height: 8),
           itemBuilder: (_, i) {
             final item = items[i];
-            return ListTile(
-              title: Text(item.assocationName ?? '-'),
+            return ItemButton(
+              title: item.assocationName ?? '-',
               onTap: () {
-                MyLog("11gssAssocationId: ${item.gssAssocationId}");
+                MyLog("PatientTransactionView").d(
+                  "Selected Association:\n"
+                  "  - ID: ${item.assocationId}\n"
+                  "  - Name: ${item.assocationName}\n"
+                  "  - GSS ID: ${item.gssAssocationId}",
+                );
                 if (item.gssAssocationId == "1") {
                   Navigator.of(context).push(
                     RawDialogRoute(
@@ -74,36 +80,36 @@ class PatientTransactionView extends StatelessWidget {
                                     ConstantString().associationGssInfoMessage,
                                     textAlign: TextAlign.center,
                                   ),
+                                  const SizedBox(height: 16),
                                   state.insuranceData.isNotEmpty
-                                      ? ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: state.insuranceData.length,
-                                          itemBuilder: (_, index) {
-                                            final insuranceItem =
-                                                state.insuranceData[index];
-                                            return ListTile(
-                                              onTap: () {
-                                                NavigationService.ns.goBack();
-                                                context
-                                                    .read<
-                                                      PatientRegistrationProceduresCubit
-                                                    >()
-                                                    .selectAssociationWithInsurance(
-                                                      AssocationModel(
-                                                        assocationId:
-                                                            item.assocationId,
-                                                        assocationName:
-                                                            item.assocationName,
-                                                      ),
-                                                      insuranceItem,
-                                                    );
-                                              },
-                                              title: Text(
-                                                insuranceItem.insuredTypeName ??
-                                                    '',
-                                              ),
-                                            );
-                                          },
+                                      ? Expanded(
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: state.insuranceData.length,
+                                            itemBuilder: (_, index) {
+                                              final insuranceItem =
+                                                  state.insuranceData[index];
+                                              return ItemButton(
+                                                title: insuranceItem.insuredTypeName ?? '',
+                                                onTap: () {
+                                                  NavigationService.ns.goBack();
+                                                  context
+                                                      .read<
+                                                        PatientRegistrationProceduresCubit
+                                                      >()
+                                                      .selectAssociationWithInsurance(
+                                                        AssocationModel(
+                                                          assocationId:
+                                                              item.assocationId,
+                                                          assocationName:
+                                                              item.assocationName,
+                                                        ),
+                                                        insuranceItem,
+                                                      );
+                                                },
+                                              );
+                                            },
+                                          ),
                                         )
                                       : Text(ConstantString().errorOccurred),
                                 ],

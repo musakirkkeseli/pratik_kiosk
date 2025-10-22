@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/material_symbols.dart';
 import 'package:kiosk/product/results/view/results_view.dart';
 
 import '../../../product/appointments/view/appointments_view.dart';
@@ -24,11 +26,20 @@ enum EnumHomeItem {
   Widget icon(BuildContext context) {
     switch (this) {
       case EnumHomeItem.appointments:
-        return Icon(Icons.calendar_today, color: Theme.of(context).primaryColor);
+        return Iconify(
+          MaterialSymbols.calendar_month_outline_rounded,
+          color: Theme.of(context).primaryColor,
+        );
       case EnumHomeItem.registration:
-        return Icon(Icons.person_add, color: Theme.of(context).primaryColor);
+        return Iconify(
+          MaterialSymbols.holiday_village_rounded,
+          color: Theme.of(context).primaryColor,
+        );
       case EnumHomeItem.results:
-        return Icon(Icons.assignment, color: Theme.of(context).primaryColor);
+        return Iconify(
+          MaterialSymbols.view_list,
+          color: Theme.of(context).primaryColor,
+        );
     }
   }
 

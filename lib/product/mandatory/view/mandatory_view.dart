@@ -5,6 +5,7 @@ import 'package:kiosk/product/mandatory/cubit/mandatory_cubit.dart';
 import 'package:kiosk/product/mandatory/service/mandatory_service.dart';
 
 import '../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
+import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/user_http_service.dart';
@@ -42,76 +43,127 @@ class _State extends State<MandatoryView> {
       case EnumGeneralStateStatus.loading:
         return const Center(child: CircularProgressIndicator());
       case EnumGeneralStateStatus.success:
-        return Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height * 0.02,
-                ),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+        return SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height * 0.02,
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      _formKey.currentState!.save();
-                      context
-                          .read<PatientRegistrationProceduresCubit>()
-                          .mandatoryCheck(state.patientMandatoryData);
-                    }
-                  },
-                  child: Text(ConstantString().completeRegistration),
-                ),
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: state.data.length,
-                itemBuilder: (context, index) {
-                  MandatoryResponseModel item = state.data[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(labelText: item.labelCaption),
-                      validator: (value) {
-                        if (item.isNullable == "0" &&
-                            (value == null || value.isEmpty)) {
-                          int minLength =
-                              int.tryParse(item.minValue ?? "0") ?? 0;
-                          MyLog.debug(
-                            "Min length for ${item.labelCaption}: $minLength",
-                          );
-                          if ((value ?? "").length < minLength) {
-                            return "${ConstantString().minLengthError} $minLength";
-                          }
-                          return ConstantString().fieldRequired;
-                        }
-                        return null;
-                      },
-                      maxLength: item.maxValue != null
-                          ? int.tryParse(item.maxValue!)
-                          : null,
-                      onSaved: (newValue) {
-                        context.read<MandatoryCubit>().mandatoryValueSave(
-                          item.id ?? "",
-                          newValue ?? "",
-                        );
-                      },
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
-                  );
-                },
-              ),
-            ],
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        _formKey.currentState!.save();
+                        context
+                            .read<PatientRegistrationProceduresCubit>()
+                            .mandatoryCheck(state.patientMandatoryData);
+                      }
+                    },
+                    child: Text(ConstantString().completeRegistration),
+                  ),
+                ),
+                Row(
+                  spacing: MediaQuery.of(context).size.width * 0.01,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.person, color: Theme.of(context).primaryColor),
+                    Text(
+                      ConstantString().patientInformation,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: const Divider(height: 24),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: state.data.length,
+                  itemBuilder: (context, index) {
+                    MandatoryResponseModel item = state.data[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: Column(
+                        spacing: 15,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${item.labelCaption}"),
+                          Container(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                              color: ConstColor.textfieldColor,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Center(
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    focusedErrorBorder: InputBorder.none,
+                                  ),
+                                  validator: (value) {
+                                    if (item.isNullable == "0" &&
+                                        (value == null || value.isEmpty)) {
+                                      int minLength =
+                                          int.tryParse(item.minValue ?? "0") ?? 0;
+                                      MyLog.debug(
+                                        "Min length for ${item.labelCaption}: $minLength",
+                                      );
+                                      if ((value ?? "").length < minLength) {
+                                        return "${ConstantString().minLengthError} $minLength";
+                                      }
+                                      return ConstantString().fieldRequired;
+                                    }
+                                    return null;
+                                  },
+                                  maxLength: item.maxValue != null
+                                      ? int.tryParse(item.maxValue!)
+                                      : null,
+                                  onSaved: (newValue) {
+                                    context
+                                        .read<MandatoryCubit>()
+                                        .mandatoryValueSave(
+                                          item.id ?? "",
+                                          newValue ?? "",
+                                        );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         );
       default:

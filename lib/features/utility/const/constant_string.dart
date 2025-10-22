@@ -67,5 +67,9 @@ class ConstantString {
   String registration = "Kayıt Aç";
   String tests = "Tetkikler";
   String completeRegistration = "Kaydı Tamamla";
-
+  String patientInformation = "Hasta Bilgileri";
+  String summaryAndInvoice = "Özet ve Fatura";
+  String totalAmount = "TOPLAM TUTAR";
+  String creditCardPayment = "Kredi Kartı ile Ödeme";
+  String securePaymentMessage = "Güvenli ödeme için kredi kartı kullanınız.";
 }

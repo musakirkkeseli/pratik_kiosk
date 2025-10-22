@@ -218,7 +218,13 @@ class PatientRegistrationProceduresView extends StatelessWidget {
                                 currentStep: state.currentStep,
                                 startStep: startStep,
                               ),
-                              InfoContainerWidget(model: state.model),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical:
+                                      MediaQuery.of(context).size.height * 0.02,
+                                ),
+                                child: InfoContainerWidget(model: state.model),
+                              ),
                               Expanded(
                                 child: state.currentStep.widget(state.model),
                               ),
