@@ -8,7 +8,6 @@ import '../../../ patient_registration_procedures/cubit/patient_registration_pro
 import '../../../../features/model/patient_price_detail_model.dart';
 import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
-import '../../model/price_model.dart';
 import 'price_info_card_widget.dart';
 
 class PriceSuccessWidget extends StatelessWidget {
@@ -46,13 +45,6 @@ class PriceSuccessWidget extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-            Text(
-              "Fatura No: 2023-00145",
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 20,
-              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -175,6 +167,9 @@ class PriceSuccessWidget extends StatelessWidget {
                 label: ConstantString().paymentAction,
                 onPressed: () {
                   context.read<PatientRegistrationProceduresCubit>().nextStep();
+                  context
+                      .read<PatientRegistrationProceduresCubit>()
+                      .paymentAction(paymentContentList, patientContent);
                 },
               ),
             ),

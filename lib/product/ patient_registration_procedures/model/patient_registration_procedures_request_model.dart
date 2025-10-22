@@ -1,3 +1,5 @@
+import '../../../features/model/patient_price_detail_model.dart';
+
 class PatientRegistrationProceduresModel {
   int? doctorId;
   String? doctorName;
@@ -10,6 +12,7 @@ class PatientRegistrationProceduresModel {
   String? insuredTypeId;
   String? insuredTypeName;
   String? patientId;
+  PatientPriceDetailModel? patientPriceDetailModel;
   PatientRegistrationProceduresModel({
     this.doctorId,
     this.doctorName,
@@ -22,6 +25,7 @@ class PatientRegistrationProceduresModel {
     this.insuredTypeId,
     this.insuredTypeName,
     this.patientId,
+    this.patientPriceDetailModel,
   });
 
   Map<String, dynamic> toJson() {

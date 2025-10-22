@@ -2,6 +2,7 @@ import '../../../core/exception/network_exception.dart';
 import '../../../core/utility/base_cubit.dart';
 import '../../../core/utility/logger_service.dart';
 import '../../../features/model/api_response_model.dart';
+import '../../../features/model/patient_price_detail_model.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/enum/enum_patient_registration_procedures.dart';
@@ -12,6 +13,7 @@ import '../../patient_transaction/model/insurance_model.dart';
 import '../../section/model/section_model.dart';
 import '../model/patient_registration_procedures_request_model.dart';
 import '../model/patient_transaction_create_response_model.dart';
+import '../model/patient_transaction_revenue_response_model.dart';
 import '../service/IPatientRegistrationProceduresService.dart';
 
 part 'patient_registration_procedures_state.dart';
@@ -33,7 +35,7 @@ class PatientRegistrationProceduresCubit
          ),
        );
 
-  // final MyLog _log = MyLog('PatientRegistrationProceduresCubit');
+  final MyLog _log = MyLog('PatientRegistrationProceduresCubit');
 
   void selectSection(SectionItems section) {
     if (section.sectionId != null && section.sectionName != null) {
@@ -111,6 +113,55 @@ class PatientRegistrationProceduresCubit
           state.copyWith(status: EnumGeneralStateStatus.success, model: model),
         );
         nextStep();
+      } else {
+        safeEmit(
+          state.copyWith(
+            status: EnumGeneralStateStatus.failure,
+            message: res.message,
+          ),
+        );
+      }
+    } on NetworkException catch (e) {
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: e.message,
+        ),
+      );
+    } catch (e) {
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: ConstantString().errorOccurred,
+        ),
+      );
+    }
+  }
+
+  void paymentAction(
+    List<PaymentContent> paymentContentList,
+    PatientContent? patientContent,
+  ) {
+    PatientPriceDetailModel patientPriceDetailModel = PatientPriceDetailModel(
+      patientContent: patientContent,
+      paymentContent: paymentContentList,
+    );
+    final updatedModel = state.model;
+    updatedModel.patientPriceDetailModel = patientPriceDetailModel;
+    emit(state.copyWith(model: updatedModel));
+    nextStep();
+  }
+
+  Future<void> patientTransactionRevenue(
+    PatientPriceDetailModel patientPriceDetailModel,
+  ) async {
+    PatientRegistrationProceduresModel model = state.model;
+    try {
+      final res = await service.postPatientTransactionRevenue(
+        patientPriceDetailModel,
+      );
+      if (res.success) {
+        _log.d("Ödeme Tamamlandı");
       } else {
         safeEmit(
           state.copyWith(
