@@ -16,7 +16,7 @@ class PriceInfoCardWidget extends StatelessWidget {
           width: double.infinity,
           height: MediaQuery.of(context).size.height * 0.14,
           decoration: BoxDecoration(
-            color: ConstColor.textfieldColor,
+            color: ConstColor.infoCardColor,
             borderRadius: BorderRadius.all(Radius.circular(20)),
             border: Border.all(width: 2, color: ConstColor.textfieldColor),
           ),

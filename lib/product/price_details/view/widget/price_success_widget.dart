@@ -28,7 +28,6 @@ class PriceSuccessWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Divider(color: ConstColor.textfieldColor),
-            // Text(patientTranscationProcessList!.processName ?? "-"),
             Row(
               spacing: 10,
               children: [
@@ -58,7 +57,7 @@ class PriceSuccessWidget extends StatelessWidget {
                   Expanded(
                     flex: 0,
                     child: Text(
-                      "Açıklama",
+                      ConstantString().description,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -71,7 +70,7 @@ class PriceSuccessWidget extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Text(
-                      "Tutar",
+                      ConstantString().amount,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

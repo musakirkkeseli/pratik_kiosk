@@ -47,19 +47,22 @@ class _ConfigWidgetState extends State<ConfigWidget> {
         ),
         Center(
           child: Column(
+            spacing: 10,
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Image.asset(ConstantString.hospitalLogo, width: 100, height: 100),
               Lottie.asset(
-                ConstantString.settingsGif,
-                width: 120,
-                height: 120,
-                fit: BoxFit.cover,
+                ConstantString.configSetting,
+                width: 180,
+                height: 180,
+                fit: BoxFit.contain,
                 repeat: true,
               ),
               SizedBox(height: 20),
               Text(
                 'Ayarlar Uygulanıyor...',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
@@ -67,13 +70,6 @@ class _ConfigWidgetState extends State<ConfigWidget> {
                 ),
               ),
               const SizedBox(height: 12),
-              // Lottie.asset(
-              //   ConstantString.configLoading,
-              //   width: 120,
-              //   height: 120,
-              //   fit: BoxFit.cover,
-              //   repeat: true,
-              // ),
             ],
           ),
         ),

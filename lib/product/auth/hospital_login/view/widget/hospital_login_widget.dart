@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiosk/features/widget/custom_button.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 import '../../../../../features/utility/const/constant_color.dart';
 import '../../../../../features/utility/const/constant_string.dart';
@@ -24,69 +26,82 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
       ? TextEditingController()
       : TextEditingController(text: "buhara");
 
-  LinearGradient get _verticalGradient => const LinearGradient(
-    colors: [Color(0xFF6F0E0E), Color(0xFF040404)],
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    stops: [0.0, 1.0],
-  );
+  // LinearGradient get _verticalGradient => const LinearGradient(
+  //   colors: [Color(0xFF6F0E0E), Color(0xFF040404)],
+  //   begin: Alignment.topCenter,
+  //   end: Alignment.bottomCenter,
+  //   stops: [0.0, 1.0],
+  // );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DecoratedBox(
-        decoration: BoxDecoration(gradient: _verticalGradient),
-        child: SizedBox.expand(
-          child: Center(
+      backgroundColor: ConstColor.white,
+      body: Stack(
+        children: [
+          GestureDetector(
             child: Container(
-              height: MediaQuery.of(context).size.height * 0.60,
-              width: MediaQuery.of(context).size.width * 0.78,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(120.0),
+                gradient: LinearGradient(
+                  tileMode: TileMode.mirror,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Colors.red, Colors.white, Colors.red],
+                ),
+                backgroundBlendMode: BlendMode.srcOver,
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 48.0,
-                vertical: 0.0,
+              child: PlasmaRenderer(
+                type: PlasmaType.infinity,
+                particles: 10,
+                color: Color(0x4423c2e4),
+                blur: 0.4,
+                size: 1,
+                speed: 3.75,
+                offset: 0,
+                blendMode: BlendMode.plus,
+                particleType: ParticleType.atlas,
+                variation1: 0,
+                variation2: 0,
+                variation3: 0,
+                rotation: 0,
               ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  spacing: 30,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      ConstantString.hospitalLogo,
-                      width: 100,
-                      height: 150,
-                    ),
-                    CustomHospitalAndPatientLoginTextfieldWidget(
-                      type: EnumTextformfield.hospitalUserName,
-                      controller: userNameController,
-                    ),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.10,
+                  horizontal: MediaQuery.of(context).size.width * 0.20,
+                ),
+                child: Center(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      spacing: 30,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          ConstantString.hospitalLogo,
+                          width: 150,
+                          height: 200,
+                        ),
+                        CustomHospitalAndPatientLoginTextfieldWidget(
+                          type: EnumTextformfield.hospitalUserName,
+                          controller: userNameController,
+                        ),
 
-                    CustomHospitalAndPatientLoginTextfieldWidget(
-                      type: EnumTextformfield.hospitalUserPassword,
-                      controller: passwordController,
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height / 10,
-                        width: MediaQuery.of(context).size.width * (2 / 3),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 48,
-                              vertical: 16,
-                            ),
-                            backgroundColor:
-                                ConstColor.primaryHospitalLoginColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(200),
-                            ),
-                          ),
+                        CustomHospitalAndPatientLoginTextfieldWidget(
+                          type: EnumTextformfield.hospitalUserPassword,
+                          controller: passwordController,
+                        ),
+                        CustomButton(
+                          label: ConstantString().signIn,
+                          backgroundColor: ConstColor.primaryHospitalLoginColor,
+                          height: MediaQuery.of(context).size.height / 12,
+                          borderRadius: 20,
                           onPressed: () {
                             final isValid =
                                 _formKey.currentState?.validate() ?? false;
@@ -100,23 +115,15 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
                                   );
                             }
                           },
-                          child: Text(
-                            ConstantString().signIn,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),
-                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ),
+        ],
       ),
     );
   }

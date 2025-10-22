@@ -28,6 +28,9 @@ class ConstantString {
   static const settingsGif = "assets/gif/settings_gif.json";
   static const hospitalLogo = "assets/images/pratikLogo.png";
   static const buharaLogo = "assets/images/buharaLogo.png";
+  static const configSetting = "assets/gif/config_setting.json";
+  static const paymentLoading = "assets/gif/payment_loading.json";
+
 
   String birthDate = LocaleKeys.birthDate.locale;
   String signIn = LocaleKeys.signIn.locale;
@@ -72,4 +75,6 @@ class ConstantString {
   String totalAmount = "TOPLAM TUTAR";
   String creditCardPayment = "Kredi Kartı ile Ödeme";
   String securePaymentMessage = "Güvenli ödeme için kredi kartı kullanınız.";
+  String description = "Açıklama";
+  String amount = "Tutar";
 }

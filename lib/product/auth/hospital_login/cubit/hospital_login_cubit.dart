@@ -95,7 +95,7 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
           ),
         );
         DynamicThemeProvider().updateTheme(resp.data ?? ConfigResponseModel());
-        await Future.delayed(const Duration(seconds: 5));
+        await Future.delayed(const Duration(milliseconds: 5000));
         await LoginStatusService().login();
       } else {
         LoginStatusService().logout();

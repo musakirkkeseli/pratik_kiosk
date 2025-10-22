@@ -7,4 +7,6 @@ class ConstColor {
   static const primaryHospitalLoginColor = Color(0xFFBB1D22);
   static const secondaryColor = Color(0xFFBB1D22);
   static const textfieldColor = Color(0xFFDFDFDF);
+  static const infoCardColor = Color(0xFFE2E8F0);
 }
+  

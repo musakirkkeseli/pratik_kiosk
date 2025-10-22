@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kiosk/core/utility/logger_service.dart';
+
 import 'package:lottie/lottie.dart';
 
 import '../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
 import '../../../features/model/patient_price_detail_model.dart';
+import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/inactivity_controller.dart';
 
@@ -22,7 +23,7 @@ class _PaymentViewState extends State<PaymentView> {
     final inactivity = context.read<InactivityController>();
     inactivity.bump(customTimeout: Duration(seconds: 50));
     Future.delayed(Duration(seconds: 5), () {
-      MyLog.debug("Ödeme gönderildi");
+      
       context
           .read<PatientRegistrationProceduresCubit>()
           .patientTransactionRevenue(widget.patientPriceDetailModel);
@@ -34,17 +35,39 @@ class _PaymentViewState extends State<PaymentView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        spacing: 20,
         children: [
-          Center(child: Text("Ödeme Ekranı")),
+
+          Center(child: Text("Ödeme Bekleniyor")),
+          Text("Lütfen POS cihazında ödeme işlemini gerçekleştiriniz"),
+          Lottie.asset(
+            ConstantString.paymentLoading,
+            width: 150,
+            height: 50,
+            fit: BoxFit.contain,
+          ),
+          Lottie.asset(
+            ConstantString.posGif,
+            width: 500,
+            height: 500,
+            fit: BoxFit.cover,
+          ),
           Container(
-            child: Lottie.asset(
-              ConstantString.posGif,
-              width: 500,
-              height: 500,
-              fit: BoxFit.contain,
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: 150,
+            decoration: BoxDecoration(
+              border: Border.all(color: ConstColor.textfieldColor, width: 2),
+              color: ConstColor.infoCardColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              spacing: 20,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Text("Ödenecek Tutar"), Text("1420,00 TL")],
             ),
           ),
-          Text("Ödeme Bekleniyor"),
+
         ],
       ),
     );
