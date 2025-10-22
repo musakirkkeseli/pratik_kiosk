@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../features/utility/const/constant_string.dart';
+
 class AppointmentCard extends StatelessWidget {
   final String departmentName;
   final String branchName;
@@ -19,9 +21,7 @@ class AppointmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // Handle appointment card tap
-      },
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -68,13 +68,13 @@ class AppointmentCard extends StatelessWidget {
                       children: [
                         _buildInfoRow(
                           context,
-                          label: 'Saat',
+                          label: ConstantString().hour,
                           value: appointmentTime,
                         ),
                         const SizedBox(height: 16),
                         _buildInfoRow(
                           context,
-                          label: 'Polikinlik',
+                          label: ConstantString().policlinic,
                           value: departmentName,
                         ),
                       ],
@@ -89,7 +89,7 @@ class AppointmentCard extends StatelessWidget {
                       children: [
                         _buildInfoRow(
                           context,
-                          label: 'Doktor',
+                          label: ConstantString().doctor,
                           value: doctorName,
                         ),
                         const SizedBox(height: 16),
