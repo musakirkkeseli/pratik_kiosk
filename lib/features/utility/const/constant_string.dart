@@ -31,7 +31,6 @@ class ConstantString {
   static const configSetting = "assets/gif/config_setting.json";
   static const paymentLoading = "assets/gif/payment_loading.json";
 
-
   String birthDate = LocaleKeys.birthDate.locale;
   String signIn = LocaleKeys.signIn.locale;
   String patientLogin = LocaleKeys.patientLogin.locale;
@@ -77,4 +76,6 @@ class ConstantString {
   String securePaymentMessage = "Güvenli ödeme için kredi kartı kullanınız.";
   String description = "Açıklama";
   String amount = "Tutar";
+  String paymentSuccess = "Ödeme Başarılı";
+  String paymentFailure = "Ödeme Başarısız";
 }

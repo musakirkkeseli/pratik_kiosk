@@ -165,7 +165,6 @@ class PriceSuccessWidget extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.06,
                 label: ConstantString().paymentAction,
                 onPressed: () {
-                  context.read<PatientRegistrationProceduresCubit>().nextStep();
                   context
                       .read<PatientRegistrationProceduresCubit>()
                       .paymentAction(paymentContentList, patientContent);

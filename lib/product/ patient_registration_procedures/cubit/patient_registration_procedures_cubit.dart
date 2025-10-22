@@ -6,6 +6,7 @@ import '../../../features/model/patient_price_detail_model.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/enum/enum_patient_registration_procedures.dart';
+import '../../../features/utility/enum/enum_payment_result_type.dart';
 import '../../doctor/model/doctor_model.dart';
 import '../../../features/model/patient_mandatory_model.dart';
 import '../../patient_transaction/model/association_model.dart';
@@ -13,7 +14,6 @@ import '../../patient_transaction/model/insurance_model.dart';
 import '../../section/model/section_model.dart';
 import '../model/patient_registration_procedures_request_model.dart';
 import '../model/patient_transaction_create_response_model.dart';
-import '../model/patient_transaction_revenue_response_model.dart';
 import '../service/IPatientRegistrationProceduresService.dart';
 
 part 'patient_registration_procedures_state.dart';
@@ -155,13 +155,15 @@ class PatientRegistrationProceduresCubit
   Future<void> patientTransactionRevenue(
     PatientPriceDetailModel patientPriceDetailModel,
   ) async {
-    PatientRegistrationProceduresModel model = state.model;
     try {
       final res = await service.postPatientTransactionRevenue(
         patientPriceDetailModel,
       );
       if (res.success) {
         _log.d("Ödeme Tamamlandı");
+        safeEmit(
+          state.copyWith(paymentResultType: EnumPaymentResultType.success),
+        );
       } else {
         safeEmit(
           state.copyWith(
