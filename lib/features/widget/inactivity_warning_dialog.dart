@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kiosk/core/utility/logger_service.dart';
 import 'circular_countdown.dart';
+import '../utility/extension/text_theme_extension.dart';
 
 class InactivityWarningDialog extends StatelessWidget {
   const InactivityWarningDialog({
@@ -32,7 +33,7 @@ class InactivityWarningDialog extends StatelessWidget {
         children: [
           const Icon(Icons.timer_outlined),
           const SizedBox(width: 8),
-          Text(title ?? 'Oturum Zaman Aşımı'),
+          Text(title ?? 'Oturum Zaman Aşımı', style: context.sectionTitle),
         ],
       ),
       content: Column(
@@ -63,7 +64,7 @@ class InactivityWarningDialog extends StatelessWidget {
               onLogout!();
             },
             style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
-            child: Text(secondaryLabel ?? 'Çıkış Yap'),
+            child: Text(secondaryLabel ?? 'Çıkış Yap', style: context.buttonText),
           ),
 
         ElevatedButton(
@@ -75,7 +76,7 @@ class InactivityWarningDialog extends StatelessWidget {
             backgroundColor: color,
             foregroundColor: onPrimary,
           ),
-          child: const Text('Devam Et'),
+          child: Text('Devam Et', style: context.buttonText),
         ),
       ],
     );

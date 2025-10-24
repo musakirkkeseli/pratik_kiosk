@@ -6,7 +6,7 @@ import 'package:simple_animations/simple_animations.dart';
 
 import '../../../../../features/utility/const/constant_color.dart';
 import '../../../../../features/utility/const/constant_string.dart';
-import '../../../../../features/utility/custom_hospital_and_patient_login_textfield_widget.dart';
+import '../../../../../features/utility/custom_textfield_widget.dart';
 import '../../../../../features/utility/enum/enum_textformfield.dart';
 import '../../cubit/hospital_login_cubit.dart';
 
@@ -88,12 +88,12 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
                           width: 150,
                           height: 200,
                         ),
-                        CustomHospitalAndPatientLoginTextfieldWidget(
+                        CustomTextfieldWidget(
                           type: EnumTextformfield.hospitalUserName,
                           controller: userNameController,
                         ),
 
-                        CustomHospitalAndPatientLoginTextfieldWidget(
+                        CustomTextfieldWidget(
                           type: EnumTextformfield.hospitalUserPassword,
                           controller: passwordController,
                         ),

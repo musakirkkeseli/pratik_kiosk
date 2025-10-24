@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-enum EnumTextformfield { hospitalUserName, hospitalUserPassword, tc, birthday }
+enum EnumTextformfield {
+  hospitalUserName,
+  hospitalUserPassword,
+  tc,
+  birthday,
+  mandatory,
+  otpCode,
+}
 
 extension EnumTextformfieldExtension on EnumTextformfield {
   String get label {
@@ -14,6 +21,10 @@ extension EnumTextformfieldExtension on EnumTextformfield {
         return 'T.C. Kimlik No';
       case EnumTextformfield.birthday:
         return 'Doğum Tarihi';
+      case EnumTextformfield.mandatory:
+        return ''; // Dinamik olarak dışarıdan verilecek
+      case EnumTextformfield.otpCode:
+        return 'SMS ile gönderilen kod';
     }
   }
 
@@ -27,6 +38,10 @@ extension EnumTextformfieldExtension on EnumTextformfield {
         return '11 haneli TC bilgisi';
       case EnumTextformfield.birthday:
         return 'gg.aa.yyyy';
+      case EnumTextformfield.mandatory:
+        return '';
+      case EnumTextformfield.otpCode:
+        return "------";
     }
   }
 
@@ -39,6 +54,10 @@ extension EnumTextformfieldExtension on EnumTextformfield {
       case EnumTextformfield.tc:
         return TextInputType.number;
       case EnumTextformfield.birthday:
+        return TextInputType.number;
+      case EnumTextformfield.mandatory:
+        return TextInputType.text;
+      case EnumTextformfield.otpCode:
         return TextInputType.number;
     }
   }
@@ -58,6 +77,10 @@ extension EnumTextformfieldExtension on EnumTextformfield {
         return 11;
       case EnumTextformfield.birthday:
         return 12; // gg.aa.yyyy
+      case EnumTextformfield.mandatory:
+        return null; // Dinamik olarak dışarıdan verilecek
+      case EnumTextformfield.otpCode:
+        return 6; // 6 haneli OTP kodu
       default:
         return null;
     }
@@ -84,6 +107,13 @@ extension EnumTextformfieldExtension on EnumTextformfield {
           FilteringTextInputFormatter.digitsOnly,
           DateDottedFormatter(),
           LengthLimitingTextInputFormatter(10),
+        ];
+      case EnumTextformfield.mandatory:
+        return [];
+      case EnumTextformfield.otpCode:
+        return [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(6),
         ];
     }
   }
@@ -121,6 +151,19 @@ extension EnumTextformfieldExtension on EnumTextformfield {
           }
           return null;
         };
+      case EnumTextformfield.mandatory:
+        return (v) => null;
+      case EnumTextformfield.otpCode:
+        return (v) => null;
+      // case EnumTextformfield.phone:
+      //   return (v) {
+      //     final digits = (v ?? '').replaceAll(RegExp(r'\D'), '');
+      //     if (digits.isEmpty) return 'Telefon numarası zorunludur';
+      //     if (digits.length != 10) return '10 haneli telefon numarası giriniz';
+      //     if (!digits.startsWith('5'))
+      //       return 'Telefon numarası 5 ile başlamalıdır';
+      //     return null;
+      //   };
     }
   }
 
@@ -182,6 +225,46 @@ class DateDottedFormatter extends TextInputFormatter {
     }
 
     // İmleci sonuna koy
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: formatted.length),
+    );
+  }
+}
+
+class PhoneFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // Sadece rakamları al
+    var digits = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+
+    // Maksimum 10 hane
+    if (digits.length > 10) {
+      digits = digits.substring(0, 10);
+    }
+
+    String formatted = '';
+
+    // Format: 0(5##) ### ## ##
+    for (int i = 0; i < digits.length; i++) {
+      if (i == 0) {
+        formatted += digits[i]; // 0
+      } else if (i == 1) {
+        formatted += '(${digits[i]}'; // (5
+      } else if (i == 3) {
+        formatted += '${digits[i]}) '; // ##)
+      } else if (i == 6) {
+        formatted += '${digits[i]} '; // ###
+      } else if (i == 8) {
+        formatted += '${digits[i]} '; // ##
+      } else {
+        formatted += digits[i];
+      }
+    }
+
     return TextEditingValue(
       text: formatted,
       selection: TextSelection.collapsed(offset: formatted.length),

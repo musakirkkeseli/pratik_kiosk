@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../utility/extension/text_theme_extension.dart';
+import '../utility/extension/color_extension.dart';
+
 class ItemButton extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
@@ -29,7 +32,7 @@ class ItemButton extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             border: Border.all(
               width: 2,
-              color: borderColor ?? Theme.of(context).primaryColor.withOpacity(0.3),
+              color: borderColor ?? context.primaryColor.withOpacity(0.3),
             ),
           ),
           child: Material(
@@ -44,9 +47,8 @@ class ItemButton extends StatelessWidget {
                     Expanded(
                       child: Text(
                         title,
-                        style: TextStyle(
+                        style: context.cardTitle.copyWith(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
                           color: textColor ?? Colors.black,
                         ),
                       ),
@@ -54,7 +56,7 @@ class ItemButton extends StatelessWidget {
                     if (trailingIcon != null)
                       Icon(
                         trailingIcon,
-                        color: textColor ?? Theme.of(context).primaryColor,
+                        color: textColor ?? context.primaryColor,
                       ),
                   ],
                 ),

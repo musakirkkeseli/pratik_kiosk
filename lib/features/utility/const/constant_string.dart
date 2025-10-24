@@ -83,4 +83,5 @@ class ConstantString {
   String paymentProcessing = "Lütfen POS cihazında ödeme işlemini gerçekleştiriniz";
   String hour = "Saat";
   String policlinic = "Polikinlik";
+  String close = "Kapat";
 }

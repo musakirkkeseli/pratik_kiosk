@@ -6,6 +6,7 @@ import 'package:kiosk/product/results/view/results_view.dart';
 import '../../../product/appointments/view/appointments_view.dart';
 import '../../../product/home/view/widget/section_button_widget.dart';
 import '../const/constant_string.dart';
+import '../extension/color_extension.dart';
 
 enum EnumHomeItem {
   appointments,
@@ -28,17 +29,17 @@ enum EnumHomeItem {
       case EnumHomeItem.appointments:
         return Iconify(
           MaterialSymbols.calendar_month_outline_rounded,
-          color: Theme.of(context).primaryColor,
+          color: context.primaryColor,
         );
       case EnumHomeItem.registration:
         return Iconify(
           MaterialSymbols.holiday_village_rounded,
-          color: Theme.of(context).primaryColor,
+          color: context.primaryColor,
         );
       case EnumHomeItem.results:
         return Iconify(
           MaterialSymbols.view_list,
-          color: Theme.of(context).primaryColor,
+          color: context.primaryColor,
         );
     }
   }

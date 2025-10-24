@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../utility/const/constant_string.dart';
+import '../utility/extension/color_extension.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -10,7 +11,7 @@ class CustomAppBar extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 200,
-      decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+      decoration: BoxDecoration(color: context.primaryColor),
       child: Column(
         children: [
           Image.asset(ConstantString.buharaLogo, width: 200, height: 200),

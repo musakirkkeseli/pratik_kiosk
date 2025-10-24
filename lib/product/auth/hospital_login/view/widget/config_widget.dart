@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:simple_animations/simple_animations.dart';
 import '../../../../../features/utility/const/constant_string.dart';
+import '../../../../../features/utility/extension/text_theme_extension.dart';
 
 class ConfigWidget extends StatefulWidget {
   const ConfigWidget({super.key});
@@ -63,10 +64,9 @@ class _ConfigWidgetState extends State<ConfigWidget> {
               Text(
                 'Ayarlar Uygulanıyor...',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: context.sectionTitle.copyWith(
                   color: Colors.black,
                   fontSize: 20,
-                  fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 12),

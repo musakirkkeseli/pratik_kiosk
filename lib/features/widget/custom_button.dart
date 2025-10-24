@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utility/extension/text_theme_extension.dart';
+
 class CustomButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
@@ -68,9 +70,8 @@ class CustomButton extends StatelessWidget {
                   SizedBox(width: iconSpacing ?? 8),
                   Text(
                     label,
-                    style: TextStyle(
+                    style: context.buttonText.copyWith(
                       fontSize: fontSize ?? 16,
-                      fontWeight: fontWeight ?? FontWeight.w600,
                       color: textColor ?? Colors.white,
                     ),
                   ),
@@ -78,9 +79,8 @@ class CustomButton extends StatelessWidget {
               )
             : Text(
                 label,
-                style: TextStyle(
+                style: context.buttonText.copyWith(
                   fontSize: fontSize ?? 16,
-                  fontWeight: fontWeight ?? FontWeight.w600,
                   color: textColor ?? Colors.white,
                 ),
               ),

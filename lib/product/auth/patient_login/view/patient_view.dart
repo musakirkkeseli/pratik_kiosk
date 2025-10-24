@@ -1,23 +1,26 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/icon_park_solid.dart';
+import 'package:kiosk/features/utility/extension/color_extension.dart';
+import 'package:kiosk/features/utility/navigation_service.dart';
 import 'package:kiosk/product/auth/patient_login/services/patient_services.dart';
 
 import '../../../../core/utility/logger_service.dart';
 import '../../../../core/widget/snackbar_service.dart';
 import '../../../../features/utility/const/constant_string.dart';
-import '../../../../features/utility/custom_hospital_and_patient_login_textfield_widget.dart';
+import '../../../../features/utility/custom_input_container.dart';
 import '../../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../../features/utility/enum/enum_textformfield.dart';
 import '../../../../features/utility/tenant_http_service.dart';
+import '../../../../features/widget/app_dialog.dart';
 import '../../../../features/widget/custom_appbar.dart';
 import '../../../../features/widget/custom_button.dart';
 import '../cubit/patient_login_cubit.dart';
-import '../model/patient_register_request_model.dart';
 import '../../../../features/widget/inactivity_warning_dialog.dart';
 import 'widget/kiosk_card_widget.dart';
+import 'widget/language_button_widget.dart';
+import 'widget/virtual_keypad.dart';
 
 class PatientView extends StatefulWidget {
   final AuthType? authType;
@@ -29,26 +32,8 @@ class PatientView extends StatefulWidget {
 
 class _PatientViewState extends State<PatientView> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _tcController = kReleaseMode
-      ? TextEditingController()
-      : TextEditingController(text: "41467192600");
-  final TextEditingController _birthDayController = TextEditingController();
   bool _dialogOpen = false;
-  bool _suppressWarning = false; // Devam Et sonrası popup yeniden açılmasın
-
-  @override
-  void dispose() {
-    _tcController.dispose();
-    _birthDayController.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _tcController.addListener(() => setState(() {}));
-  }
+  bool _suppressWarning = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +46,9 @@ class _PatientViewState extends State<PatientView> {
           final failureTransition =
               prev.status != EnumGeneralStateStatus.failure &&
               curr.status == EnumGeneralStateStatus.failure;
+          final successTransition =
+              prev.status != EnumGeneralStateStatus.success &&
+              curr.status == EnumGeneralStateStatus.success;
           final enteredWarning =
               (prev.counter > 15) && (curr.counter <= 15) && (curr.counter > 0);
 
@@ -69,6 +57,7 @@ class _PatientViewState extends State<PatientView> {
 
           return counterControl ||
               failureTransition ||
+              successTransition ||
               enteredWarning ||
               leftWarningWhileOpen;
         },
@@ -90,15 +79,35 @@ class _PatientViewState extends State<PatientView> {
             _showTimeDialog(context);
           }
 
-          // Sayaç tekrar 10’un üstüne çıktıysa popup’ı kapat
           if (_dialogOpen && state.counter > 15) {
             Navigator.of(context, rootNavigator: true).maybePop();
             _dialogOpen = false;
-            _suppressWarning =
-                false; // güvenli eşik üstünde, tekrar gösterilebilir
+            _suppressWarning = false;
           }
 
           switch (state.status) {
+            case EnumGeneralStateStatus.success:
+              if (state.authType == AuthType.login) {
+                AppDialog(context).infoDialog(
+                  "Numara Size Mi Ait?",
+                  "${state.phoneNumber} numarası size mi ait?",
+                  firstActionText: "EVET",
+                  secondActionText: "HAYIR",
+                  firstOnPressed: () {
+                    NavigationService.ns.goBack();
+                    context.read<PatientLoginCubit>().setPageType(
+                      PageType.verifySms,
+                    );
+                  },
+                  secondOnPressed: () {
+                    NavigationService.ns.goBack();
+                    AppDialog(
+                      context,
+                    ).infoDialog("Bilgi", "Lütfen doğru numarayı giriniz.");
+                  },
+                );
+              }
+              break;
             case EnumGeneralStateStatus.failure:
               SnackbarService().showSnackBar(
                 state.message ?? ConstantString().errorOccurred,
@@ -108,116 +117,122 @@ class _PatientViewState extends State<PatientView> {
           }
         },
         builder: (context, state) {
-          return Scaffold(
-            body: Column(
-              children: [
-                CustomAppBar(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 200.0,
-                    vertical: 20.0,
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      spacing: 30,
-                      children: [
-                        Text(ConstantString().enterYourTurkishIdNumber),
-                        CustomHospitalAndPatientLoginTextfieldWidget(
-                          type: EnumTextformfield.tc,
-                          controller: _tcController,
-                          onChanged: (String value) {
-                            context.read<PatientLoginCubit>().onChanged(value);
-                          },
-                        ),
-                        if (state.authType == AuthType.register) ...[
-                          CustomHospitalAndPatientLoginTextfieldWidget(
-                            controller: _birthDayController,
-                            type: EnumTextformfield.birthday,
-                            onChanged: (String value) {
-                              context.read<PatientLoginCubit>().onChanged(
-                                value,
-                              );
-                            },
-                          ),
-                        ],
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0),
-                          child: const Divider(height: 24),
-                        ),
-                        CustomButton(
-                          width: MediaQuery.of(context).size.width * 0.60,
-                          height: MediaQuery.of(context).size.height * 0.07,
-                          label: ConstantString().signIn,
-                          onPressed: () {
-                            final isValid =
-                                _formKey.currentState?.validate() ?? false;
-                            if (isValid) {
-                              FocusScope.of(context).unfocus();
-                              final state = context
-                                  .read<PatientLoginCubit>()
-                                  .state;
-
-                              state.authType == AuthType.login
-                                  ? context.read<PatientLoginCubit>().userLogin(
-                                      tcNo: _tcController.text.trim(),
-                                    )
-                                  : context
-                                        .read<PatientLoginCubit>()
-                                        .userRegister(
-                                          patientRegisterRequestModel:
-                                              PatientRegisterRequestModel(
-                                                tcNo: _tcController.text.trim(),
-                                                birthDate: _birthDayController
-                                                    .text
-                                                    .trim(),
-                                              ),
-                                        );
-                            }
-                          },
-                        ),
-                        if (_tcController.text.trim().isNotEmpty)
-                          OutlinedButton.icon(
-                            style: OutlinedButton.styleFrom(
-                              iconColor: Colors.red,
-                              foregroundColor: Colors.red,
-                              side: const BorderSide(
-                                color: Colors.red,
-                                width: 1.5,
-                              ),
-                            ),
-                            onPressed: () {
-                              _clean(context);
-                            },
-                            icon: Iconify(
-                              IconParkSolid.clear_format,
-                              color: Colors.red,
-                            ),
-                            label: Text(ConstantString().clear),
-                          ),
-                        KioskCardWidget(),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+          return Scaffold(body: _body(context, state));
         },
       ),
     );
   }
 
-  _clean(BuildContext ctx) {
-    FocusScope.of(ctx).unfocus();
-    _formKey.currentState?.reset();
-    _tcController.clear();
-    _birthDayController.clear();
-    final cubit = ctx.read<PatientLoginCubit>();
-    if (widget.authType != AuthType.login) {
-      cubit.setAuthType(AuthType.login);
+  _body(BuildContext cubitContext, PatientLoginState state) {
+    switch (state.pageType) {
+      case PageType.auth:
+        return Column(
+          children: [
+            CustomAppBar(),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 200.0,
+                vertical: 20.0,
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  spacing: 30,
+                  children: [
+                    Text(ConstantString().enterYourTurkishIdNumber),
+                    CustomInputContainer(
+                      type: EnumTextformfield.tc,
+                      child: Expanded(
+                        child: Text(state.tcNo, textAlign: TextAlign.left),
+                      ),
+                    ),
+                    if (state.authType == AuthType.register) ...[
+                      CustomInputContainer(
+                        type: EnumTextformfield.tc,
+                        child: Expanded(
+                          child: Text(state.tcNo, textAlign: TextAlign.left),
+                        ),
+                      ),
+                    ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: const Divider(height: 24),
+                    ),
+                    CustomButton(
+                      width: MediaQuery.of(context).size.width * 0.60,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      label: ConstantString().signIn,
+                      onPressed: () {
+                        final isValid =
+                            _formKey.currentState?.validate() ?? false;
+                        if (isValid) {
+                          FocusScope.of(context).unfocus();
+                          state.authType == AuthType.login
+                              ? cubitContext
+                                    .read<PatientLoginCubit>()
+                                    .userLogin()
+                              : cubitContext
+                                    .read<PatientLoginCubit>()
+                                    .userRegister();
+                        }
+                      },
+                    ),
+                    if (state.tcNo.isNotEmpty)
+                      OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          iconColor: Colors.red,
+                          foregroundColor: Colors.red,
+                          side: const BorderSide(color: Colors.red, width: 1.5),
+                        ),
+                        onPressed: () {
+                          _clean(cubitContext);
+                        },
+                        icon: Iconify(
+                          IconParkSolid.clear_format,
+                          color: Colors.red,
+                        ),
+                        label: Text(ConstantString().clear),
+                      ),
+                    KioskCardWidget(),
+                    VirtualKeypad(pageType: PageType.auth),
+                    LanguageButtonWidget(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      case PageType.verifySms:
+        return Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.3,
+              decoration: BoxDecoration(
+                color: context.primaryColor,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                children: [
+                  Text('Lütfen SMS Kodunuzu Giriniz.'),
+                  CustomInputContainer(
+                    type: EnumTextformfield.otpCode,
+                    child: Expanded(
+                      child: Text(state.otpCode, textAlign: TextAlign.left),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Text('Phone Page'),
+            VirtualKeypad(pageType: PageType.verifySms),
+          ],
+        );
     }
-    ctx.read<PatientLoginCubit>().stopCounter();
+  }
+
+  _clean(BuildContext ctx) {
+    ctx.read<PatientLoginCubit>().clean();
   }
 
   void _showTimeDialog(BuildContext context) {
@@ -244,12 +259,6 @@ class _PatientViewState extends State<PatientView> {
                   _dialogOpen = false;
                   _suppressWarning = true;
                 },
-                // onLogout: () {
-                //   dialogCtx.read<PatientLoginCubit>().stopCounter();
-                //   Navigator.of(dialogCtx).pop();
-                //   _dialogOpen = false;
-                //   _suppressWarning = true;
-                // },
               );
             },
           ),

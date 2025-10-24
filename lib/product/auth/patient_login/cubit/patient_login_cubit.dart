@@ -16,28 +16,28 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   PatientLoginCubit({required this.service}) : super(PatientLoginState());
 
   final MyLog _log = MyLog('PatientLoginCubit');
-  Future<void> userLogin({required String tcNo}) async {
-    _log.d("tcNo $tcNo");
+  Future<void> userLogin() async {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
 
     try {
-      final resp = await service.postUserLogin(tcNo);
+      final resp = await service.postUserLogin(state.tcNo);
 
       if (resp.success && resp.data is PatientResponseModel) {
         String? accessToken = resp.data!.accessToken;
         if (accessToken is String) {
           _log.d("data doğru");
-          UserLoginStatusService().login(
-            accessToken: accessToken,
-            cityName: "",
-            name: "",
-            phone: "",
-            userId: 1,
-          );
+          // UserLoginStatusService().login(
+          //   accessToken: accessToken,
+          //   cityName: "",
+          //   name: "",
+          //   phone: "",
+          //   userId: 1,
+          // );
           safeEmit(
             state.copyWith(
               status: EnumGeneralStateStatus.success,
               message: resp.message,
+              phoneNumber: "5398461416",
             ),
           );
         } else {
@@ -86,14 +86,16 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
     }
   }
 
-  Future<void> userRegister({
-    required PatientRegisterRequestModel patientRegisterRequestModel,
-  }) async {
-    _log.d("patientRegisterRequestModel $patientRegisterRequestModel");
+  Future<void> userRegister() async {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
 
     try {
-      final resp = await service.postUserRegister(patientRegisterRequestModel);
+      final resp = await service.postUserRegister(
+        PatientRegisterRequestModel(
+          tcNo: state.tcNo,
+          birthDate: state.birthDate,
+        ),
+      );
 
       if (resp.success && resp.data is PatientResponseModel) {
         String? accessToken = resp.data!.accessToken;
@@ -146,8 +148,20 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
     }
   }
 
-  void setAuthType(AuthType type) {
-    emit(state.copyWith(authType: type));
+  void clean() {
+    emit(
+      state.copyWith(
+        authType: AuthType.login,
+        tcNo: "",
+        otpCode: "",
+        birthDate: "",
+      ),
+    );
+    stopCounter();
+  }
+
+  void setPageType(PageType type) {
+    emit(state.copyWith(pageType: type));
   }
 
   static const int _initialSeconds = 30;
@@ -160,6 +174,33 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
       return;
     }
     _startOrResetTimer();
+  }
+
+  void onChangeTcNo(String value) {
+    String? tcNo = state.tcNo;
+    tcNo = "$tcNo$value";
+    safeEmit(state.copyWith(tcNo: tcNo));
+    _startOrResetTimer();
+  }
+
+  void deleteTcNo() {
+    String? tcNo = state.tcNo;
+    if (tcNo.isEmpty) return;
+    tcNo = tcNo.substring(0, tcNo.length - 1);
+    safeEmit(state.copyWith(tcNo: tcNo));
+  }
+
+  void onChangeOtpCode(String value) {
+    String? otpCode = state.otpCode;
+    otpCode = "$otpCode $value";
+    safeEmit(state.copyWith(otpCode: otpCode));
+    _startOrResetTimer();
+  }
+
+  void deleteOtpCode() {
+    String? otpCode = state.otpCode;
+    otpCode = otpCode.substring(0, otpCode.length - 1);
+    safeEmit(state.copyWith(otpCode: otpCode));
   }
 
   void _startOrResetTimer() {

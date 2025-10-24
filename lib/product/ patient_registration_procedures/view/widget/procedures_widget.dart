@@ -7,6 +7,8 @@ import 'package:timelines_plus/timelines_plus.dart';
 import '../../../../core/utility/user_login_status_service.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/enum/enum_patient_registration_procedures.dart';
+import '../../../../features/utility/extension/text_theme_extension.dart';
+import '../../../../features/utility/extension/color_extension.dart';
 import '../../cubit/patient_registration_procedures_cubit.dart';
 import '../../model/patient_registration_procedures_request_model.dart';
 import 'info_container_widget.dart';
@@ -224,9 +226,8 @@ class _ButtonBar extends StatelessWidget {
                               .values[currentStep.index - 1]
                               .label
                         : '',
-                    style: TextStyle(
+                    style: context.cardTitle.copyWith(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
                       color: Colors.grey[800],
                     ),
                   ),
@@ -240,10 +241,10 @@ class _ButtonBar extends StatelessWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
-                foregroundColor: Theme.of(context).primaryColor,
+                foregroundColor: context.primaryColor,
                 elevation: 0,
                 side: BorderSide(
-                  color: Theme.of(context).primaryColor,
+                  color: context.primaryColor,
                   width: 2,
                 ),
                 shape: RoundedRectangleBorder(
@@ -262,14 +263,13 @@ class _ButtonBar extends StatelessWidget {
                 children: [
                   Iconify(
                     MaterialSymbols.exit_to_app,
-                    color: Theme.of(context).primaryColor,
+                    color: context.primaryColor,
                   ),
                   Text(
                     ConstantString().logout,
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                    style: context.buttonText.copyWith(
+                      color: context.primaryColor,
                       fontSize: 16,
-                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kiosk/features/utility/extension/color_extension.dart';
 import 'package:lottie/lottie.dart';
 
 import '../utility/const/constant_color.dart';
@@ -16,7 +17,7 @@ class AppDialog {
         backgroundColor: Colors.transparent,
         child: WillPopScope(
           child: Center(
-            child: Lottie.asset(ConstantString.healthGif, width: 150, ),
+            child: Lottie.asset(ConstantString.healthGif, width: 150),
           ),
           onWillPop: () async => false,
         ),
@@ -54,6 +55,7 @@ class AppDialog {
     String? secondActionText,
   }) {
     return AlertDialog(
+      backgroundColor: context.primaryColor,
       title: Text(title),
       content: Text(descript),
       actions: [
@@ -75,7 +77,7 @@ class AppDialog {
                   Navigator.pop(context);
                 },
           child: Text(
-            firstActionText ?? "ConstantString().close",
+            firstActionText ?? ConstantString().close,
             style: const TextStyle(color: ConstColor.white),
           ),
         ),

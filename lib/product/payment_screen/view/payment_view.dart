@@ -8,6 +8,7 @@ import '../../../features/model/patient_price_detail_model.dart';
 import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/inactivity_controller.dart';
+import '../../../features/utility/extension/text_theme_extension.dart';
 
 class PaymentView extends StatefulWidget {
   final PatientPriceDetailModel patientPriceDetailModel;
@@ -36,8 +37,8 @@ class _PaymentViewState extends State<PaymentView> {
       body: Column(
         spacing: 20,
         children: [
-          Center(child: Text(ConstantString().paymentPending)),
-          Text(ConstantString().paymentProcessing),
+          Center(child: Text(ConstantString().paymentPending, style: context.sectionTitle)),
+          Text(ConstantString().paymentProcessing, style: context.bodyPrimary),
           Lottie.asset(
             ConstantString.paymentLoading,
             width: 150,
@@ -62,7 +63,10 @@ class _PaymentViewState extends State<PaymentView> {
               spacing: 20,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text("Ödenecek Tutar"), Text("1420,00 TL")],
+              children: [
+                Text("Ödenecek Tutar", style: context.cardTitle),
+                Text("1420,00 TL", style: context.sectionTitle.copyWith(fontSize: 24)),
+              ],
             ),
           ),
         ],

@@ -8,6 +8,8 @@ import '../../../ patient_registration_procedures/cubit/patient_registration_pro
 import '../../../../features/model/patient_price_detail_model.dart';
 import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
+import '../../../../features/utility/extension/text_theme_extension.dart';
+import '../../../../features/utility/extension/color_extension.dart';
 import 'price_info_card_widget.dart';
 
 class PriceSuccessWidget extends StatelessWidget {
@@ -33,15 +35,12 @@ class PriceSuccessWidget extends StatelessWidget {
               children: [
                 Iconify(
                   MaterialSymbols.summarize_rounded,
-                  color: Theme.of(context).primaryColor,
+                  color: context.primaryColor,
                   size: 35,
                 ),
                 Text(
                   ConstantString().summaryAndInvoice,
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 35,
-                  ),
+                  style: context.pageTitle.copyWith(fontSize: 35),
                 ),
               ],
             ),
@@ -58,10 +57,8 @@ class PriceSuccessWidget extends StatelessWidget {
                     flex: 0,
                     child: Text(
                       ConstantString().description,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                      style: context.cardTitle.copyWith(
                         fontSize: 16,
-                        color: Theme.of(context).primaryColor,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -71,10 +68,8 @@ class PriceSuccessWidget extends StatelessWidget {
                     flex: 1,
                     child: Text(
                       ConstantString().amount,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                      style: context.cardTitle.copyWith(
                         fontSize: 16,
-                        color: Theme.of(context).primaryColor,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -120,7 +115,7 @@ class PriceSuccessWidget extends StatelessWidget {
                           child: Text(
                             paymentContent.paymentName ?? "",
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 14),
+                            style: context.bodyPrimary.copyWith(fontSize: 14),
                           ),
                         ),
                         SizedBox(
@@ -131,10 +126,7 @@ class PriceSuccessWidget extends StatelessWidget {
                           child: Text(
                             paymentContent.price.toString(),
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            style: context.cardTitle.copyWith(fontSize: 14),
                           ),
                         ),
                       ],
@@ -153,7 +145,7 @@ class PriceSuccessWidget extends StatelessWidget {
               child: Center(
                 child: Text(
                   "${ConstantString().totalAmount} : ${patientContent!.totalPrice ?? "-"}",
-                  style: TextStyle(color: ConstColor.white),
+                  style: context.buttonText.copyWith(color: ConstColor.white),
                 ),
               ),
             ),

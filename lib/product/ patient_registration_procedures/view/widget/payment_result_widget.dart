@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/enum/enum_payment_result_type.dart';
+import '../../../../features/utility/extension/text_theme_extension.dart';
+import '../../../../features/utility/extension/color_extension.dart';
 
 class PaymentResultWidget extends StatelessWidget {
   final EnumPaymentResultType paymentResultType;
@@ -29,10 +31,10 @@ class PaymentResultWidget extends StatelessWidget {
                     : Colors.red,
                 size: 100,
               ),
-              Text(paymentResultType.title),
+              Text(paymentResultType.title, style: context.sectionTitle),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              Text("Ödeme işleminiz başarıyla tamamlandı."),
-              Text(ConstantString().appointmentConfirmed),
+              Text("Ödeme işleminiz başarıyla tamamlandı.", style: context.bodyPrimary),
+              Text(ConstantString().appointmentConfirmed, style: context.bodyPrimary),
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(20),
@@ -46,7 +48,7 @@ class PaymentResultWidget extends StatelessWidget {
                     _PaymentInfoRow(
                       label: "Ödenen Tutar",
                       value: "1.420 TL",
-                      valueColor: Theme.of(context).primaryColor,
+                      valueColor: context.primaryColor,
                       valueSize: 32,
                       valueBold: true,
                     ),
@@ -73,7 +75,7 @@ class PaymentResultWidget extends StatelessWidget {
                 width: double.infinity,
                 padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: context.primaryColor,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -82,9 +84,8 @@ class PaymentResultWidget extends StatelessWidget {
                     Center(
                       child: Text(
                         "Randevu Detayları",
-                        style: TextStyle(
+                        style: context.sectionTitle.copyWith(
                           fontSize: 24,
-                          fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
@@ -100,34 +101,30 @@ class PaymentResultWidget extends StatelessWidget {
                             children: [
                               Text(
                                 "Bölüm",
-                                style: TextStyle(
-                                  fontSize: 14,
+                                style: context.caption.copyWith(
                                   color: Colors.white70,
                                 ),
                               ),
                               SizedBox(height: 8),
                               Text(
                                 "Beyin ve Sinir Cerrahisi",
-                                style: TextStyle(
+                                style: context.cardTitle.copyWith(
                                   fontSize: 18,
-                                  fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
                               ),
                               SizedBox(height: 20),
                               Text(
                                 "Tarih",
-                                style: TextStyle(
-                                  fontSize: 14,
+                                style: context.caption.copyWith(
                                   color: Colors.white70,
                                 ),
                               ),
                               SizedBox(height: 8),
                               Text(
                                 "25 Ekim 2023",
-                                style: TextStyle(
+                                style: context.cardTitle.copyWith(
                                   fontSize: 18,
-                                  fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
                               ),
@@ -141,34 +138,30 @@ class PaymentResultWidget extends StatelessWidget {
                             children: [
                               Text(
                                 "Doktor",
-                                style: TextStyle(
-                                  fontSize: 14,
+                                style: context.caption.copyWith(
                                   color: Colors.white70,
                                 ),
                               ),
                               SizedBox(height: 8),
                               Text(
                                 "Dr. Adil Yılmaz",
-                                style: TextStyle(
+                                style: context.cardTitle.copyWith(
                                   fontSize: 18,
-                                  fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
                               ),
                               SizedBox(height: 20),
                               Text(
                                 "Saat",
-                                style: TextStyle(
-                                  fontSize: 14,
+                                style: context.caption.copyWith(
                                   color: Colors.white70,
                                 ),
                               ),
                               SizedBox(height: 8),
                               Text(
                                 "14:30",
-                                style: TextStyle(
+                                style: context.cardTitle.copyWith(
                                   fontSize: 18,
-                                  fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
                               ),
@@ -212,17 +205,14 @@ class _PaymentInfoRow extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[600],
-            ),
+            style: context.bodySecondary,
           ),
           Text(
             value,
-            style: TextStyle(
+            style: context.bodyPrimary.copyWith(
               fontSize: valueSize ?? 16,
               fontWeight: valueBold ? FontWeight.bold : FontWeight.w600,
-              color: valueColor ?? Colors.black87,
+              color: valueColor,
             ),
           ),
         ],

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kiosk/core/utility/logger_service.dart';
+import 'package:kiosk/features/utility/custom_textfield_widget.dart';
+import 'package:kiosk/features/utility/enum/enum_textformfield.dart';
 import 'package:kiosk/product/mandatory/cubit/mandatory_cubit.dart';
 import 'package:kiosk/product/mandatory/service/mandatory_service.dart';
 
 import '../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
-import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/user_http_service.dart';
+import '../../../features/utility/extension/text_theme_extension.dart';
+import '../../../features/utility/extension/color_extension.dart';
 import '../model/mandatory_request_model.dart';
 import '../model/mandatory_response_model.dart';
 
@@ -22,6 +24,15 @@ class MandatoryView extends StatefulWidget {
 
 class _State extends State<MandatoryView> {
   final _formKey = GlobalKey<FormState>();
+  final Map<String, TextEditingController> _controllers = {};
+
+  @override
+  void dispose() {
+    for (var controller in _controllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +65,7 @@ class _State extends State<MandatoryView> {
                   ),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: context.primaryColor,
                       foregroundColor: Colors.white,
                       elevation: 0,
                       padding: const EdgeInsets.symmetric(
@@ -80,14 +91,10 @@ class _State extends State<MandatoryView> {
                   spacing: MediaQuery.of(context).size.width * 0.01,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(Icons.person, color: Theme.of(context).primaryColor),
+                    Icon(Icons.person, color: context.primaryColor),
                     Text(
                       ConstantString().patientInformation,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: context.sectionTitle,
                     ),
                   ],
                 ),
@@ -100,65 +107,46 @@ class _State extends State<MandatoryView> {
                   itemCount: state.data.length,
                   itemBuilder: (context, index) {
                     MandatoryResponseModel item = state.data[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0),
-                      child: Column(
-                        spacing: 15,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("${item.labelCaption}"),
-                          Container(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height * 0.07,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                              color: ConstColor.textfieldColor,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Center(
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    errorBorder: InputBorder.none,
-                                    focusedErrorBorder: InputBorder.none,
-                                  ),
-                                  validator: (value) {
-                                    if (item.isNullable == "0" &&
-                                        (value == null || value.isEmpty)) {
-                                      int minLength =
-                                          int.tryParse(item.minValue ?? "0") ?? 0;
-                                      MyLog.debug(
-                                        "Min length for ${item.labelCaption}: $minLength",
-                                      );
-                                      if ((value ?? "").length < minLength) {
-                                        return "${ConstantString().minLengthError} $minLength";
-                                      }
-                                      return ConstantString().fieldRequired;
-                                    }
-                                    return null;
-                                  },
-                                  maxLength: item.maxValue != null
-                                      ? int.tryParse(item.maxValue!)
-                                      : null,
-                                  onSaved: (newValue) {
-                                    context
-                                        .read<MandatoryCubit>()
-                                        .mandatoryValueSave(
-                                          item.id ?? "",
-                                          newValue ?? "",
-                                        );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                    
+                    // Her item için controller oluştur
+                    _controllers.putIfAbsent(
+                      item.id ?? '',
+                      () => TextEditingController(),
+                    );
+                    final controller = _controllers[item.id ?? '']!;
+                    
+                    return Column(
+                     
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomTextfieldWidget(
+                          type: EnumTextformfield.mandatory,
+                          customLabel: item.labelCaption ?? "",
+                          controller: controller,
+                          customValidator: (value) {
+                            if (item.isNullable == "0" &&
+                                (value == null || value.isEmpty)) {
+                              return ConstantString().fieldRequired;
+                            }
+                            if (item.minValue != null) {
+                              int minLength = int.tryParse(item.minValue!) ?? 0;
+                              if ((value ?? "").length < minLength) {
+                                return "${ConstantString().minLengthError} $minLength";
+                              }
+                            }
+                            return null;
+                          },
+                          customMaxLength: item.maxValue != null
+                              ? int.tryParse(item.maxValue!)
+                              : null,
+                          onSaved: (newValue) {
+                            context.read<MandatoryCubit>().mandatoryValueSave(
+                                  item.id ?? "",
+                                  newValue ?? "",
+                                );
+                          },
+                        ),
+                      ],
                     );
                   },
                 ),

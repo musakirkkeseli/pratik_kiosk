@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../features/utility/const/constant_string.dart';
+import '../../../../features/utility/extension/text_theme_extension.dart';
+import '../../../../features/utility/extension/color_extension.dart';
 
 class AppointmentCard extends StatelessWidget {
   final String departmentName;
@@ -27,7 +29,7 @@ class AppointmentCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border(
-            left: BorderSide(color: Theme.of(context).primaryColor, width: 8),
+            left: BorderSide(color: context.primaryColor, width: 8),
           ),
           boxShadow: [
             BoxShadow(
@@ -49,11 +51,7 @@ class AppointmentCard extends StatelessWidget {
                 children: [
                   Text(
                     branchName,
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: context.sectionTitle.copyWith(fontSize: 24),
                   ),
                 ],
               ),
@@ -115,8 +113,7 @@ class AppointmentCard extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(
-            color: Colors.grey[600],
+          style: context.bodySecondary.copyWith(
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -124,8 +121,7 @@ class AppointmentCard extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           value,
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
+          style: context.primaryText.copyWith(
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),

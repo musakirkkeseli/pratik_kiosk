@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../features/utility/const/constant_string.dart';
+import '../../../../features/utility/extension/color_extension.dart';
+import '../../../../features/utility/extension/text_theme_extension.dart';
 import '../../model/patient_registration_procedures_request_model.dart';
 
 class InfoContainerWidget extends StatefulWidget {
@@ -21,7 +23,7 @@ class _State extends State<InfoContainerWidget> {
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(12),
         border: Border(
-          left: BorderSide(color: Theme.of(context).primaryColor, width: 8),
+          left: BorderSide(color: context.primaryColor, width: 8),
         ),
         boxShadow: [
           BoxShadow(
@@ -36,11 +38,11 @@ class _State extends State<InfoContainerWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            infoWidget(ConstantString().section, widget.model.branchName),
+            infoWidget(ConstantString().section, widget.model.branchName, context),
             _DashedDivider(),
-            infoWidget(ConstantString().doctor, widget.model.doctorName),
+            infoWidget(ConstantString().doctor, widget.model.doctorName, context),
             _DashedDivider(),
-            infoWidget(ConstantString().insurance, widget.model.assocationName),
+            infoWidget(ConstantString().insurance, widget.model.assocationName, context),
           ],
         ),
       ),
@@ -92,17 +94,17 @@ class _DashedLinePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-infoWidget(String title, String? text) {
+infoWidget(String title, String? text, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Column(
       children: [
         Row(
           children: [
-            Text("$title: ", style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("$title: ", style: context.cardTitle),
             text != null && text.isNotEmpty
-                ? Text(text, textAlign: TextAlign.center)
-                : Text("-"),
+                ? Text(text, textAlign: TextAlign.center, style: context.bodyPrimary)
+                : Text("-", style: context.bodySecondary),
           ],
         ),
 

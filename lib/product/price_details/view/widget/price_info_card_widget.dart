@@ -4,6 +4,8 @@ import 'package:iconify_flutter/icons/bi.dart';
 
 import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
+import '../../../../features/utility/extension/text_theme_extension.dart';
+import '../../../../features/utility/extension/color_extension.dart';
 
 class PriceInfoCardWidget extends StatelessWidget {
   const PriceInfoCardWidget({super.key});
@@ -36,7 +38,7 @@ class PriceInfoCardWidget extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.08,
                       height: MediaQuery.of(context).size.height * 0.06,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
+                        color: context.primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                       child: Padding(
@@ -50,16 +52,13 @@ class PriceInfoCardWidget extends StatelessWidget {
                     ),
                     Text(
                       ConstantString().creditCardPayment,
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: context.sectionTitle.copyWith(fontSize: 30),
                     ),
                   ],
                 ),
                 Text(
                   ConstantString().securePaymentMessage,
-                  style: TextStyle(fontSize: 20),
+                  style: context.bodyPrimary.copyWith(fontSize: 20),
                 ),
               ],
             ),

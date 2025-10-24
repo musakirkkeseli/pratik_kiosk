@@ -5,6 +5,8 @@ import 'package:iconify_flutter/icons/line_md.dart';
 import 'package:iconify_flutter/icons/material_symbols.dart';
 
 import '../../../../../features/utility/const/constant_string.dart';
+import '../../../../../features/utility/extension/text_theme_extension.dart';
+import '../../../../../features/utility/extension/color_extension.dart';
 
 class KioskCardWidget extends StatelessWidget {
   const KioskCardWidget({super.key});
@@ -15,18 +17,14 @@ class KioskCardWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.60,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        border: Border.all(width: 1, color: Theme.of(context).primaryColor),
+        border: Border.all(width: 1, color: context.primaryColor),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         children: [
           Text(
             "Kiosk İşlemleri",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).primaryColor,
-            ),
+            style: context.sectionTitle.copyWith(fontSize: 20),
           ),
           const SizedBox(height: 24),
           Wrap(
@@ -85,7 +83,7 @@ Widget _buildKioskItem(
         width: MediaQuery.of(context).size.width * 0.08,
         height: MediaQuery.of(context).size.height * 0.06,
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: context.primaryColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Center(child: icon),
@@ -96,10 +94,8 @@ Widget _buildKioskItem(
         child: Text(
           label,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: context.cardTitle.copyWith(
             fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).primaryColor,
           ),
         ),
       ),

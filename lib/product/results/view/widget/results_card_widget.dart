@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../features/utility/extension/text_theme_extension.dart';
+
 class ResultsCard extends StatelessWidget {
   const ResultsCard({super.key});
 
@@ -29,11 +31,7 @@ class ResultsCard extends StatelessWidget {
               children: [
                 Text(
                   "Kan Tahlili",
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: context.sectionTitle.copyWith(fontSize: 24),
                 ),
               ],
             ),
@@ -88,8 +86,7 @@ class ResultsCard extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(
-            color: Colors.grey[600],
+          style: context.bodySecondary.copyWith(
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -97,8 +94,7 @@ class ResultsCard extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           value,
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
+          style: context.primaryText.copyWith(
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
