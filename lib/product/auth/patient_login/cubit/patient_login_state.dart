@@ -9,22 +9,24 @@ class PatientLoginState {
   final AuthType authType;
   final PageType pageType;
   final EnumGeneralStateStatus status;
-  final int counter;
+  final int? counter;
   final String phoneNumber;
   final String otpCode;
   final String tcNo;
   final String birthDate;
+  final String? encryptedUserData;
 
   const PatientLoginState({
-    this.counter = 0,
+    this.counter,
     this.message,
     this.authType = AuthType.login,
     this.pageType = PageType.auth,
     this.status = EnumGeneralStateStatus.initial,
     this.phoneNumber = "",
     this.otpCode = "",
-    this.tcNo = "",
+    this.tcNo = "41467192600",
     this.birthDate = "",
+    this.encryptedUserData,
   });
 
   PatientLoginState copyWith({
@@ -37,6 +39,7 @@ class PatientLoginState {
     String? otpCode,
     String? tcNo,
     String? birthDate,
+    String? encryptedUserData
   }) {
     return PatientLoginState(
       message: message ?? this.message,
@@ -48,6 +51,7 @@ class PatientLoginState {
       otpCode: otpCode ?? this.otpCode,
       tcNo: tcNo ?? this.tcNo,
       birthDate: birthDate ?? this.birthDate,
+      encryptedUserData: encryptedUserData ?? this.encryptedUserData,
     );
   }
 }

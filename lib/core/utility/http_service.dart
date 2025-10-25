@@ -160,7 +160,6 @@ class HttpService implements IHttpService {
     );
   }
 
-  // ----- Ortak yardımcılar -----
   void updateLanguageHeader(String languageCode) {
     _dio.options.headers['Accept-Language'] = languageCode;
   }

@@ -90,4 +90,7 @@ class ConstantString {
   String paymentAmount = "Ödenecek Tutar:";
   String registrationFailed = "Kayıt İşlemi Başarısız Oldu";
   String bankReferral = "Lütfen bankoya müracaat edin";
+  String continueLabel = "Devam";
+  String validateTcText = "Doğru bir Tc Numarası giriniz";
+  String validateOTPText = "6 haneli Sms kodunu giriniz";
 }

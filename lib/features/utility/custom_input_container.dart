@@ -26,7 +26,6 @@ class CustomInputContainer extends StatelessWidget {
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
-
         Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height * 0.06,

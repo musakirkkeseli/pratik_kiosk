@@ -88,7 +88,7 @@ class TenantHttpService extends HttpService {
 
               return handler.resolve(response);
             } catch (_) {
-              _refreshMylog.d("catch");
+              _refreshMylog.d("catch $e");
               LoginStatusService().logout();
               return handler.next(e);
             }
