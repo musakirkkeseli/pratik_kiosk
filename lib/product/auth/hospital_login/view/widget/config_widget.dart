@@ -62,7 +62,7 @@ class _ConfigWidgetState extends State<ConfigWidget> {
               ),
               SizedBox(height: 20),
               Text(
-                'Ayarlar Uygulanıyor...',
+                ConstantString().settingsApplying,
                 textAlign: TextAlign.center,
                 style: context.sectionTitle.copyWith(
                   color: Colors.black,

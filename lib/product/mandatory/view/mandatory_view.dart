@@ -25,13 +25,55 @@ class MandatoryView extends StatefulWidget {
 class _State extends State<MandatoryView> {
   final _formKey = GlobalKey<FormState>();
   final Map<String, TextEditingController> _controllers = {};
+  final Map<String, FocusNode> _focusNodes = {};
+  final List<String> _editableFields = [];
+  final ScrollController _scrollController = ScrollController();
+
+  final Map<String, String> _fakeData = {
+    'TC': '41467192600',
+    'T.C': '41467192600',
+    'T.C.': '41467192600',
+    'TCKN': '41467192600',
+    'Adres': 'Atatürk Mah. Cumhuriyet Cad. No:123 Daire:4 Beşiktaş/İstanbul',
+    'Address': 'Atatürk Mah. Cumhuriyet Cad. No:123 Daire:4 Beşiktaş/İstanbul',
+  };
 
   @override
   void dispose() {
+    _scrollController.dispose();
     for (var controller in _controllers.values) {
       controller.dispose();
     }
+    for (var focusNode in _focusNodes.values) {
+      focusNode.dispose();
+    }
     super.dispose();
+  }
+
+  String? _getFakeData(String label) {
+    final normalizedLabel = label.trim().toUpperCase();
+    for (var key in _fakeData.keys) {
+      if (normalizedLabel.contains(key.toUpperCase())) {
+        return _fakeData[key];
+      }
+    }
+    return null;
+  }
+
+  void _focusNextEmptyField(
+    int currentIndex,
+    List<MandatoryResponseModel> data,
+  ) {
+    // Bir sonraki boş alanı bul
+    for (int i = currentIndex + 1; i < data.length; i++) {
+      final nextId = data[i].id ?? '';
+      if (_editableFields.contains(nextId)) {
+        _focusNodes[nextId]?.requestFocus();
+        return;
+      }
+    }
+    // Eğer sonuna geldiyse klavyeyi kapat
+    FocusScope.of(context).unfocus();
   }
 
   @override
@@ -54,105 +96,134 @@ class _State extends State<MandatoryView> {
       case EnumGeneralStateStatus.loading:
         return const Center(child: CircularProgressIndicator());
       case EnumGeneralStateStatus.success:
-        return SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
+        return Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height * 0.02,
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: context.primaryColor,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    _formKey.currentState!.save();
+                    context
+                        .read<PatientRegistrationProceduresCubit>()
+                        .mandatoryCheck(state.patientMandatoryData);
+                  }
+                },
+                child: Text(ConstantString().completeRegistration),
+              ),
+            ),
+            Row(
+              spacing: MediaQuery.of(context).size.width * 0.01,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: context.primaryColor,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        _formKey.currentState!.save();
-                        context
-                            .read<PatientRegistrationProceduresCubit>()
-                            .mandatoryCheck(state.patientMandatoryData);
-                      }
-                    },
-                    child: Text(ConstantString().completeRegistration),
-                  ),
-                ),
-                Row(
-                  spacing: MediaQuery.of(context).size.width * 0.01,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(Icons.person, color: context.primaryColor),
-                    Text(
-                      ConstantString().patientInformation,
-                      style: context.sectionTitle,
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: const Divider(height: 24),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: state.data.length,
-                  itemBuilder: (context, index) {
-                    MandatoryResponseModel item = state.data[index];
-                    
-                    // Her item için controller oluştur
-                    _controllers.putIfAbsent(
-                      item.id ?? '',
-                      () => TextEditingController(),
-                    );
-                    final controller = _controllers[item.id ?? '']!;
-                    
-                    return Column(
-                     
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomTextfieldWidget(
-                          type: EnumTextformfield.mandatory,
-                          customLabel: item.labelCaption ?? "",
-                          controller: controller,
-                          customValidator: (value) {
-                            if (item.isNullable == "0" &&
-                                (value == null || value.isEmpty)) {
-                              return ConstantString().fieldRequired;
-                            }
-                            if (item.minValue != null) {
-                              int minLength = int.tryParse(item.minValue!) ?? 0;
-                              if ((value ?? "").length < minLength) {
-                                return "${ConstantString().minLengthError} $minLength";
-                              }
-                            }
-                            return null;
-                          },
-                          customMaxLength: item.maxValue != null
-                              ? int.tryParse(item.maxValue!)
-                              : null,
-                          onSaved: (newValue) {
-                            context.read<MandatoryCubit>().mandatoryValueSave(
-                                  item.id ?? "",
-                                  newValue ?? "",
-                                );
-                          },
-                        ),
-                      ],
-                    );
-                  },
+                Icon(Icons.person, color: context.primaryColor),
+                Text(
+                  ConstantString().patientInformation,
+                  style: context.sectionTitle,
                 ),
               ],
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: const Divider(height: 24),
+            ),
+            Expanded(
+              child: Form(
+                key: _formKey,
+                child: Scrollbar(
+                  controller: _scrollController,
+                  thumbVisibility: true,
+                  thickness: 6.0,
+                  radius: const Radius.circular(10),
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.only(right: 40),
+                    itemCount: state.data.length,
+                    itemBuilder: (context, index) {
+                      MandatoryResponseModel item = state.data[index];
+                      final itemId = item.id ?? '';
+                      final label = item.labelCaption ?? "";
+
+                      _controllers.putIfAbsent(itemId, () {
+                        final fakeData = _getFakeData(label);
+                        final controller = TextEditingController(
+                          text: fakeData,
+                        );
+
+                        if (fakeData == null &&
+                            !_editableFields.contains(itemId)) {
+                          _editableFields.add(itemId);
+                        }
+
+                        return controller;
+                      });
+
+                      _focusNodes.putIfAbsent(itemId, () => FocusNode());
+
+                      final controller = _controllers[itemId]!;
+                      final focusNode = _focusNodes[itemId]!;
+                      final isReadOnly = controller.text.isNotEmpty;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomTextfieldWidget(
+                            type: EnumTextformfield.mandatory,
+                            customLabel: label,
+                            controller: controller,
+                            focusNode: focusNode,
+                            readOnly: isReadOnly,
+                            textInputAction: TextInputAction.next,
+                            onFieldSubmitted: () {
+                              _focusNextEmptyField(index, state.data);
+                            },
+                            customValidator: (value) {
+                              if (item.isNullable == "0" &&
+                                  (value == null || value.isEmpty)) {
+                                return ConstantString().fieldRequired;
+                              }
+                              if (item.minValue != null) {
+                                int minLength =
+                                    int.tryParse(item.minValue!) ?? 0;
+                                if ((value ?? "").length < minLength) {
+                                  return "${ConstantString().minLengthError} $minLength";
+                                }
+                              }
+                              return null;
+                            },
+                            customMaxLength: item.maxValue != null
+                                ? int.tryParse(item.maxValue!)
+                                : null,
+                            onSaved: (newValue) {
+                              context.read<MandatoryCubit>().mandatoryValueSave(
+                                itemId,
+                                newValue ?? "",
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
         );
       default:
         return Center(child: Text(ConstantString().errorOccurred));

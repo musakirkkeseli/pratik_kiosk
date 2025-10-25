@@ -54,23 +54,19 @@ class PriceSuccessWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    flex: 0,
+                    flex: 7,
                     child: Text(
                       ConstantString().description,
-                      style: context.cardTitle.copyWith(
-                        fontSize: 16,
-                      ),
+                      style: context.cardTitle.copyWith(fontSize: 16),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                   Expanded(
-                    flex: 1,
+                    flex: 20,
                     child: Text(
                       ConstantString().amount,
-                      style: context.cardTitle.copyWith(
-                        fontSize: 16,
-                      ),
+                      style: context.cardTitle.copyWith(fontSize: 16),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -111,7 +107,7 @@ class PriceSuccessWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
-                          flex: 0,
+                          flex: 7,
                           child: Text(
                             paymentContent.paymentName ?? "",
                             textAlign: TextAlign.center,
@@ -122,7 +118,7 @@ class PriceSuccessWidget extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.04,
                         ),
                         Expanded(
-                          flex: 1,
+                          flex: 20,
                           child: Text(
                             paymentContent.price.toString(),
                             textAlign: TextAlign.center,

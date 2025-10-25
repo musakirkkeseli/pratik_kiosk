@@ -26,13 +26,13 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
         String? accessToken = resp.data!.accessToken;
         if (accessToken is String) {
           _log.d("data doğru");
-          // UserLoginStatusService().login(
-          //   accessToken: accessToken,
-          //   cityName: "",
-          //   name: "",
-          //   phone: "",
-          //   userId: 1,
-          // );
+          UserLoginStatusService().login(
+            accessToken: accessToken,
+            cityName: "",
+            name: "",
+            phone: "",
+            userId: 1,
+          );
           safeEmit(
             state.copyWith(
               status: EnumGeneralStateStatus.success,

@@ -17,4 +17,17 @@ abstract class LocaleKeys {
   static const noAppointments = 'noAppointments';
   static const internetConnectionError = 'internetConnectionError';
   static const checkInternetConnection = 'checkInternetConnection';
+  static const associationGssInfoMessage = 'associationGssInfoMessage';
+  static const fieldRequired = 'fieldRequired';
+  static const minLengthError = 'minLengthError';
+  static const priceInformation = 'priceInformation';
+  static const sectionSelection = 'sectionSelection';
+  static const section = 'section';
+  static const doctorSelection = 'doctorSelection';
+  static const doctor = 'doctor';
+  static const patientTransaction = 'patientTransaction';
+  static const mandatoryFields = 'mandatoryFields';
+  static const payment = 'payment';
+  static const paymentAction = 'paymentAction';
+  static const total = 'total';
 }

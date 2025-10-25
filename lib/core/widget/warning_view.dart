@@ -36,11 +36,11 @@ class WarningScreen extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                          fontSize: 23, fontWeight: FontWeight.bold),
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     Text(
                       desc,
                       style: const TextStyle(fontSize: 18),
@@ -55,16 +55,14 @@ class WarningScreen extends StatelessWidget {
                 child: InkWell(
                   onTap: onTap,
                   child: Container(
-                      width: MediaQuery.of(context).size.width * .8,
-                      height: 50,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          // color: ConstColor.primaryColor.withOpacity(.2),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Text(
-                        buttonText,
-                        // style: const TextStyle(color: ConstColor.primaryColor),
-                      )),
+                    width: MediaQuery.of(context).size.width * .8,
+                    height: 50,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(buttonText),
+                  ),
                 ),
               ),
             ],

@@ -12,6 +12,10 @@ class CustomTextfieldWidget extends StatelessWidget {
   final int? customMaxLength;
   final List<TextInputFormatter>? customInputFormatters;
   final String? customLabel; // Dinamik label için
+  final bool readOnly; // Readonly özelliği
+  final FocusNode? focusNode; // Focus yönetimi
+  final TextInputAction? textInputAction; // Enter aksiyonu
+  final void Function()? onFieldSubmitted; // Enter'a basıldığında
 
   const CustomTextfieldWidget({
     super.key,
@@ -23,6 +27,10 @@ class CustomTextfieldWidget extends StatelessWidget {
     this.customInputFormatters,
     this.customLabel,
     required this.type,
+    this.readOnly = false,
+    this.focusNode,
+    this.textInputAction,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -39,7 +47,14 @@ class CustomTextfieldWidget extends StatelessWidget {
         validator: customValidator ?? type.validator,
         onChanged: onChanged,
         onSaved: onSaved,
-        style: const TextStyle(fontSize: 25),
+        readOnly: readOnly,
+        focusNode: focusNode,
+        textInputAction: textInputAction ?? TextInputAction.next,
+        onFieldSubmitted: (_) => onFieldSubmitted?.call(),
+        style: TextStyle(
+          fontSize: 25,
+          color: readOnly ? Colors.grey.shade600 : Colors.black,
+        ),
         decoration: const InputDecoration(
           border: InputBorder.none,
           enabledBorder: InputBorder.none,

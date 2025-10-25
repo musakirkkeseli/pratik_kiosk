@@ -24,6 +24,10 @@ class AppointmentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      hoverColor: context.primaryColor.withOpacity(0.05),
+      splashColor: context.primaryColor.withOpacity(0.1),
+      highlightColor: context.primaryColor.withOpacity(0.05),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -52,6 +56,12 @@ class AppointmentCard extends StatelessWidget {
                   Text(
                     branchName,
                     style: context.sectionTitle.copyWith(fontSize: 24),
+                  ),
+                  // Sağ üst köşeye ok ikonu
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: context.primaryColor.withOpacity(0.6),
+                    size: 20,
                   ),
                 ],
               ),
@@ -95,6 +105,36 @@ class AppointmentCard extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+
+              SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                  color: context.primaryColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      ConstantString().select,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

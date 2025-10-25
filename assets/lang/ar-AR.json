@@ -12,5 +12,18 @@
   "errorOccurred": "حدث خطأ",
   "noAppointments": "لا توجد مواعيد",
   "internetConnectionError": "خطأ في الاتصال بالإنترنت",
-  "checkInternetConnection": "يرجى التحقق من اتصال الإنترنت الخاص بك للمتابعة في استخدام التطبيق."
+  "checkInternetConnection": "يرجى التحقق من اتصال الإنترنت الخاص بك للمتابعة في استخدام التطبيق.",
+  "associationGssInfoMessage": "يرجى اختيار حالة العمل.",
+  "fieldRequired": "لا يمكن تركه فارغًا.",
+  "minCharacters": "الحد الأدنى للأحرف:",
+  "priceInformation": "معلومات السعر",
+  "sectionSelection": "اختيار القسم",
+  "section": "القسم",
+  "doctorSelection": "اختيار الطبيب",
+  "doctor": "طبيب",
+  "patientTransaction": "إجراءات المريض",
+  "mandatoryFields": "حقول إلزامية",
+  "payment": "الدفع",
+  "paymentAction": "إتمام الدفع",
+  "total": "الإجمالي"
 }

@@ -64,7 +64,7 @@ class _PaymentViewState extends State<PaymentView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Ödenecek Tutar", style: context.cardTitle),
+                Text(ConstantString().paymentAmount, style: context.cardTitle),
                 Text("1420,00 TL", style: context.sectionTitle.copyWith(fontSize: 24)),
               ],
             ),

@@ -12,5 +12,21 @@
   "errorOccurred": "Bir hata oluştu",
   "noAppointments": "Randevu Bulunmamaktadır",
   "internetConnectionError": "İnternet bağlantısı hatası",
-  "checkInternetConnection": "Uygulamayı kullanmaya devam edebilmek için lütfen internet bağlantınızı kontrol edin."
+  "checkInternetConnection": "Uygulamayı kullanmaya devam edebilmek için lütfen internet bağlantınızı kontrol edin.",
+  "associationGssInfoMessage": "Lütfen Çalışma durumu seçiniz.",
+  "fieldRequired": "Boş Bırakılamaz.",
+  "minCharacters": "Minimum karakter:",
+  "priceInformation": "Fiyat Bilgisi",
+  "sectionSelection": "Bölüm Seçimi",
+  "section": "Bölüm",
+  "doctorSelection": "Doktor Seçimi",
+  "doctor": "Doktor",
+  "patientTransaction": "Hasta İşlemleri",
+  "mandatoryFields": "Zorunlu Alanlar",
+  "payment": "Ödeme",
+  "paymentAction": "Ödeme Yap",
+  "total": "Toplam"
+
+
+
 }

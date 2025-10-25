@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
+import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/navigation_service.dart';
 import '../../../features/utility/user_http_service.dart';
@@ -31,8 +32,8 @@ class PriceView extends StatelessWidget {
                   .patientTransactionCancel();
               NavigationService.ns.goBack();
               AppDialog(context).infoDialog(
-                "Kayıt İşlemi Başarısız Oldu",
-                "Lütfen bankoya müracaat edin",
+                ConstantString().registrationFailed,
+                ConstantString().bankReferral,
               );
               break;
             default:

@@ -14,15 +14,6 @@ class SectionSearchBodyWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.all(10),
-          //   child: Text(
-          //     ConstantString().selectBranch,
-      
-          //     style: Theme.of(context).textTheme.titleMedium,
-          //   ),
-          // ),
-          // const Divider(),
           SectionSearchListViewWidget(sectionItemList: sectionItemList),
         ],
       ),

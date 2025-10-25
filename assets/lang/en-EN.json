@@ -12,5 +12,19 @@
   "errorOccurred": "An error occurred",
   "noAppointments": "No appointments found",
   "internetConnectionError": "Internet connection error",
-  "checkInternetConnection": "Please check your internet connection to continue using the application."
+  "checkInternetConnection": "Please check your internet connection to continue using the application.",
+  "associationGssInfoMessage": "Please select a work status.",
+  "fieldRequired": "Cannot be left blank.",
+  "minCharacters": "Minimum characters:",
+  "priceInformation": "Price Information",
+  "sectionSelection": "Department Selection",
+  "section": "Department",
+  "doctorSelection": "Doctor Selection",
+  "doctor": "Doctor",
+  "patientTransaction": "Patient Operations",
+  "mandatoryFields": "Mandatory Fields",
+  "payment": "Payment",
+  "paymentAction": "Make Payment",
+  "total": "Total"
+
 }

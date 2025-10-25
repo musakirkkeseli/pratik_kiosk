@@ -68,7 +68,7 @@ class _PatientViewState extends State<PatientView> {
             _clean(context);
             context.read<PatientLoginCubit>().stopCounter();
             SnackbarService().showSnackBar(
-              'Süre doldu. Lütfen tekrar deneyin.',
+              ConstantString().timeExpired,
             );
             _suppressWarning = false;
           }
@@ -86,28 +86,28 @@ class _PatientViewState extends State<PatientView> {
           }
 
           switch (state.status) {
-            case EnumGeneralStateStatus.success:
-              if (state.authType == AuthType.login) {
-                AppDialog(context).infoDialog(
-                  "Numara Size Mi Ait?",
-                  "${state.phoneNumber} numarası size mi ait?",
-                  firstActionText: "EVET",
-                  secondActionText: "HAYIR",
-                  firstOnPressed: () {
-                    NavigationService.ns.goBack();
-                    context.read<PatientLoginCubit>().setPageType(
-                      PageType.verifySms,
-                    );
-                  },
-                  secondOnPressed: () {
-                    NavigationService.ns.goBack();
-                    AppDialog(
-                      context,
-                    ).infoDialog("Bilgi", "Lütfen doğru numarayı giriniz.");
-                  },
-                );
-              }
-              break;
+            // case EnumGeneralStateStatus.success:
+            //   if (state.authType == AuthType.login) {
+            //     AppDialog(context).infoDialog(
+            //       "Numara Size Mi Ait?",
+            //       "${state.phoneNumber} numarası size mi ait?",
+            //       firstActionText: "EVET",
+            //       secondActionText: "HAYIR",
+            //       firstOnPressed: () {
+            //         NavigationService.ns.goBack();
+            //         context.read<PatientLoginCubit>().setPageType(
+            //           PageType.verifySms,
+            //         );
+            //       },
+            //       secondOnPressed: () {
+            //         NavigationService.ns.goBack();
+            //         AppDialog(
+            //           context,
+            //         ).infoDialog("Bilgi", "Lütfen doğru numarayı giriniz.");
+            //       },
+            //     );
+            //   }
+            //   break;
             case EnumGeneralStateStatus.failure:
               SnackbarService().showSnackBar(
                 state.message ?? ConstantString().errorOccurred,
