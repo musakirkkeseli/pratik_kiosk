@@ -25,6 +25,27 @@ class AppDialog {
     );
   }
 
+  // infoDialog(
+  //   String title,
+  //   String descript, {
+  //   void Function()? firstOnPressed,
+  //   void Function()? secondOnPressed,
+  //   String? firstActionText,
+  //   String? secondActionText,
+  // }) {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (context) => defaultAlertDialog(
+  //       title,
+  //       descript,
+  //       firstOnPressed: firstOnPressed,
+  //       secondOnPressed: secondOnPressed,
+  //       firstActionText: firstActionText,
+  //       secondActionText: secondActionText,
+  //     ),
+  //   );
+  // }
+
   infoDialog(
     String title,
     String descript, {
@@ -32,18 +53,23 @@ class AppDialog {
     void Function()? secondOnPressed,
     String? firstActionText,
     String? secondActionText,
+    void Function(dynamic onValue)? afterFunc,
   }) {
-    return showDialog(
-      context: context,
-      builder: (context) => defaultAlertDialog(
-        title,
-        descript,
-        firstOnPressed: firstOnPressed,
-        secondOnPressed: secondOnPressed,
-        firstActionText: firstActionText,
-        secondActionText: secondActionText,
-      ),
-    );
+    return Navigator.of(context)
+        .push(
+          RawDialogRoute(
+            pageBuilder: (dialogcontext, animation, secondaryAnimation) =>
+                defaultAlertDialog(
+                  title,
+                  descript,
+                  firstOnPressed: firstOnPressed,
+                  secondOnPressed: secondOnPressed,
+                  firstActionText: firstActionText,
+                  secondActionText: secondActionText,
+                ),
+          ),
+        )
+        .then(afterFunc ?? (_) {});
   }
 
   defaultAlertDialog(

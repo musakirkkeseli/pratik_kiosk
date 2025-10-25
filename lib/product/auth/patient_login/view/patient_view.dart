@@ -76,9 +76,7 @@ class _PatientViewState extends State<PatientView> {
             _clean(context);
             context.read<PatientLoginCubit>().stopCounter();
             Navigator.of(context, rootNavigator: true).maybePop(false);
-            SnackbarService().showSnackBar(
-              ConstantString().timeExpired,
-            );
+            SnackbarService().showSnackBar(ConstantString().timeExpired);
             if (_isOpenVerifyPhoneNumberDialog ||
                 _isOpenWarningPhoneNumberDialog) {
               Navigator.of(context, rootNavigator: true).maybePop();
@@ -267,70 +265,28 @@ class _PatientViewState extends State<PatientView> {
 
   verifyPhoneDialog(BuildContext cubitContext, String phoneNumber) {
     cubitContext.read<PatientLoginCubit>().statusInitial();
-    Navigator.of(context)
-        .push(
-          RawDialogRoute(
-            pageBuilder: (dialogcontext, animation, secondaryAnimation) {
-              return Center(
-                child: Material(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                            icon: const Icon(Icons.close),
-                            onPressed: () {
-                              NavigationService.ns.goBack();
-                            },
-                          ),
-                        ),
-                        Text(
-                          "Numara Size Mi Ait?",
-                          textAlign: TextAlign.center,
-                        ),
-                        Text("$phoneNumber numarası size mi ait?"),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                NavigationService.ns.goBack();
-                                _isOpenWarningPhoneNumberDialog = false;
-                                AppDialog(context).infoDialog(
-                                  "Bilgi",
-                                  "Lütfen doğru numarayı giriniz.",
-                                );
-                              },
-                              child: Text("Hayır"),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                NavigationService.ns.goBack();
-                                _isOpenWarningPhoneNumberDialog = false;
-                                cubitContext
-                                    .read<PatientLoginCubit>()
-                                    .sendOtpCode();
-                              },
-                              child: Text("Evet"),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        )
-        .then((onValue) {
-          _isOpenVerifyPhoneNumberDialog = false;
-          _isOpenWarningPhoneNumberDialog = false;
-        });
+    AppDialog(context).infoDialog(
+      "Numara Size Mi Ait?",
+      "$phoneNumber numarası size mi ait?",
+      firstActionText: "Hayır",
+      firstOnPressed: () {
+        NavigationService.ns.goBack();
+        _isOpenWarningPhoneNumberDialog = false;
+        AppDialog(
+          context,
+        ).infoDialog("Bilgi", "Lütfen doğru numarayı giriniz.");
+      },
+      secondActionText: "Evet",
+      secondOnPressed: () {
+        NavigationService.ns.goBack();
+        _isOpenWarningPhoneNumberDialog = false;
+        cubitContext.read<PatientLoginCubit>().sendOtpCode();
+      },
+      afterFunc: (onValue) {
+        _isOpenVerifyPhoneNumberDialog = false;
+        _isOpenWarningPhoneNumberDialog = false;
+      },
+    );
   }
 
   _clean(BuildContext ctx) {
