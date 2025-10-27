@@ -45,7 +45,6 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
             state.copyWith(
               status: EnumGeneralStateStatus.success,
               message: resp.message,
-              phoneNumber: "5398461416",
             ),
           );
         } else {
@@ -357,7 +356,7 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   void _startOTPTimer() {
     if (state.pageType == PageType.verifySms) {
       _otpTimer?.cancel();
-      int otpCounter = 30;
+      int otpCounter = 150;
       _otpTimer = Timer.periodic(const Duration(seconds: 1), (t) {
         otpCounter -= 1;
         _log.d("otpCounter: $otpCounter");
