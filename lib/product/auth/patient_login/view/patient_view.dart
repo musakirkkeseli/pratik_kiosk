@@ -47,12 +47,7 @@ class _PatientViewState extends State<PatientView> {
       child: BlocConsumer<PatientLoginCubit, PatientLoginState>(
         listenWhen: (prev, curr) {
           final counterControl = (prev.counter != 0) && (curr.counter == 0);
-          final failureTransition =
-              prev.status != EnumGeneralStateStatus.failure &&
-              curr.status == EnumGeneralStateStatus.failure;
-          final successTransition =
-              prev.status != EnumGeneralStateStatus.success &&
-              curr.status == EnumGeneralStateStatus.success;
+          final transition = prev.status != curr.status;
           final enteredWarning =
               ((prev.counter ?? 0) > 15) &&
               ((curr.counter ?? 0) <= 15) &&
@@ -64,8 +59,7 @@ class _PatientViewState extends State<PatientView> {
               ((curr.counter ?? 0) > 15);
 
           return counterControl ||
-              failureTransition ||
-              successTransition ||
+              transition ||
               enteredWarning ||
               leftWarningWhileOpen;
         },
@@ -96,8 +90,12 @@ class _PatientViewState extends State<PatientView> {
           }
 
           switch (state.status) {
+            case EnumGeneralStateStatus.loading:
+              AppDialog(context).loadingDialog();
             case EnumGeneralStateStatus.success:
-              if (state.authType == AuthType.login) {
+              Navigator.pop(context);
+              if (state.authType == AuthType.login &&
+                  state.pageType == PageType.auth) {
                 if (!_isOpenVerifyPhoneNumberDialog &&
                     !_isOpenWarningPhoneNumberDialog) {
                   _log.d(
@@ -109,6 +107,7 @@ class _PatientViewState extends State<PatientView> {
               }
               break;
             case EnumGeneralStateStatus.failure:
+              Navigator.of(context, rootNavigator: true).maybePop();
               SnackbarService().showSnackBar(
                 state.message ?? ConstantString().errorOccurred,
               );
@@ -201,7 +200,7 @@ class _PatientViewState extends State<PatientView> {
         return [
           Text('Lütfen SMS Kodunuzu Giriniz.'),
           CircularCountdown(
-            total: Duration(seconds: 30),
+            total: Duration(seconds: 150),
             size: 100,
             strokeWidth: 8,
             color: Theme.of(context).colorScheme.primary,
