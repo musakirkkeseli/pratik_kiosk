@@ -15,7 +15,7 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
   final int kioskDeviceId;
   final IHospitalAndUserLoginServices service;
   HospitalLoginCubit({required this.service, required this.kioskDeviceId})
-    : super(const HospitalLoginState());
+    : super(HospitalLoginState());
 
   final MyLog _log = MyLog('HospitalLoginCubit');
 

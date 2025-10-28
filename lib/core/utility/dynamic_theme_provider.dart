@@ -10,6 +10,8 @@ class DynamicThemeProvider extends ChangeNotifier {
 
   ThemeData _themeData = ThemeData.light();
   ThemeData get themeData => _themeData;
+  String _logoUrl = "";
+  String get logoUrl => _logoUrl;
 
   void updateTheme(ConfigResponseModel config) {
     final primaryColorHex = config.color?.primaryColor;
@@ -19,7 +21,11 @@ class DynamicThemeProvider extends ChangeNotifier {
         primaryColor: color,
         colorScheme: ColorScheme.fromSeed(seedColor: color),
       );
-      notifyListeners();
     }
+    final logo = config.logo;
+    if (logo != null) {
+      _logoUrl = logo;
+    }
+    notifyListeners();
   }
 }

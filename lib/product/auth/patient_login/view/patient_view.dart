@@ -23,8 +23,7 @@ import 'widget/language_button_widget.dart';
 import 'widget/virtual_keypad.dart';
 
 class PatientView extends StatefulWidget {
-  final AuthType? authType;
-  const PatientView({super.key, this.authType});
+  const PatientView({super.key});
 
   @override
   State<PatientView> createState() => _PatientViewState();
@@ -94,23 +93,31 @@ class _PatientViewState extends State<PatientView> {
               AppDialog(context).loadingDialog();
             case EnumGeneralStateStatus.success:
               Navigator.pop(context);
-              if (state.authType == AuthType.login &&
-                  state.pageType == PageType.auth) {
+              if (state.pageType == PageType.auth) {
                 if (!_isOpenVerifyPhoneNumberDialog &&
                     !_isOpenWarningPhoneNumberDialog) {
                   _log.d(
                     "_isOpenVerifyPhoneNumberDialog $_isOpenVerifyPhoneNumberDialog // $_isOpenWarningPhoneNumberDialog //result ${!_isOpenVerifyPhoneNumberDialog || !_isOpenWarningPhoneNumberDialog}",
                   );
                   _isOpenVerifyPhoneNumberDialog = true;
-                  verifyPhoneDialog(context, state.phoneNumber);
+                  if (state.phoneNumber.length == 10) {
+                    verifyPhoneDialog(context, state.phoneNumber);
+                  } else {
+                    AppDialog(context).infoDialog(
+                      ConstantString().warning,
+                      ConstantString().updatePhoneAtAdmission,
+                    );
+                  }
                 }
               }
               break;
             case EnumGeneralStateStatus.failure:
-              Navigator.of(context, rootNavigator: true).maybePop();
-              SnackbarService().showSnackBar(
+              Navigator.pop(context);
+              AppDialog(context).infoDialog(
+                ConstantString().errorOccurred,
                 state.message ?? ConstantString().errorOccurred,
               );
+              context.read<PatientLoginCubit>().statusInitial();
               break;
             default:
           }
@@ -153,9 +160,14 @@ class _PatientViewState extends State<PatientView> {
                           ),
                           label: Text(ConstantString().clear),
                         ),
-                      // KioskCardWidget(),
+                      if (state.tcNo.isEmpty)
+                      SizedBox(height: 48),
                       VirtualKeypad(pageType: state.pageType),
-                      LanguageButtonWidget(),
+                      Visibility(
+                        visible: state.pageType == PageType.auth,
+                        child: LanguageButtonWidget(),
+                      ),
+                      // KioskCardWidget(),
                     ],
                   ),
                 ),
@@ -177,28 +189,49 @@ class _PatientViewState extends State<PatientView> {
             builder: (context, validateTcValue, child) {
               return CustomInputContainer(
                 type: EnumTextformfield.tc,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(state.tcNo, textAlign: TextAlign.left),
-                    validateTcValue == false
-                        ? Text(ConstantString().validateTcText)
-                        : SizedBox(),
-                  ],
+                currentValue: state.tcNo,
+                isValid: validateTcValue,
+                errorMessage: ConstantString().validateTcText,
+                onClear: () {
+                  _validateTc.value = true;
+                  cubitContext.read<PatientLoginCubit>().clearTcNo();
+                },
+                child: Text(
+                  state.tcNo,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 2,
+                  ),
                 ),
               );
             },
           ),
-          if (state.authType == AuthType.register) ...[
-            CustomInputContainer(
-              type: EnumTextformfield.birthday,
-              child: Text(state.birthDate, textAlign: TextAlign.left),
+        ];
+      case PageType.register:
+        return [
+          Text(ConstantString().enterYourBirthDate),
+          CustomInputContainer(
+            type: EnumTextformfield.birthday,
+            currentValue: state.birthDate,
+            onClear: () {
+              cubitContext.read<PatientLoginCubit>().clearBirthDate();
+            },
+            child: Text(
+              state.birthDate.isEmpty ? '' : state.birthDate,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 2,
+              ),
             ),
-          ],
+          ),
         ];
       case PageType.verifySms:
         return [
-          Text('Lütfen SMS Kodunuzu Giriniz.'),
+          Text(ConstantString().pleaseEnterSmsCode),
           CircularCountdown(
             total: Duration(seconds: 150),
             size: 100,
@@ -206,22 +239,29 @@ class _PatientViewState extends State<PatientView> {
             color: Theme.of(context).colorScheme.primary,
             backgroundColor: Colors.grey.shade300,
           ),
-          CustomInputContainer(
-            type: EnumTextformfield.otpCode,
-            child: ValueListenableBuilder(
-              valueListenable: _validateOtp,
-              builder: (context, validateOtpValue, child) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(state.otpCode, textAlign: TextAlign.left),
-                    validateOtpValue == false
-                        ? Text(ConstantString().validateOTPText)
-                        : SizedBox(),
-                  ],
-                );
-              },
-            ),
+          ValueListenableBuilder(
+            valueListenable: _validateOtp,
+            builder: (context, validateOtpValue, child) {
+              return CustomInputContainer(
+                type: EnumTextformfield.otpCode,
+                currentValue: state.otpCode,
+                isValid: validateOtpValue,
+                errorMessage: ConstantString().validateOTPText,
+                onClear: () {
+                  _validateOtp.value = true;
+                  cubitContext.read<PatientLoginCubit>().clearOtpCode();
+                },
+                child: Text(
+                  state.otpCode,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 8,
+                  ),
+                ),
+              );
+            },
           ),
         ];
     }
@@ -247,11 +287,22 @@ class _PatientViewState extends State<PatientView> {
             _validateTc.value = false;
           } else {
             _validateTc.value = true;
-            state.authType == AuthType.login
-                ? cubitContext.read<PatientLoginCubit>().validateIdentity()
-                : cubitContext.read<PatientLoginCubit>().userRegister();
+            cubitContext.read<PatientLoginCubit>().validateIdentity();
           }
         };
+        break;
+      case PageType.register:
+        onPressed = () {
+          if (state.birthDate.length != 10) {
+            // gg.aa.yyyy formatı için 10 karakter
+            SnackbarService().showSnackBar(
+              ConstantString().pleaseEnterValidBirthDate,
+            );
+          } else {
+            cubitContext.read<PatientLoginCubit>().userRegister();
+          }
+        };
+        break;
     }
 
     return CustomButton(
@@ -263,19 +314,21 @@ class _PatientViewState extends State<PatientView> {
   }
 
   verifyPhoneDialog(BuildContext cubitContext, String phoneNumber) {
+    String secretPhoneNumber = phoneNumber.replaceRange(0, 6, "****");
     cubitContext.read<PatientLoginCubit>().statusInitial();
     AppDialog(context).infoDialog(
-      "Numara Size Mi Ait?",
-      "$phoneNumber numarası size mi ait?",
-      firstActionText: "Hayır",
+      ConstantString().isThisNumberYours,
+      ConstantString().isThisNumberYoursWithPhone(secretPhoneNumber),
+      firstActionText: ConstantString().no,
       firstOnPressed: () {
         NavigationService.ns.goBack();
         _isOpenWarningPhoneNumberDialog = false;
-        AppDialog(
-          context,
-        ).infoDialog("Bilgi", "Lütfen doğru numarayı giriniz.");
+        AppDialog(context).infoDialog(
+          ConstantString().warning,
+          ConstantString().updatePhoneAtAdmission,
+        );
       },
-      secondActionText: "Evet",
+      secondActionText: ConstantString().yes,
       secondOnPressed: () {
         NavigationService.ns.goBack();
         _isOpenWarningPhoneNumberDialog = false;
@@ -311,7 +364,7 @@ class _PatientViewState extends State<PatientView> {
                     final int remaining = s.counter ?? 0;
                     return InactivityWarningDialog(
                       remaining: Duration(seconds: remaining),
-                      secondaryLabel: 'Kapat',
+                      secondaryLabel: ConstantString().close,
                       onContinue: () {
                         dialogCtx.read<PatientLoginCubit>().onChanged('force');
                         NavigationService.ns.goBack();

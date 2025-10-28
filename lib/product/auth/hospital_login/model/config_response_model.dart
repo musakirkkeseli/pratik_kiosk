@@ -1,10 +1,12 @@
 class ConfigResponseModel {
   AppColor? color;
+  String? logo;
 
-  ConfigResponseModel({this.color});
+  ConfigResponseModel({this.color, this.logo});
 
   ConfigResponseModel.fromJson(Map<String, dynamic> json) {
     color = json['color'] != null ? AppColor.fromJson(json['color']) : null;
+    logo = json['logo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -12,6 +14,7 @@ class ConfigResponseModel {
     if (color != null) {
       data['color'] = color!.toJson();
     }
+    data['logo'] = logo;
     return data;
   }
 }

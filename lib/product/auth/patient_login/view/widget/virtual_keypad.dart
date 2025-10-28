@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kiosk/features/utility/extension/color_extension.dart';
 
+import '../../../../../features/utility/const/constant_color.dart';
 import '../../cubit/patient_login_cubit.dart';
 
 class VirtualKeypad extends StatefulWidget {
@@ -16,15 +16,16 @@ class _VirtualKeypadState extends State<VirtualKeypad> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * .17,
+      width: MediaQuery.of(context).size.width * .25,
       child: GridView.builder(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
         //Bir sırada kaç buton bulunacağı ve aralarındaki mesafeyi belirler
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          crossAxisSpacing: 6,
-          mainAxisSpacing: 6,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 1.0,
         ),
         itemCount: 12,
         itemBuilder: (context, index) {
@@ -44,16 +45,25 @@ class _VirtualKeypadState extends State<VirtualKeypad> {
                   case PageType.auth:
                     context.read<PatientLoginCubit>().deleteTcNo();
                     break;
+                  case PageType.register:
+                    context.read<PatientLoginCubit>().deleteBirthDate();
+                    break;
                   case PageType.verifySms:
                     context.read<PatientLoginCubit>().deleteOtpCode();
                     break;
                 }
               },
               style: OutlinedButton.styleFrom(
-                backgroundColor: context.primaryColor,
+                backgroundColor: Colors.white,
+                side: const BorderSide(color: ConstColor.grey, width: 1),
                 shape: const CircleBorder(),
+                padding: const EdgeInsets.all(20),
               ),
-              child: Icon(Icons.delete, color: context.errorColor),
+              child: Icon(
+                Icons.backspace_outlined,
+                color: Colors.red,
+                size: 28,
+              ),
             );
           }
         },
@@ -70,18 +80,29 @@ class _VirtualKeypadState extends State<VirtualKeypad> {
           case PageType.auth:
             context.read<PatientLoginCubit>().onChangeTcNo(index.toString());
             break;
+          case PageType.register:
+            context.read<PatientLoginCubit>().onChangeBirthDate(index.toString());
+            break;
           case PageType.verifySms:
             context.read<PatientLoginCubit>().onChangeOtpCode(index.toString());
             break;
         }
       },
       style: OutlinedButton.styleFrom(
-        backgroundColor: context.primaryColor,
+        backgroundColor: ConstColor.white,
+        side: const BorderSide(color: ConstColor.grey, width: 1),
         shape: const CircleBorder(),
+        padding: const EdgeInsets.all(20),
       ),
-      child: Text(
-        (index).toString(),
-        style: TextStyle(fontSize: 20, color: context.secondaryColor),
+      child: Center(
+        child: Text(
+          (index).toString(),
+          style: const TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w300,
+            color: ConstColor.black,
+          ),
+        ),
       ),
     );
   }

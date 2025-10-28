@@ -96,6 +96,7 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
                         CustomTextfieldWidget(
                           type: EnumTextformfield.hospitalUserPassword,
                           controller: passwordController,
+
                         ),
                         CustomButton(
                           label: ConstantString().signIn,

@@ -33,7 +33,7 @@ extension EnumTextformfieldExtension on EnumTextformfield {
       case EnumTextformfield.hospitalUserName:
         return '';
       case EnumTextformfield.hospitalUserPassword:
-        return '••••••••';
+        return ''; // Hint gösterme
       case EnumTextformfield.tc:
         return '11 haneli TC bilgisi';
       case EnumTextformfield.birthday:

@@ -81,7 +81,7 @@ Widget _buildKioskItem(
     children: [
       Container(
         width: MediaQuery.of(context).size.width * 0.08,
-        height: MediaQuery.of(context).size.height * 0.06,
+        height: 50,
         decoration: BoxDecoration(
           color: context.primaryColor,
           borderRadius: BorderRadius.circular(12),

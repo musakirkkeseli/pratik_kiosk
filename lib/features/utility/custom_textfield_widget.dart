@@ -62,7 +62,7 @@ class CustomTextfieldWidget extends StatelessWidget {
           errorBorder: InputBorder.none,
           focusedErrorBorder: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          counterText: '', // maxLength sayacını kaldırır
+          counterText: '', 
         ),
       ),
     );

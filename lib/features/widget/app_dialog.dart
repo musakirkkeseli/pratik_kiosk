@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kiosk/features/utility/extension/color_extension.dart';
 import 'package:lottie/lottie.dart';
 
 import '../utility/const/constant_color.dart';
@@ -81,9 +80,13 @@ class AppDialog {
     String? secondActionText,
   }) {
     return AlertDialog(
-      backgroundColor: context.primaryColor,
-      title: Text(title),
-      content: Text(descript),
+      backgroundColor: Colors.white,
+      title: Text(
+        title,
+      ),
+      content: Text(
+        descript,
+      ),
       actions: [
         secondActionText is String
             ? TextButton(
@@ -92,7 +95,9 @@ class AppDialog {
                     : null,
                 child: Text(
                   secondActionText,
-                  style: const TextStyle(color: ConstColor.white),
+                  style: TextStyle(
+                    color: ConstColor.black,
+                  ),
                 ),
               )
             : Container(),
@@ -104,7 +109,7 @@ class AppDialog {
                 },
           child: Text(
             firstActionText ?? ConstantString().close,
-            style: const TextStyle(color: ConstColor.white),
+            style: TextStyle(color: ConstColor.black),
           ),
         ),
       ],

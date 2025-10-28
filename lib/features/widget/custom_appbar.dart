@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../utility/const/constant_string.dart';
+import '../../core/utility/dynamic_theme_provider.dart';
 import '../utility/extension/color_extension.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -8,13 +10,45 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DynamicThemeProvider>(context);
+    final logoUrl = themeProvider.logoUrl;
+    
     return Container(
       width: double.infinity,
       height: 200,
       decoration: BoxDecoration(color: context.primaryColor),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(ConstantString.buharaLogo, width: 200, height: 200),
+          if (logoUrl.isNotEmpty)
+            CachedNetworkImage(
+              imageUrl: logoUrl,
+              width: 200,
+              height: 150,
+              fit: BoxFit.contain,
+              placeholder: (context, url) => SizedBox(
+                width: 200,
+                height: 150,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              errorWidget: (context, url, error) {
+                return Icon(
+                  Icons.business,
+                  size: 80,
+                  color: Colors.white,
+                );
+              },
+            )
+          else
+            Icon(
+              Icons.business,
+              size: 80,
+              color: Colors.white,
+            ),
         ],
       ),
     );
