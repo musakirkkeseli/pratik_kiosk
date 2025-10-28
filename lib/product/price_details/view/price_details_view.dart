@@ -33,7 +33,7 @@ class PriceView extends StatelessWidget {
               NavigationService.ns.goBack();
               AppDialog(context).infoDialog(
                 ConstantString().registrationFailed,
-                ConstantString().bankReferral,
+                ConstantString().pleaseProceedToPatientAdmission,
               );
               break;
             default:
