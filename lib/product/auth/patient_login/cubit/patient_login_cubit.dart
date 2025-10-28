@@ -71,7 +71,7 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
             state.copyWith(
               status: EnumGeneralStateStatus.success,
               message: e.message,
-              authType: AuthType.register,
+              pageType: PageType.register,
             ),
           );
           break;
@@ -94,6 +94,7 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   }
 
   Future<void> userRegister() async {
+    _startOrResetTimer();
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
 
     try {
@@ -108,13 +109,13 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
         String? accessToken = resp.data!.accessToken;
         if (accessToken is String) {
           _log.d("data doğru");
-          UserLoginStatusService().login(
-            accessToken: accessToken,
-            cityName: "",
-            name: "",
-            phone: "",
-            userId: 1,
-          );
+          // UserLoginStatusService().login(
+          //   accessToken: accessToken,
+          //   cityName: "",
+          //   name: "",
+          //   phone: "",
+          //   userId: 1,
+          // );
           safeEmit(
             state.copyWith(
               status: EnumGeneralStateStatus.success,
@@ -198,7 +199,7 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
             state.copyWith(
               status: EnumGeneralStateStatus.success,
               message: e.message,
-              authType: AuthType.register,
+              pageType: PageType.register,
             ),
           );
           break;
@@ -269,7 +270,6 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   void clean() {
     safeEmit(
       state.copyWith(
-        authType: AuthType.login,
         tcNo: "",
         otpCode: "",
         birthDate: "",
@@ -279,15 +279,54 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
     stopCounter();
   }
 
+  void clearTcNo() {
+    safeEmit(state.copyWith(tcNo: ""));
+  }
+
+  void clearOtpCode() {
+    safeEmit(state.copyWith(otpCode: ""));
+  }
+
+  void clearBirthDate() {
+    safeEmit(state.copyWith(birthDate: ""));
+  }
+
+  void onChangeBirthDate(String value) {
+    String? birthDate = state.birthDate;
+    
+    // Sadece rakam ekle
+    birthDate = "$birthDate$value";
+    
+    // Otomatik slash ekleme (gg/aa/yyyy formatı)
+    if (birthDate.length == 2 || birthDate.length == 5) {
+      birthDate = "$birthDate/";
+    }
+    
+    // 10 karakter sınır kontrolü (gg/aa/yyyy formatı)
+    if (birthDate.length > 10) {
+      return;
+    }
+    
+    safeEmit(state.copyWith(birthDate: birthDate));
+    _startOrResetTimer();
+  }
+
+  void deleteBirthDate() {
+    String? birthDate = state.birthDate;
+    if (birthDate.isEmpty) return;
+    birthDate = birthDate.substring(0, birthDate.length - 1);
+    
+    // Silme sırasında slash'i da sil
+    if (birthDate.endsWith('/')) {
+      birthDate = birthDate.substring(0, birthDate.length - 1);
+    }
+    
+    safeEmit(state.copyWith(birthDate: birthDate));
+  }
+
   statusInitial() {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.initial));
   }
-
-  // void setPageType(PageType type) {
-  //   safeEmit(state.copyWith(pageType: type));
-  //   _startOrResetTimer();
-  //   _startOTPTimer();
-  // }
 
   Timer? _timer;
   Timer? _otpTimer;
@@ -304,6 +343,12 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   void onChangeTcNo(String value) {
     String? tcNo = state.tcNo;
     tcNo = "$tcNo$value";
+    
+    // 11 haneli sınır kontrolü
+    if (tcNo.length > 11) {
+      return;
+    }
+    
     safeEmit(state.copyWith(tcNo: tcNo));
     _startOrResetTimer();
   }
@@ -318,6 +363,12 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   void onChangeOtpCode(String value) {
     String? otpCode = state.otpCode;
     otpCode = "$otpCode$value";
+    
+    // 6 haneli sınır kontrolü
+    if (otpCode.length > 6) {
+      return;
+    }
+    
     safeEmit(state.copyWith(otpCode: otpCode));
     _startOrResetTimer();
   }
@@ -333,6 +384,9 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
     _timer?.cancel();
     switch (state.pageType) {
       case PageType.auth:
+        safeEmit(state.copyWith(counter: 30));
+        break;
+      case PageType.register:
         safeEmit(state.copyWith(counter: 30));
         break;
       case PageType.verifySms:

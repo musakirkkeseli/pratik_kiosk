@@ -90,6 +90,7 @@ class PatientRegistrationProceduresCubit
   Future<void> patientTransactionCreate(
     List<PatientMandatoryModel> mandatoryModelList,
   ) async {
+    safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
     PatientRegistrationProceduresModel model = state.model;
     try {
       final res = await service.postPatientTransactionCreate(
@@ -100,11 +101,7 @@ class PatientRegistrationProceduresCubit
           mandatoryFields: mandatoryModelList,
         ),
       );
-      // final res = ApiResponse<PatientTransactionCreateResponseModel>(
-      //   success: true,
-      //   data: PatientTransactionCreateResponseModel(patientId: "4352273"),
-      //   message: "",
-      // );
+
       if (res.success &&
           res.data is PatientTransactionCreateResponseModel &&
           res.data!.patientId is String) {

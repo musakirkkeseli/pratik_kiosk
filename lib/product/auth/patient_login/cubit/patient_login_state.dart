@@ -1,12 +1,9 @@
 part of 'patient_login_cubit.dart';
 
-enum AuthType { register, login }
-
-enum PageType { auth, verifySms }
+enum PageType { auth,register, verifySms }
 
 class PatientLoginState {
   final String? message;
-  final AuthType authType;
   final PageType pageType;
   final EnumGeneralStateStatus status;
   final int? counter;
@@ -19,7 +16,6 @@ class PatientLoginState {
   const PatientLoginState({
     this.counter,
     this.message,
-    this.authType = AuthType.login,
     this.pageType = PageType.auth,
     this.status = EnumGeneralStateStatus.initial,
     this.phoneNumber = "",
@@ -31,7 +27,6 @@ class PatientLoginState {
 
   PatientLoginState copyWith({
     String? message,
-    AuthType? authType,
     PageType? pageType,
     EnumGeneralStateStatus? status,
     int? counter,
@@ -39,11 +34,10 @@ class PatientLoginState {
     String? otpCode,
     String? tcNo,
     String? birthDate,
-    String? encryptedUserData
+    String? encryptedUserData,
   }) {
     return PatientLoginState(
       message: message ?? this.message,
-      authType: authType ?? this.authType,
       pageType: pageType ?? this.pageType,
       status: status ?? this.status,
       counter: counter ?? this.counter,
