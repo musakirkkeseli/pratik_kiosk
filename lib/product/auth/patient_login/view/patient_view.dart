@@ -95,6 +95,7 @@ class _PatientViewState extends State<PatientView> {
               AppDialog(context).loadingDialog();
             case EnumGeneralStateStatus.success:
               Navigator.pop(context);
+              context.read<PatientLoginCubit>().statusInitial();
               if (state.pageType == PageType.auth) {
                 if (!_isOpenVerifyPhoneNumberDialog &&
                     !_isOpenWarningPhoneNumberDialog) {
@@ -282,7 +283,7 @@ class _PatientViewState extends State<PatientView> {
         return [
           Text(ConstantString().pleaseEnterSmsCode),
           CircularCountdown(
-            total: Duration(seconds: 150),
+            total: Duration(seconds: 30),
             size: 100,
             strokeWidth: 8,
             color: Theme.of(context).colorScheme.primary,
