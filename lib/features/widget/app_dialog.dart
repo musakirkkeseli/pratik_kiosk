@@ -24,26 +24,26 @@ class AppDialog {
     );
   }
 
-  // infoDialog(
-  //   String title,
-  //   String descript, {
-  //   void Function()? firstOnPressed,
-  //   void Function()? secondOnPressed,
-  //   String? firstActionText,
-  //   String? secondActionText,
-  // }) {
-  //   return showDialog(
-  //     context: context,
-  //     builder: (context) => defaultAlertDialog(
-  //       title,
-  //       descript,
-  //       firstOnPressed: firstOnPressed,
-  //       secondOnPressed: secondOnPressed,
-  //       firstActionText: firstActionText,
-  //       secondActionText: secondActionText,
-  //     ),
-  //   );
-  // }
+  infoShowDialog(
+    String title,
+    String descript, {
+    void Function()? firstOnPressed,
+    void Function()? secondOnPressed,
+    String? firstActionText,
+    String? secondActionText,
+  }) {
+    return showDialog(
+      context: context,
+      builder: (context) => defaultAlertDialog(
+        title,
+        descript,
+        firstOnPressed: firstOnPressed,
+        secondOnPressed: secondOnPressed,
+        firstActionText: firstActionText,
+        secondActionText: secondActionText,
+      ),
+    );
+  }
 
   infoDialog(
     String title,
@@ -81,12 +81,8 @@ class AppDialog {
   }) {
     return AlertDialog(
       backgroundColor: Colors.white,
-      title: Text(
-        title,
-      ),
-      content: Text(
-        descript,
-      ),
+      title: Text(title),
+      content: Text(descript),
       actions: [
         secondActionText is String
             ? TextButton(
@@ -95,9 +91,7 @@ class AppDialog {
                     : null,
                 child: Text(
                   secondActionText,
-                  style: TextStyle(
-                    color: ConstColor.black,
-                  ),
+                  style: TextStyle(color: ConstColor.black),
                 ),
               )
             : Container(),
