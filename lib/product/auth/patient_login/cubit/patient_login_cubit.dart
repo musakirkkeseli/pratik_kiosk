@@ -415,8 +415,8 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
         otpCounter -= 1;
         _log.d("otpCounter: $otpCounter");
         if (otpCounter <= 1) {
-          _stopOtpTimer();
-          _stopTimer();
+          // _stopOtpTimer();
+          // _stopTimer();
           safeEmit(state.copyWith(counter: 0));
           return;
         }
@@ -443,6 +443,7 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   @override
   Future<void> close() {
     _stopTimer();
+    _stopOtpTimer();
     return super.close();
   }
 }
