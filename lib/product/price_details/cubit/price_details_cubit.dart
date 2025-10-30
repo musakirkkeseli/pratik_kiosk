@@ -4,7 +4,6 @@ import '../../../core/utility/logger_service.dart';
 import '../../../features/model/patient_price_detail_model.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
-import '../model/price_model.dart';
 import '../service/IPriceDetailsService.dart';
 
 part 'price_details_state.dart';

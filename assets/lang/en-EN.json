@@ -68,7 +68,10 @@
   "isThisNumberYoursWithPhone": "Is the number {} yours?",
   "warning": "Warning",
   "updatePhoneAtAdmission": "You can update your phone number in the system by applying to patient admission.",
-  "yes": "Yes"
+  "yes": "Yes",
+  "clearData": "Clear Data",
+  "downloadOurApp": "Download Our App"
+
   
 
 

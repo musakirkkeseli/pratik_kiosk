@@ -104,5 +104,7 @@ class ConstantString {
   String updatePhoneAtAdmission = LocaleKeys.updatePhoneAtAdmission.locale;
   String yes = LocaleKeys.yes.locale;
   String enterYourBirthDate = "Doğum Tarihinizi Giriniz"; // TODO: Add to locale
-  String pleaseEnterValidBirthDate = "Lütfen geçerli bir doğum tarihi giriniz"; // TODO: Add to locale
+  String pleaseEnterValidBirthDate = "Lütfen geçerli bir doğum tarihi giriniz"; 
+  String clearData = LocaleKeys.clearData.locale;
+  String downloadOurApp = LocaleKeys.downloadOurApp.locale;
 }

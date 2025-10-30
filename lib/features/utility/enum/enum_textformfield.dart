@@ -37,7 +37,7 @@ extension EnumTextformfieldExtension on EnumTextformfield {
       case EnumTextformfield.tc:
         return '11 haneli TC bilgisi';
       case EnumTextformfield.birthday:
-        return 'gg.aa.yyyy';
+        return 'gg/aa/yyyy';
       case EnumTextformfield.mandatory:
         return '';
       case EnumTextformfield.otpCode:
@@ -183,8 +183,8 @@ extension EnumTextformfieldExtension on EnumTextformfield {
   }
 
   bool _isValidDate(String s) {
-    // Beklenen: gg.aa.yyyy
-    final parts = s.split('.');
+    // Beklenen: gg/aa/yyyy
+    final parts = s.split('/');
     if (parts.length != 3) return false;
 
     final day = int.tryParse(parts[0]);
@@ -205,6 +205,69 @@ extension EnumTextformfieldExtension on EnumTextformfield {
     if (dt.isAfter(DateTime(now.year, now.month, now.day))) return false;
 
     return true;
+  }
+
+  // Public validator fonksiyonları CustomInputContainer için
+  static String? validateTC(String value) {
+    final raw = value.replaceAll(RegExp(r'\D'), '');
+    if (raw.isEmpty) return 'T.C. Kimlik No zorunludur';
+    if (raw.length != 11) return '11 haneli olmalıdır';
+    
+    // TC Kimlik No algoritması
+    if (!RegExp(r'^\d{11}$').hasMatch(raw)) return 'Geçersiz T.C. Kimlik No';
+    if (raw[0] == '0') return 'T.C. Kimlik No 0 ile başlayamaz';
+    if (RegExp(r'^(\d)\1{10}$').hasMatch(raw)) return 'Tüm rakamlar aynı olamaz';
+
+    final d = raw.split('').map(int.parse).toList();
+    final sumOdd = d[0] + d[2] + d[4] + d[6] + d[8];
+    final sumEven = d[1] + d[3] + d[5] + d[7];
+
+    final d10 = ((sumOdd * 7) - sumEven) % 10;
+    final d11 = (d.take(10).reduce((a, b) => a + b)) % 10;
+
+    if (d[9] != d10 || d[10] != d11) return 'Geçersiz T.C. Kimlik No';
+    
+    return null; // Geçerli
+  }
+
+  static String? validateBirthDate(String value) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) return 'Doğum tarihi zorunludur';
+    
+    // Beklenen: gg/aa/yyyy
+    final parts = trimmed.split('/');
+    if (parts.length != 3) return 'gg/aa/yyyy formatında giriniz';
+
+    final day = int.tryParse(parts[0]);
+    final month = int.tryParse(parts[1]);
+    final year = int.tryParse(parts[2]);
+    
+    if (day == null || month == null || year == null) {
+      return 'Geçersiz tarih formatı';
+    }
+
+    // Mantıklı aralıklar
+    if (year < 1900) return 'Yıl 1900\'den küçük olamaz';
+    if (month < 1 || month > 12) return 'Ay 1-12 arasında olmalı';
+    if (day < 1 || day > 31) return 'Gün 1-31 arasında olmalı';
+
+    // Geçerli tarih mi?
+    try {
+      final dt = DateTime(year, month, day);
+      if (dt.year != year || dt.month != month || dt.day != day) {
+        return 'Geçersiz tarih';
+      }
+
+      // Gelecek tarih olmasın
+      final now = DateTime.now();
+      if (dt.isAfter(DateTime(now.year, now.month, now.day))) {
+        return 'Gelecek tarih girilemez';
+      }
+    } catch (e) {
+      return 'Geçersiz tarih';
+    }
+
+    return null; // Geçerli
   }
 }
 

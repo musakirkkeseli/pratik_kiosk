@@ -4,6 +4,8 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/icon_park_solid.dart';
 import 'package:kiosk/features/utility/navigation_service.dart';
 import 'package:kiosk/product/auth/patient_login/services/patient_services.dart';
+import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../core/utility/logger_service.dart';
 import '../../../../core/widget/snackbar_service.dart';
@@ -16,9 +18,9 @@ import '../../../../features/widget/app_dialog.dart';
 import '../../../../features/widget/circular_countdown.dart';
 import '../../../../features/widget/custom_appbar.dart';
 import '../../../../features/widget/custom_button.dart';
+import '../../../../core/utility/dynamic_theme_provider.dart';
 import '../cubit/patient_login_cubit.dart';
 import '../../../../features/widget/inactivity_warning_dialog.dart';
-import 'widget/kiosk_card_widget.dart';
 import 'widget/language_button_widget.dart';
 import 'widget/virtual_keypad.dart';
 
@@ -124,53 +126,98 @@ class _PatientViewState extends State<PatientView> {
         },
         builder: (context, state) {
           return Scaffold(
-            body: Column(
+            body: Stack(
               children: [
-                CustomAppBar(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 200.0,
-                    vertical: 20.0,
-                  ),
-                  child: Column(
-                    spacing: 30,
-                    children: [
-                      ..._body(context, state),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20.0),
-                        child: const Divider(height: 24),
+                Column(
+                  children: [
+                    CustomAppBar(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 200.0,
+                        vertical: 10.0,
                       ),
-                      continueButton(context, state),
-                      if (state.tcNo.isNotEmpty)
-                        OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(
-                            iconColor: Colors.red,
-                            foregroundColor: Colors.red,
-                            side: const BorderSide(
-                              color: Colors.red,
-                              width: 1.5,
+                      child: Column(
+                        spacing: 25,
+                        children: [
+                          ..._body(context, state),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20.0),
+                            child: const Divider(height: 24),
+                          ),
+                          continueButton(context, state),
+                          if (state.tcNo.isNotEmpty)
+                            OutlinedButton.icon(
+                              style: OutlinedButton.styleFrom(
+                                iconColor: Colors.red,
+                                foregroundColor: Colors.red,
+                                side: const BorderSide(
+                                  color: Colors.red,
+                                  width: 1.5,
+                                ),
+                              ),
+                              onPressed: () {
+                                _clean(context);
+                              },
+                              icon: Iconify(
+                                IconParkSolid.clear_format,
+                                color: Colors.red,
+                              ),
+                              label: Text(ConstantString().clearData),
                             ),
+                          if (state.tcNo.isEmpty) SizedBox(height: 48),
+                          VirtualKeypad(pageType: state.pageType),
+                          Visibility(
+                            visible: state.pageType == PageType.auth,
+                            child: LanguageButtonWidget(),
                           ),
-                          onPressed: () {
-                            _clean(context);
-                          },
-                          icon: Iconify(
-                            IconParkSolid.clear_format,
-                            color: Colors.red,
-                          ),
-                          label: Text(ConstantString().clear),
-                        ),
-                      if (state.tcNo.isEmpty)
-                      SizedBox(height: 48),
-                      VirtualKeypad(pageType: state.pageType),
-                      Visibility(
-                        visible: state.pageType == PageType.auth,
-                        child: LanguageButtonWidget(),
+                          // KioskCardWidget(),
+                        ],
                       ),
-                      // KioskCardWidget(),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+                if (state.pageType == PageType.auth)
+                  Positioned(
+                    right: 40,
+                    bottom: 40,
+                    child: Consumer<DynamicThemeProvider>(
+                      builder: (context, themeProvider, child) {
+                        final qrCodeUrl = themeProvider.qrCodeUrl;
+                        if (qrCodeUrl.isEmpty) return const SizedBox.shrink();
+
+                        return Column(
+                          spacing: 10,
+                          children: [
+                            Text(ConstantString().downloadOurApp),
+                            Container(
+                              width: 150,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 10,
+                                    offset: Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              child: CachedNetworkImage(
+                                imageUrl: qrCodeUrl,
+                                fit: BoxFit.contain,
+                                placeholder: (context, url) =>
+                                    Center(child: CircularProgressIndicator()),
+                                errorWidget: (context, url, error) =>
+                                    const SizedBox.shrink(),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
               ],
             ),
           );
@@ -183,6 +230,7 @@ class _PatientViewState extends State<PatientView> {
     switch (state.pageType) {
       case PageType.auth:
         return [
+          const SizedBox(height: 100),
           Text(ConstantString().enterYourTurkishIdNumber),
           ValueListenableBuilder(
             valueListenable: _validateTc,
@@ -211,6 +259,7 @@ class _PatientViewState extends State<PatientView> {
         ];
       case PageType.register:
         return [
+          const SizedBox(height: 125),
           Text(ConstantString().enterYourBirthDate),
           CustomInputContainer(
             type: EnumTextformfield.birthday,
@@ -286,20 +335,34 @@ class _PatientViewState extends State<PatientView> {
           if (state.tcNo.length != 11) {
             _validateTc.value = false;
           } else {
-            _validateTc.value = true;
-            cubitContext.read<PatientLoginCubit>().validateIdentity();
+            // TC validasyonu
+            final tcError = EnumTextformfieldExtension.validateTC(state.tcNo);
+            if (tcError != null) {
+              _validateTc.value = false;
+              SnackbarService().showSnackBar(tcError);
+            } else {
+              _validateTc.value = true;
+              cubitContext.read<PatientLoginCubit>().validateIdentity();
+            }
           }
         };
         break;
       case PageType.register:
         onPressed = () {
           if (state.birthDate.length != 10) {
-            // gg.aa.yyyy formatı için 10 karakter
             SnackbarService().showSnackBar(
               ConstantString().pleaseEnterValidBirthDate,
             );
           } else {
-            cubitContext.read<PatientLoginCubit>().userRegister();
+            // Doğum tarihi validasyonu
+            final birthDateError = EnumTextformfieldExtension.validateBirthDate(
+              state.birthDate,
+            );
+            if (birthDateError != null) {
+              SnackbarService().showSnackBar(birthDateError);
+            } else {
+              cubitContext.read<PatientLoginCubit>().userRegister();
+            }
           }
         };
         break;

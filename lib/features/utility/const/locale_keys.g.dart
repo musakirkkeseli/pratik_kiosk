@@ -72,5 +72,7 @@ abstract class LocaleKeys {
   static const warning = 'warning';
   static const updatePhoneAtAdmission = 'updatePhoneAtAdmission';
   static const yes = 'yes';
+  static const clearData = 'clearData';
+  static const downloadOurApp = 'downloadOurApp';
 
 }

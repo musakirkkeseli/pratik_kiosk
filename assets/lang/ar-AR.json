@@ -68,5 +68,7 @@
   "isThisNumberYoursWithPhone": "هل الرقم {} يخصك؟",
   "warning": "تحذير",
   "updatePhoneAtAdmission": "يمكنك تحديث رقم هاتفك في النظام من خلال مراجعة قسم قبول المرضى.",
-  "yes": "نعم"
+  "yes": "نعم",
+  "clearData": "مسح البيانات",
+  "downloadOurApp": "قم بتنزيل تطبيقنا"
 }

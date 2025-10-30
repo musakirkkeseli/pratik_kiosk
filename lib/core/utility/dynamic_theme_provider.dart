@@ -12,6 +12,8 @@ class DynamicThemeProvider extends ChangeNotifier {
   ThemeData get themeData => _themeData;
   String _logoUrl = "";
   String get logoUrl => _logoUrl;
+  String _qrCodeUrl = "";
+  String get qrCodeUrl => _qrCodeUrl;
 
   void updateTheme(ConfigResponseModel config) {
     final primaryColorHex = config.color?.primaryColor;
@@ -25,6 +27,10 @@ class DynamicThemeProvider extends ChangeNotifier {
     final logo = config.logo;
     if (logo != null) {
       _logoUrl = logo;
+    }
+    final qrCode = config.qrCode;
+    if (qrCode != null) {
+      _qrCodeUrl = qrCode;
     }
     notifyListeners();
   }

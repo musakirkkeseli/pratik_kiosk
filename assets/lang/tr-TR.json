@@ -68,5 +68,7 @@
   "isThisNumberYoursWithPhone": "{} numarası size mi ait?",
   "warning": "Uyarı",
   "updatePhoneAtAdmission": "Hasta kabüle müracaat ederek sistemdeki telefon numaranızı güncelleyebilirsiniz.",
-  "yes": "Evet"
+  "yes": "Evet",
+  "clearData": "Verileri Temizle",
+  "downloadOurApp": "Uygulamamızı İndir"
 }
