@@ -31,7 +31,7 @@ class PriceView extends StatelessWidget {
                   .read<PatientRegistrationProceduresCubit>()
                   .patientTransactionCancel();
               NavigationService.ns.goBack();
-              AppDialog(context).infoDialog(
+              AppDialog(context).infoShowDialog(
                 ConstantString().registrationFailed,
                 ConstantString().pleaseProceedToPatientAdmission,
               );
