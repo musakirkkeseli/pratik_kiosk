@@ -258,6 +258,9 @@ class _ButtonBar extends StatelessWidget {
                 ),
               ),
               onPressed: () {
+                context
+                    .read<PatientRegistrationProceduresCubit>()
+                    .patientTransactionCancel();
                 UserLoginStatusService().logout();
               },
               child: Row(
