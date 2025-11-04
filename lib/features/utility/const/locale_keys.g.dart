@@ -80,4 +80,5 @@ abstract class LocaleKeys {
       'examinationRegistrationCreated';
   static const paymentCompletedSuccessfully = 'paymentCompletedSuccessfully';
   static const selectDepartment = 'selectDepartment';
+  static const welcomeUser = 'welcomeUser';
 }

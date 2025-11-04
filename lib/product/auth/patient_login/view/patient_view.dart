@@ -218,9 +218,14 @@ class _PatientViewState extends State<PatientView> {
                           if (qrCodeUrl.isEmpty) return const SizedBox.shrink();
 
                           return Column(
-                            spacing: 10,
+                            spacing: 5,
                             children: [
                               Text(ConstantString().downloadOurApp),
+                              Image.asset(
+                                ConstantString.downloadImage,
+                                width: 150,
+                                height: 120,
+                              ),
                               Container(
                                 width: 150,
                                 height: 150,

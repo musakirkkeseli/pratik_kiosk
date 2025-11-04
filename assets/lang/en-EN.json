@@ -74,5 +74,6 @@
   "sessionWillCloseIfInactive": "If you do not continue, your session will be closed.",
   "examinationRegistrationCreated": "Your examination registration has been created",
   "paymentCompletedSuccessfully": "Your payment has been completed successfully.",
-  "selectDepartment": "Select Department"
+  "selectDepartment": "Select Department",
+  "welcomeWithName": "Welcome, {}"
 }

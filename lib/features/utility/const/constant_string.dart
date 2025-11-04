@@ -30,9 +30,13 @@ class ConstantString {
   static const buharaLogo = "assets/images/buharaLogo.png";
   static const configSetting = "assets/gif/config_setting.json";
   static const paymentLoading = "assets/gif/payment_loading.json";
+  static const downloadImage = "assets/images/downloadImage.png";
 
   String isThisNumberYoursWithPhone(String phoneNumber) =>
       LocaleKeys.isThisNumberYoursWithPhone.localArg([phoneNumber]);
+
+  String welcomeUser(String userName) =>
+      LocaleKeys.welcomeUser.localArg([userName]);
 
   String birthDate = LocaleKeys.birthDate.locale;
   String signIn = LocaleKeys.signIn.locale;

@@ -32,7 +32,9 @@ class _HomeViewState extends State<HomeView> {
                   horizontal: 20.0,
                 ),
                 child: Text(
-                  "Hoşgeldiniz Sayın ${UserLoginStatusService().userName ?? ""}",
+                  ConstantString().welcomeUser(
+                    UserLoginStatusService().userName ?? "",
+                  ),
                   style: context.pageTitle,
                 ),
               ),

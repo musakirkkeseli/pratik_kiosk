@@ -75,5 +75,6 @@
   "sessionWillCloseIfInactive": "إذا لم تواصل العملية، فستُغلق جلستك.",
   "examinationRegistrationCreated": "تم إنشاء تسجيل الفحص الخاص بك",
   "paymentCompletedSuccessfully": "تم إكمال عملية الدفع بنجاح.",
-  "selectDepartment": "اختر القسم"
+  "selectDepartment": "اختر القسم",
+  "welcomeWithName": "مرحبًا، {}"
 }

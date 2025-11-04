@@ -8,6 +8,7 @@ import '../../../../../features/utility/const/constant_color.dart';
 import '../../../../../features/utility/const/constant_string.dart';
 import '../../../../../features/utility/custom_textfield_widget.dart';
 import '../../../../../features/utility/enum/enum_textformfield.dart';
+import '../../../../pdf_viewer/view/widget/pdf_test_button.dart';
 import '../../cubit/hospital_login_cubit.dart';
 
 class HospitalLoginWidget extends StatefulWidget {
@@ -25,13 +26,6 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
   final TextEditingController passwordController = kReleaseMode
       ? TextEditingController()
       : TextEditingController(text: "etlikk");
-
-  // LinearGradient get _verticalGradient => const LinearGradient(
-  //   colors: [Color(0xFF6F0E0E), Color(0xFF040404)],
-  //   begin: Alignment.topCenter,
-  //   end: Alignment.bottomCenter,
-  //   stops: [0.0, 1.0],
-  // );
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +61,7 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
               ),
             ),
           ),
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -96,7 +91,6 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
                         CustomTextfieldWidget(
                           type: EnumTextformfield.hospitalUserPassword,
                           controller: passwordController,
-
                         ),
                         CustomButton(
                           label: ConstantString().signIn,
@@ -117,6 +111,7 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
                             }
                           },
                         ),
+                        const PdfTestButton(),
                       ],
                     ),
                   ),

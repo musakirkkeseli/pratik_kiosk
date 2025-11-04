@@ -74,5 +74,6 @@
   "sessionWillCloseIfInactive": "İşleminize devam etmezseniz oturumunuz kapanacaktır.",
   "examinationRegistrationCreated": "Muayene Kaydınız Oluşturuldu",
   "paymentCompletedSuccessfully": "Ödeme işleminiz başarıyla tamamlandı.",
-  "selectDepartment": "Bölüm Seç"
+  "selectDepartment": "Bölüm Seç",
+  "welcomeWithName": "Hoşgeldiniz Sayın {}"
 }

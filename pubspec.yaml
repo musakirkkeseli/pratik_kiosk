@@ -20,6 +20,9 @@ dependencies:
   #service
   connectivity_plus: ^6.1.5
   easy_localization: ^3.0.3
+  pdfx: ^2.7.0
+  path_provider: ^2.1.4
+  http: ^1.2.2
 
   #cache
   shared_preferences: ^2.5.3
@@ -35,6 +38,7 @@ dependencies:
   iconify_flutter: ^0.0.7
   hugeicons: ^1.1.1
   cached_network_image: ^3.4.1
+  signature: ^5.5.0
 
   # analysis
   mixpanel_flutter: ^2.4.4
