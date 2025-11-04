@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/core/utility/logger_service.dart';
 import 'package:kiosk/features/utility/custom_textfield_widget.dart';
@@ -175,6 +176,11 @@ class _State extends State<MandatoryView> {
                             readOnly: isReadOnly,
                             textInputAction: TextInputAction.next,
                             keyboardType: keyboardType,
+                            customInputFormatters: [
+                              ...?item.objectType == "integer"
+                                  ? [FilteringTextInputFormatter.digitsOnly]
+                                  : null,
+                            ],
                             onFieldSubmitted: () {
                               _focusNextEmptyField(index, state.data);
                             },
