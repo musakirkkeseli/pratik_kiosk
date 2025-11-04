@@ -17,7 +17,11 @@ class UserHttpService extends HttpService {
             handler.next(options);
           },
           onError: (DioException e, handler) async {
-            if (e.response?.statusCode == 401) {
+            final status = e.response?.statusCode;
+            if (status == 401 ||
+                status == 403 ||
+                status == 429 ||
+                status == 409) {
               UserLoginStatusService().logout();
             }
             handler.next(e);

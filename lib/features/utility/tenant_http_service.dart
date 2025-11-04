@@ -29,6 +29,10 @@ class TenantHttpService extends HttpService {
             if (status != 401 || alreadyRetried == true) {
               return handler.next(e);
             }
+            if (status == 403 || status == 429 || status == 409) {
+              LoginStatusService().logout();
+              return handler.next(e);
+            }
 
             try {
               await _refreshTokenStatic();
@@ -85,10 +89,19 @@ class TenantHttpService extends HttpService {
 
               final response = await client.fetch(retried);
               _refreshMylog.d("istek finish ${response.data}");
-
+              if (response.statusCode != 401 &&
+                  response.statusCode != 403 &&
+                  response.statusCode != 429 &&
+                  response.statusCode != 409) {
+                _refreshMylog.d("retry sonucu 400 - logout yapılmayacak");
+                return handler.resolve(response);
+              }
               return handler.resolve(response);
-            } catch (_) {
+            } catch (err) {
               _refreshMylog.d("catch $e");
+              if (err is DioException && err.response?.statusCode != 401) {
+                return handler.next(err);
+              }
               LoginStatusService().logout();
               return handler.next(e);
             }
