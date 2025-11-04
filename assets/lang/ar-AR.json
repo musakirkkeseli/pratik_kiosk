@@ -70,5 +70,10 @@
   "updatePhoneAtAdmission": "يمكنك تحديث رقم هاتفك في النظام من خلال مراجعة قسم قبول المرضى.",
   "yes": "نعم",
   "clearData": "مسح البيانات",
-  "downloadOurApp": "قم بتنزيل تطبيقنا"
+  "downloadOurApp": "قم بتنزيل تطبيقنا",
+  "sessionTimeout": "انتهت مهلة الجلسة",
+  "sessionWillCloseIfInactive": "إذا لم تواصل العملية، فستُغلق جلستك.",
+  "examinationRegistrationCreated": "تم إنشاء تسجيل الفحص الخاص بك",
+  "paymentCompletedSuccessfully": "تم إكمال عملية الدفع بنجاح.",
+  "selectDepartment": "اختر القسم"
 }

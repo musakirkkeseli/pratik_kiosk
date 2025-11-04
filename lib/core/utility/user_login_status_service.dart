@@ -22,10 +22,12 @@ class UserLoginStatusService {
   }
 
   String? _accessToken;
+  String? _userName;
 
   Stream<UserLoginStatus> get statusStream => _controller.stream;
 
   String? get accessToken => _accessToken;
+  String? get userName => _userName;
 
   Future<void> _loadInitialStatus() async {
     _controller.add(
@@ -46,6 +48,7 @@ class UserLoginStatusService {
     required String phone,
   }) async {
     _accessToken = accessToken;
+    _userName = name;
     _controller.add(UserLoginStatus.online);
     _inactivityStartSafe();
     // AnalyticsService().identifyUser(userId.toString());
@@ -64,6 +67,7 @@ class UserLoginStatusService {
 
   Future<void> logout() async {
     _accessToken = null;
+    _userName = null;
     AnalyticsService().reset();
     _controller.add(UserLoginStatus.offline);
     _inactivityStopSafe();

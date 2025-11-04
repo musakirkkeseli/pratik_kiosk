@@ -45,7 +45,6 @@
   "amount": "Amount",
   "paymentSuccess": "Payment Successful",
   "paymentFailure": "Payment Failed",
-  "appointmentConfirmed": "Appointment Confirmed",
   "paymentPending": "Payment Pending",
   "paymentProcessing": "Payment Processing",
   "hour": "Hour",
@@ -70,10 +69,10 @@
   "updatePhoneAtAdmission": "You can update your phone number in the system by applying to patient admission.",
   "yes": "Yes",
   "clearData": "Clear Data",
-  "downloadOurApp": "Download Our App"
-
-  
-
-
-
+  "downloadOurApp": "Download Our App",
+  "sessionTimeout": "Session Timeout",
+  "sessionWillCloseIfInactive": "If you do not continue, your session will be closed.",
+  "examinationRegistrationCreated": "Your examination registration has been created",
+  "paymentCompletedSuccessfully": "Your payment has been completed successfully.",
+  "selectDepartment": "Select Department"
 }

@@ -13,22 +13,22 @@ class LanguageButtonWidget extends StatelessWidget {
       spacing: 16,
       children: LanguageManager.instance.appSupportLanguageList.map((language) {
         final isSelected = context.locale == language.locale;
-        
-        return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: isSelected ? Theme.of(context).primaryColor : Colors.white,
-            foregroundColor: isSelected ? Colors.white : Colors.black87,
-            elevation: isSelected ? 2 : 0,
+
+        return OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: Theme.of(context).primaryColor,
+            elevation: isSelected ? 4 : 0,
+            shadowColor: isSelected
+                ? Theme.of(context).primaryColor.withOpacity(0.5)
+                : null,
             side: BorderSide(
               color: Theme.of(context).primaryColor,
-              width: 1.5,
+              width: isSelected ? 2.5 : 1.5,
             ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 12,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(12),
             ),
           ),
           onPressed: () async {
@@ -37,17 +37,29 @@ class LanguageButtonWidget extends StatelessWidget {
           },
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            spacing: 8,
+            spacing: 5,
             children: [
-              Text(
-                language.flag,
-                style: const TextStyle(fontSize: 24),
-              ),
-              Text(
-                language.language,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+              Text(language.flag, style: const TextStyle(fontSize: 40)),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? Theme.of(context).primaryColor
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  language.language,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                    color: isSelected
+                        ? Colors.white
+                        : Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
             ],
@@ -56,6 +68,4 @@ class LanguageButtonWidget extends StatelessWidget {
       }).toList(),
     );
   }
-
-    
 }

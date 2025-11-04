@@ -34,42 +34,52 @@ class _PaymentViewState extends State<PaymentView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        spacing: 20,
-        children: [
-          Center(child: Text(ConstantString().paymentPending, style: context.sectionTitle)),
-          Text(ConstantString().paymentProcessing, style: context.bodyPrimary),
-          Lottie.asset(
-            ConstantString.paymentLoading,
-            width: 150,
-            height: 50,
-            fit: BoxFit.contain,
-          ),
-          Lottie.asset(
-            ConstantString.posGif,
-            width: 500,
-            height: 500,
-            fit: BoxFit.cover,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: 150,
-            decoration: BoxDecoration(
-              border: Border.all(color: ConstColor.textfieldColor, width: 2),
-              color: ConstColor.infoCardColor,
-              borderRadius: BorderRadius.circular(12),
+      body: Center(
+        child: Column(
+          spacing: 20,
+          children: [
+            Text(
+              ConstantString().paymentProcessing,
+              style: context.bodyPrimary,
             ),
-            child: Column(
-              spacing: 20,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(ConstantString().paymentAmount, style: context.cardTitle),
-                Text("1420,00 TL", style: context.sectionTitle.copyWith(fontSize: 24)),
-              ],
+            Lottie.asset(
+              ConstantString.paymentLoading,
+              width: 150,
+              height: 50,
+              fit: BoxFit.contain,
             ),
-          ),
-        ],
+            Lottie.asset(
+              ConstantString.posGif,
+              width: 500,
+              height: 500,
+              fit: BoxFit.cover,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.5,
+              height: 150,
+              decoration: BoxDecoration(
+                border: Border.all(color: ConstColor.textfieldColor, width: 2),
+                color: ConstColor.infoCardColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                spacing: 20,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    ConstantString().paymentAmount,
+                    style: context.cardTitle,
+                  ),
+                  Text(
+                    "1420,00 TL",
+                    style: context.sectionTitle.copyWith(fontSize: 24),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

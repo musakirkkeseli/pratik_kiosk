@@ -98,6 +98,7 @@ class PatientRegistrationProceduresCubit
           associationId: int.tryParse(model.assocationId ?? ""),
           departmentId: model.departmentId,
           doctorId: model.doctorId,
+          appointmentID: model.appointmentID,
           mandatoryFields: mandatoryModelList,
         ),
       );

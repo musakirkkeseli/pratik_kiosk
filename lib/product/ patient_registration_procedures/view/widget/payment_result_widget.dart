@@ -31,10 +31,16 @@ class PaymentResultWidget extends StatelessWidget {
                     : Colors.red,
                 size: 100,
               ),
-              Text(paymentResultType.title, style: context.sectionTitle),
+              Text(paymentResultType.title, style: context.successText),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              Text("Ödeme işleminiz başarıyla tamamlandı.", style: context.bodyPrimary),
-              Text(ConstantString().appointmentConfirmed, style: context.bodyPrimary),
+              Text(
+                ConstantString().paymentCompletedSuccessfully,
+                style: context.bodyPrimary,
+              ),
+              Text(
+                ConstantString().examinationRegistrationCreated,
+                style: context.bodyPrimary,
+              ),
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(20),
@@ -203,10 +209,7 @@ class _PaymentInfoRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: context.bodySecondary,
-          ),
+          Text(label, style: context.bodySecondary),
           Text(
             value,
             style: context.bodyPrimary.copyWith(

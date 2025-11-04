@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/utility/dynamic_theme_provider.dart';
-import '../utility/extension/color_extension.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -12,11 +11,10 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<DynamicThemeProvider>(context);
     final logoUrl = themeProvider.logoUrl;
-    
-    return Container(
+
+    return SizedBox(
       width: double.infinity,
       height: 200,
-      decoration: BoxDecoration(color: context.primaryColor),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -30,25 +28,15 @@ class CustomAppBar extends StatelessWidget {
                 width: 200,
                 height: 150,
                 child: Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
+                  child: CircularProgressIndicator(color: Colors.white),
                 ),
               ),
               errorWidget: (context, url, error) {
-                return Icon(
-                  Icons.business,
-                  size: 80,
-                  color: Colors.white,
-                );
+                return Icon(Icons.business, size: 80, color: Colors.white);
               },
             )
           else
-            Icon(
-              Icons.business,
-              size: 80,
-              color: Colors.white,
-            ),
+            Icon(Icons.business, size: 80, color: Colors.white),
         ],
       ),
     );

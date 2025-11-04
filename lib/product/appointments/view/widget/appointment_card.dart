@@ -57,7 +57,6 @@ class AppointmentCard extends StatelessWidget {
                     branchName,
                     style: context.sectionTitle.copyWith(fontSize: 24),
                   ),
-                  // Sağ üst köşeye ok ikonu
                   Icon(
                     Icons.arrow_forward_ios_rounded,
                     color: context.primaryColor.withOpacity(0.6),
@@ -106,34 +105,36 @@ class AppointmentCard extends StatelessWidget {
                   ),
                 ],
               ),
-
               SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                  color: context.primaryColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      ConstantString().select,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: SizedBox(
+                  height: 40,
+                  child: ElevatedButton(
+                    onPressed: onTap,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.02),
-                    Icon(
-                      Icons.arrow_forward_rounded,
-                      color: Colors.white,
-                      size: 24,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          ConstantString().select,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(
+                          Icons.arrow_forward_rounded,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ],

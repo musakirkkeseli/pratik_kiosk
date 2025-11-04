@@ -4,12 +4,14 @@ class PatientTransactionCreateRequestModel {
   int? doctorId;
   int? departmentId;
   int? associationId;
+  String? appointmentID;
   List<PatientMandatoryModel>? mandatoryFields;
 
   PatientTransactionCreateRequestModel({
     this.doctorId,
     this.departmentId,
     this.associationId,
+    this.appointmentID,
     this.mandatoryFields,
   });
 
@@ -17,6 +19,7 @@ class PatientTransactionCreateRequestModel {
     doctorId = json['doctorId'];
     departmentId = json['departmentId'];
     associationId = json['associationId'];
+    appointmentID = json['appointmentID'];
     if (json['mandatoryFields'] != null) {
       mandatoryFields = <PatientMandatoryModel>[];
       json['mandatoryFields'].forEach((v) {
@@ -30,6 +33,7 @@ class PatientTransactionCreateRequestModel {
     data['doctorId'] = doctorId;
     data['departmentId'] = departmentId;
     data['associationId'] = associationId;
+    data['appointmentID'] = appointmentID;
     if (mandatoryFields != null) {
       data['mandatoryFields'] = mandatoryFields!
           .map((v) => v.toJson())

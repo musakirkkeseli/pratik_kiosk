@@ -81,7 +81,6 @@ class ConstantString {
   String amount = LocaleKeys.amount.locale;
   String paymentSuccess = LocaleKeys.paymentSuccess.locale;
   String paymentFailure = LocaleKeys.paymentFailure.locale;
-  String appointmentConfirmed = LocaleKeys.appointmentConfirmed.locale;
   String paymentPending = LocaleKeys.paymentPending.locale;
   String paymentProcessing = LocaleKeys.paymentProcessing.locale;
   String hour = LocaleKeys.hour.locale;
@@ -103,8 +102,16 @@ class ConstantString {
   String warning = LocaleKeys.warning.locale;
   String updatePhoneAtAdmission = LocaleKeys.updatePhoneAtAdmission.locale;
   String yes = LocaleKeys.yes.locale;
-  String enterYourBirthDate = "Doğum Tarihinizi Giriniz"; // TODO: Add to locale
-  String pleaseEnterValidBirthDate = "Lütfen geçerli bir doğum tarihi giriniz"; 
+  String enterYourBirthDate = "Doğum Tarihinizi Giriniz";
+  String pleaseEnterValidBirthDate = "Lütfen geçerli bir doğum tarihi giriniz";
   String clearData = LocaleKeys.clearData.locale;
   String downloadOurApp = LocaleKeys.downloadOurApp.locale;
+  String sessionTimeout = LocaleKeys.sessionTimeout.locale;
+  String sessionWillCloseIfInactive =
+      LocaleKeys.sessionWillCloseIfInactive.locale;
+  String examinationRegistrationCreated =
+      LocaleKeys.examinationRegistrationCreated.locale;
+  String paymentCompletedSuccessfully =
+      LocaleKeys.paymentCompletedSuccessfully.locale;
+  String selectDepartment = LocaleKeys.selectDepartment.locale;
 }

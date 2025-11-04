@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:animated_flip_counter/animated_flip_counter.dart';
+import 'package:kiosk/features/utility/extension/color_extension.dart';
+
 
 class CircularCountdown extends StatefulWidget {
   const CircularCountdown({
@@ -52,9 +54,10 @@ class _CircularCountdownState extends State<CircularCountdown> {
     final totalMs = widget.total.inMilliseconds.clamp(1, 1 << 31);
     final leftMs = _left.inMilliseconds.clamp(0, totalMs);
     final progress = leftMs / totalMs; // 1.0 -> 0.0
-    final color = widget.color ?? Theme.of(context).colorScheme.primary;
+    final color = context.primaryColor;
     final bg = widget.backgroundColor ?? Colors.grey.shade300;
-    final textStyle = widget.textStyle ?? Theme.of(context).textTheme.headlineSmall;
+    final textStyle =
+        widget.textStyle ?? Theme.of(context).textTheme.headlineSmall;
 
     return SizedBox(
       width: widget.size,
@@ -94,9 +97,11 @@ class _CircularCountdownState extends State<CircularCountdown> {
             bottom: 10,
             child: Text(
               'sn',
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.grey[700]),
+              style: Theme.of(
+                context,
+              ).textTheme.labelMedium?.copyWith(color: Colors.grey[700]),
             ),
-          )
+          ),
         ],
       ),
     );

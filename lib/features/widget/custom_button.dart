@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     required this.label,
-   this.onPressed,
+    this.onPressed,
     this.icon,
     this.backgroundColor,
     this.textColor,
@@ -38,25 +38,20 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
     return SizedBox(
       width: width,
       height: height,
       child: ElevatedButton(
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? theme.primaryColor,
+          backgroundColor: backgroundColor,
           foregroundColor: textColor ?? Colors.white,
-          elevation: elevation ?? 0,
-          padding: padding ?? const EdgeInsets.symmetric(
-            horizontal: 24,
-            vertical: 16,
-          ),
+          elevation: elevation ?? 2,
+          padding: padding,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius ?? 12),
+            borderRadius: BorderRadius.circular(borderRadius ?? 8),
           ),
         ),
-        onPressed: onPressed,
         child: icon != null
             ? Row(
                 mainAxisSize: MainAxisSize.min,
@@ -73,6 +68,7 @@ class CustomButton extends StatelessWidget {
                     style: context.buttonText.copyWith(
                       fontSize: fontSize ?? 16,
                       color: textColor ?? Colors.white,
+                      fontWeight: fontWeight,
                     ),
                   ),
                 ],
@@ -82,6 +78,7 @@ class CustomButton extends StatelessWidget {
                 style: context.buttonText.copyWith(
                   fontSize: fontSize ?? 16,
                   color: textColor ?? Colors.white,
+                  fontWeight: fontWeight,
                 ),
               ),
       ),

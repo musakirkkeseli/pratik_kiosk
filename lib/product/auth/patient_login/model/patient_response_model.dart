@@ -2,8 +2,14 @@ class PatientResponseModel {
   String? accessToken;
   TokenInfo? tokenInfo;
   RequestInfo? requestInfo;
+  PatientData? patientData;
 
-  PatientResponseModel({this.accessToken, this.tokenInfo, this.requestInfo});
+  PatientResponseModel({
+    this.accessToken,
+    this.tokenInfo,
+    this.requestInfo,
+    this.patientData,
+  });
 
   PatientResponseModel.fromJson(Map<String, dynamic> json) {
     accessToken = json['accessToken'];
@@ -12,6 +18,9 @@ class PatientResponseModel {
         : null;
     requestInfo = json['requestInfo'] != null
         ? RequestInfo.fromJson(json['requestInfo'])
+        : null;
+    patientData = json['patientData'] != null
+        ? PatientData.fromJson(json['patientData'])
         : null;
   }
 
@@ -23,6 +32,9 @@ class PatientResponseModel {
     }
     if (requestInfo != null) {
       data['requestInfo'] = requestInfo!.toJson();
+    }
+    if (patientData != null) {
+      data['patientData'] = patientData!.toJson();
     }
     return data;
   }
@@ -72,6 +84,28 @@ class RequestInfo {
     data['hospitalId'] = hospitalId;
     data['hospitalName'] = hospitalName;
     data['requestTime'] = requestTime;
+    return data;
+  }
+}
+
+class PatientData {
+  String? name;
+  String? surname;
+  String? birthDate;
+
+  PatientData({this.name, this.surname, this.birthDate});
+
+  PatientData.fromJson(Map<String, dynamic> json) {
+    name = json['Name'];
+    surname = json['Surname'];
+    birthDate = json['BirthDate'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Name'] = name;
+    data['Surname'] = surname;
+    data['BirthDate'] = birthDate;
     return data;
   }
 }

@@ -51,18 +51,21 @@ class CustomTextfieldWidget extends StatelessWidget {
         focusNode: focusNode,
         textInputAction: textInputAction ?? TextInputAction.next,
         onFieldSubmitted: (_) => onFieldSubmitted?.call(),
+        cursorColor: Colors.grey.shade700,
         style: TextStyle(
           fontSize: 25,
           color: readOnly ? Colors.grey.shade600 : Colors.black,
         ),
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
+          fillColor: Colors.grey.shade200,
+          filled: false,
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           errorBorder: InputBorder.none,
           focusedErrorBorder: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          counterText: '', 
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          counterText: '',
         ),
       ),
     );

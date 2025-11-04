@@ -49,7 +49,6 @@ abstract class LocaleKeys {
   static const amount = 'amount';
   static const paymentSuccess = 'paymentSuccess';
   static const paymentFailure = 'paymentFailure';
-  static const appointmentConfirmed = 'appointmentConfirmed';
   static const paymentPending = 'paymentPending';
   static const paymentProcessing = 'paymentProcessing';
   static const hour = 'hour';
@@ -68,11 +67,17 @@ abstract class LocaleKeys {
   static const isThisNumberYours = 'isThisNumberYours';
   static const no = 'no';
   static const isThisNumberYoursWithPhone = 'isThisNumberYoursWithPhone';
-  static const pleaseProceedToPatientAdmission = 'pleaseProceedToPatientAdmission';
+  static const pleaseProceedToPatientAdmission =
+      'pleaseProceedToPatientAdmission';
   static const warning = 'warning';
   static const updatePhoneAtAdmission = 'updatePhoneAtAdmission';
   static const yes = 'yes';
   static const clearData = 'clearData';
   static const downloadOurApp = 'downloadOurApp';
-
+  static const sessionTimeout = 'sessionTimeout';
+  static const sessionWillCloseIfInactive = 'sessionWillCloseIfInactive';
+  static const examinationRegistrationCreated =
+      'examinationRegistrationCreated';
+  static const paymentCompletedSuccessfully = 'paymentCompletedSuccessfully';
+  static const selectDepartment = 'selectDepartment';
 }

@@ -14,14 +14,37 @@ class DynamicThemeProvider extends ChangeNotifier {
   String get logoUrl => _logoUrl;
   String _qrCodeUrl = "";
   String get qrCodeUrl => _qrCodeUrl;
+  String _hospitalName = "";
+  String get hospitalName => _hospitalName;
 
   void updateTheme(ConfigResponseModel config) {
+    final hospitalName = config.hospitalName;
+    if (hospitalName != null && hospitalName.isNotEmpty) {
+      _hospitalName = hospitalName;
+    } else {
+      _hospitalName = "";
+    }
+    
     final primaryColorHex = config.color?.primaryColor;
     if (primaryColorHex != null) {
       final color = primaryColorHex.toColor();
       _themeData = ThemeData(
         primaryColor: color,
         colorScheme: ColorScheme.fromSeed(seedColor: color),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: color,
+            side: BorderSide(color: color, width: 2),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: color,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(22.0),
+            ),
+          ),
+        ),
       );
     }
     final logo = config.logo;

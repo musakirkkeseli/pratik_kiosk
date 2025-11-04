@@ -5,6 +5,7 @@ import 'package:iconify_flutter/icons/material_symbols.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 import '../../../../core/utility/user_login_status_service.dart';
+import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/enum/enum_patient_registration_procedures.dart';
 import '../../../../features/utility/extension/text_theme_extension.dart';
@@ -58,11 +59,11 @@ class ProceduresWidget extends StatelessWidget {
                             nodePosition: 0.5,
                             connectorTheme: ConnectorThemeData(
                               thickness: 8,
-                              color: iColor,
+                              color: context.primaryColor,
                             ),
                             indicatorTheme: IndicatorThemeData(
                               size: 26,
-                              color: aColor,
+                              color: context.primaryColor,
                             ),
                           ),
                           builder: TimelineTileBuilder.connected(
@@ -79,7 +80,9 @@ class ProceduresWidget extends StatelessWidget {
                                 curve: Curves.easeInOutCubic,
                                 child: DotIndicator(
                                   size: reached ? 34 : 30,
-                                  color: reached ? aColor : iColor,
+                                  color: reached
+                                      ? context.primaryColor
+                                      : iColor,
                                   child: AnimatedSwitcher(
                                     duration: const Duration(milliseconds: 350),
                                     transitionBuilder: (child, anim) =>
@@ -103,8 +106,8 @@ class ProceduresWidget extends StatelessWidget {
                                 duration: const Duration(milliseconds: 600),
                                 curve: Curves.easeInOutCubic,
                                 tween: ColorTween(
-                                  begin: iColor,
-                                  end: filled ? aColor : iColor,
+                                  begin: context.primaryColor,
+                                  end: filled ? context.primaryColor : iColor,
                                 ),
                                 builder: (context, color, _) =>
                                     SolidLineConnector(color: color),
@@ -122,7 +125,9 @@ class ProceduresWidget extends StatelessWidget {
                                 fontWeight: reached
                                     ? FontWeight.w600
                                     : FontWeight.w400,
-                                color: reached ? aColor : Colors.grey,
+                                color: reached
+                                    ? context.primaryColor
+                                    : ConstColor.grey,
                               );
                               final content = Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -243,10 +248,7 @@ class _ButtonBar extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 foregroundColor: context.primaryColor,
                 elevation: 0,
-                side: BorderSide(
-                  color: context.primaryColor,
-                  width: 2,
-                ),
+                side: BorderSide(color: context.primaryColor, width: 2),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),

@@ -24,7 +24,7 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
   Widget build(BuildContext context) {
     return BlocProvider<HospitalLoginCubit>(
       create: (_) => HospitalLoginCubit(
-        kioskDeviceId: 2,
+        kioskDeviceId: 3,
         service: HospitalAndUserLoginServices(TenantHttpService()),
       ),
       child: BlocConsumer<HospitalLoginCubit, HospitalLoginState>(

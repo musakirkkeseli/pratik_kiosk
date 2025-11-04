@@ -24,8 +24,6 @@ class _ConfigWidgetState extends State<ConfigWidget> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [Colors.red, Colors.white, Colors.red],
-                // colors: [Color(0xfff44336), Color(0xff2196f3)],
-                // stops: [0, 1],
               ),
               backgroundBlendMode: BlendMode.srcOver,
             ),

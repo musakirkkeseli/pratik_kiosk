@@ -20,7 +20,7 @@ class _State extends State<InfoContainerWidget> {
     return Container(
       width: MediaQuery.of(context).size.width * 0.50,
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.grey[100],
         borderRadius: BorderRadius.circular(12),
         border: Border(
           left: BorderSide(color: context.primaryColor, width: 8),

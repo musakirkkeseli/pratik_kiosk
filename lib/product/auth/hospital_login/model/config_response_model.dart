@@ -2,13 +2,15 @@ class ConfigResponseModel {
   AppColor? color;
   String? logo;
   String? qrCode;
+  String? hospitalName;
 
-  ConfigResponseModel({this.color, this.logo, this.qrCode});
+  ConfigResponseModel({this.color, this.logo, this.qrCode, this.hospitalName});
 
   ConfigResponseModel.fromJson(Map<String, dynamic> json) {
     color = json['color'] != null ? AppColor.fromJson(json['color']) : null;
     logo = json['logo'];
     qrCode = json['qrCode'];
+    hospitalName = json['hospitalName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -18,6 +20,7 @@ class ConfigResponseModel {
     }
     data['logo'] = logo;
     data['qrCode'] = qrCode;
+    data['hospitalName'] = hospitalName;
     return data;
   }
 }

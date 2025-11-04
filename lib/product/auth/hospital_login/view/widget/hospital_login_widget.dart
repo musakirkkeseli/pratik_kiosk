@@ -21,10 +21,10 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController userNameController = kReleaseMode
       ? TextEditingController()
-      : TextEditingController(text: "buhara");
+      : TextEditingController(text: "lokmanEtlik");
   final TextEditingController passwordController = kReleaseMode
       ? TextEditingController()
-      : TextEditingController(text: "buhara");
+      : TextEditingController(text: "etlikk");
 
   // LinearGradient get _verticalGradient => const LinearGradient(
   //   colors: [Color(0xFF6F0E0E), Color(0xFF040404)],
@@ -100,7 +100,7 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
                         ),
                         CustomButton(
                           label: ConstantString().signIn,
-                          backgroundColor: ConstColor.primaryHospitalLoginColor,
+                          backgroundColor: Colors.red,
                           height: MediaQuery.of(context).size.height / 12,
                           borderRadius: 20,
                           onPressed: () {

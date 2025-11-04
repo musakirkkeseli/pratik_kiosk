@@ -6,6 +6,7 @@ class PatientRegistrationProceduresModel {
   int? branchId;
   int? departmentId;
   String? branchName;
+  String? appointmentID;
   String? assocationId;
   String? assocationName;
   String? gssAssocationId;
@@ -19,6 +20,7 @@ class PatientRegistrationProceduresModel {
     this.branchId,
     this.departmentId,
     this.branchName,
+    this.appointmentID,
     this.assocationId,
     this.assocationName,
     this.gssAssocationId,
@@ -33,6 +35,7 @@ class PatientRegistrationProceduresModel {
     data['doctorId'] = doctorId;
     data['branchId'] = branchId;
     data['departmentId'] = departmentId;
+    data['appointmentID'] = appointmentID;
     data['assocationId'] = assocationId;
     data['insuredTypeId'] = insuredTypeId;
     return data;

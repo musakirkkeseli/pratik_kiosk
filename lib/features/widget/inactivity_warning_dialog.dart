@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kiosk/core/utility/logger_service.dart';
+import 'package:kiosk/features/utility/extension/color_extension.dart';
+import '../utility/const/constant_string.dart';
 import 'circular_countdown.dart';
 import '../utility/extension/text_theme_extension.dart';
 
@@ -18,7 +20,6 @@ class InactivityWarningDialog extends StatelessWidget {
   final void Function()? onContinue;
   final void Function()? onLogout;
 
-  /// Optional label for the secondary action button. Defaults to 'Çıkış Yap'.
   final String? secondaryLabel;
   final String? title;
   final String? message;
@@ -26,14 +27,17 @@ class InactivityWarningDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme.primary;
-    final onPrimary = Theme.of(context).colorScheme.onPrimary;
+    // final onPrimary = Theme.of(context).colorScheme.onPrimary;
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Row(
         children: [
-          const Icon(Icons.timer_outlined),
+          Icon(Icons.timer_outlined, color: context.primaryColor),
           const SizedBox(width: 8),
-          Text(title ?? 'Oturum Zaman Aşımı', style: context.sectionTitle),
+          Text(
+            title ?? ConstantString().sessionTimeout,
+            style: context.sectionTitle,
+          ),
         ],
       ),
       content: Column(
@@ -41,7 +45,7 @@ class InactivityWarningDialog extends StatelessWidget {
         children: [
           const SizedBox(height: 4),
           Text(
-            message ?? 'İşleminize devam etmezseniz oturumunuz kapanacaktır.',
+            message ?? ConstantString().sessionWillCloseIfInactive,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
@@ -64,19 +68,18 @@ class InactivityWarningDialog extends StatelessWidget {
               onLogout!();
             },
             style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
-            child: Text(secondaryLabel ?? 'Çıkış Yap', style: context.buttonText),
+            child: Text(
+              secondaryLabel ?? ConstantString().logout,
+              style: context.buttonText,
+            ),
           ),
 
-        ElevatedButton(
+        OutlinedButton(
           onPressed: () {
             MyLog.debug("'onContinue tetiklendi'");
             onContinue!();
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: color,
-            foregroundColor: onPrimary,
-          ),
-          child: Text('Devam Et', style: context.buttonText),
+          child: Text(ConstantString().continueLabel),
         ),
       ],
     );

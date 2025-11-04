@@ -34,10 +34,15 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
         String? accessToken = resp.data!.accessToken;
         if (accessToken is String) {
           _log.d("data doğru");
+
+          final patientName = resp.data!.patientData?.name ?? "";
+          final patientSurname = resp.data!.patientData?.surname ?? "";
+          final fullName = "$patientName $patientSurname".trim();
+
           UserLoginStatusService().login(
             accessToken: accessToken,
             cityName: "",
-            name: "",
+            name: fullName,
             phone: "",
             userId: 1,
           );
@@ -109,13 +114,19 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
         String? accessToken = resp.data!.accessToken;
         if (accessToken is String) {
           _log.d("data doğru");
-          // UserLoginStatusService().login(
-          //   accessToken: accessToken,
-          //   cityName: "",
-          //   name: "",
-          //   phone: "",
-          //   userId: 1,
-          // );
+
+          // Patient data'dan name ve surname'i al
+          final patientName = resp.data!.patientData?.name ?? "";
+          final patientSurname = resp.data!.patientData?.surname ?? "";
+          final fullName = "$patientName $patientSurname".trim();
+
+          UserLoginStatusService().login(
+            accessToken: accessToken,
+            cityName: "",
+            name: fullName,
+            phone: "",
+            userId: 1,
+          );
           safeEmit(
             state.copyWith(
               status: EnumGeneralStateStatus.success,
@@ -292,35 +303,101 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   }
 
   void onChangeBirthDate(String value) {
-    String? birthDate = state.birthDate;
-    
-    // Sadece rakam ekle
-    birthDate = "$birthDate$value";
-    
-    // Otomatik slash ekleme (gg/aa/yyyy formatı)
-    if (birthDate.length == 2 || birthDate.length == 5) {
-      birthDate = "$birthDate/";
-    }
-    
-    // 10 karakter sınır kontrolü (gg/aa/yyyy formatı)
-    if (birthDate.length > 10) {
+    String birthDate = state.birthDate;
+
+    String newBirthDate = "$birthDate$value";
+
+    if (newBirthDate.length > 10) {
       return;
     }
-    
-    safeEmit(state.copyWith(birthDate: birthDate));
+
+    if (newBirthDate.length <= 2) {
+      int? day = int.tryParse(newBirthDate);
+      if (day == null) return;
+
+      if (newBirthDate.length == 1 && int.parse(value) > 3) {
+        return;
+      }
+
+      if (newBirthDate.length == 2) {
+        if (day == 0 || day > 31) {
+          return;
+        }
+      }
+    }
+
+    if (newBirthDate.length >= 3 && newBirthDate.length <= 5) {
+      if (newBirthDate.length == 2) {
+        newBirthDate = "$newBirthDate/";
+      }
+
+      if (newBirthDate.length > 3) {
+        String monthPart = newBirthDate.substring(3);
+        int? month = int.tryParse(monthPart);
+        if (month == null) return;
+
+        if (monthPart.length == 1 && int.parse(value) > 1) {
+          return;
+        }
+
+        if (monthPart.length == 2) {
+          if (month == 0 || month > 12) {
+            return;
+          }
+        }
+      }
+    }
+
+    if (newBirthDate.length >= 6) {
+      if (newBirthDate.length == 5) {
+        newBirthDate = "$newBirthDate/";
+      }
+
+      if (newBirthDate.length > 6) {
+        String yearPart = newBirthDate.substring(6);
+
+        if (yearPart.length == 1 &&
+            int.parse(value) != 1 &&
+            int.parse(value) != 2) {
+          return;
+        }
+
+        if (yearPart.length == 4) {
+          int? year = int.tryParse(yearPart);
+          if (year == null || year == 0) {
+            return;
+          }
+        }
+      }
+    }
+
+    // Otomatik slash ekleme (gg/aa/yyyy formatı)
+    if (newBirthDate.length == 2 || newBirthDate.length == 5) {
+      newBirthDate = "$newBirthDate/";
+    }
+
+    safeEmit(state.copyWith(birthDate: newBirthDate));
     _startOrResetTimer();
   }
 
   void deleteBirthDate() {
-    String? birthDate = state.birthDate;
+    String birthDate = state.birthDate;
     if (birthDate.isEmpty) return;
-    birthDate = birthDate.substring(0, birthDate.length - 1);
-    
-    // Silme sırasında slash'i da sil
+
     if (birthDate.endsWith('/')) {
+      if (birthDate.length > 1) {
+        birthDate = birthDate.substring(0, birthDate.length - 2);
+      } else {
+        birthDate = "";
+      }
+    } else {
       birthDate = birthDate.substring(0, birthDate.length - 1);
+
+      if (birthDate.endsWith('/')) {
+        birthDate = birthDate.substring(0, birthDate.length - 1);
+      }
     }
-    
+
     safeEmit(state.copyWith(birthDate: birthDate));
   }
 
@@ -343,12 +420,12 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   void onChangeTcNo(String value) {
     String? tcNo = state.tcNo;
     tcNo = "$tcNo$value";
-    
+
     // 11 haneli sınır kontrolü
     if (tcNo.length > 11) {
       return;
     }
-    
+
     safeEmit(state.copyWith(tcNo: tcNo));
     _startOrResetTimer();
   }
@@ -363,12 +440,12 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   void onChangeOtpCode(String value) {
     String? otpCode = state.otpCode;
     otpCode = "$otpCode$value";
-    
+
     // 6 haneli sınır kontrolü
     if (otpCode.length > 6) {
       return;
     }
-    
+
     safeEmit(state.copyWith(otpCode: otpCode));
     _startOrResetTimer();
   }

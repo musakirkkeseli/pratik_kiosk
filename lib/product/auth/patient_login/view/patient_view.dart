@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/icon_park_solid.dart';
+import 'package:kiosk/features/utility/extension/color_extension.dart';
 import 'package:kiosk/features/utility/navigation_service.dart';
 import 'package:kiosk/product/auth/patient_login/services/patient_services.dart';
 import 'package:provider/provider.dart';
@@ -127,99 +128,131 @@ class _PatientViewState extends State<PatientView> {
         },
         builder: (context, state) {
           return Scaffold(
-            body: Stack(
-              children: [
-                Column(
-                  children: [
-                    CustomAppBar(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 200.0,
-                        vertical: 10.0,
+            body: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                context.read<PatientLoginCubit>().onChanged('force');
+              },
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      CustomAppBar(),
+                      Consumer<DynamicThemeProvider>(
+                        builder: (context, themeProvider, child) {
+                          final hospitalName = themeProvider.hospitalName;
+                          if (hospitalName.isEmpty) {
+                            return const SizedBox.shrink();
+                          }
+
+                          return Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            decoration: BoxDecoration(
+                              color: context.primaryColor,
+                            ),
+                            child: Text(
+                              hospitalName,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: context.backgroundColor,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      child: Column(
-                        spacing: 25,
-                        children: [
-                          ..._body(context, state),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20.0),
-                            child: const Divider(height: 24),
-                          ),
-                          continueButton(context, state),
-                          if (state.tcNo.isNotEmpty)
-                            OutlinedButton.icon(
-                              style: OutlinedButton.styleFrom(
-                                iconColor: Colors.red,
-                                foregroundColor: Colors.red,
-                                side: const BorderSide(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 200.0),
+                        child: Column(
+                          spacing: 15,
+                          children: [
+                            ..._body(context, state),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10.0,
+                              ),
+                              child: const Divider(height: 24),
+                            ),
+                            continueButton(context, state),
+                            if (state.tcNo.isNotEmpty)
+                              OutlinedButton.icon(
+                                style: OutlinedButton.styleFrom(
+                                  iconColor: Colors.red,
+                                  foregroundColor: Colors.red,
+                                  side: const BorderSide(
+                                    color: Colors.red,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  _clean(context);
+                                },
+                                icon: Iconify(
+                                  IconParkSolid.clear_format,
                                   color: Colors.red,
-                                  width: 1.5,
+                                ),
+                                label: Text(ConstantString().clearData),
+                              ),
+                            if (state.tcNo.isEmpty) SizedBox(height: 48),
+                            VirtualKeypad(pageType: state.pageType),
+                            Visibility(
+                              visible: state.pageType == PageType.auth,
+                              child: LanguageButtonWidget(),
+                            ),
+                            // KioskCardWidget(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (state.pageType == PageType.auth)
+                    Positioned(
+                      right: 40,
+                      bottom: 40,
+                      child: Consumer<DynamicThemeProvider>(
+                        builder: (context, themeProvider, child) {
+                          final qrCodeUrl = themeProvider.qrCodeUrl;
+                          if (qrCodeUrl.isEmpty) return const SizedBox.shrink();
+
+                          return Column(
+                            spacing: 10,
+                            children: [
+                              Text(ConstantString().downloadOurApp),
+                              Container(
+                                width: 150,
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 10,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(8),
+                                child: CachedNetworkImage(
+                                  imageUrl: qrCodeUrl,
+                                  fit: BoxFit.contain,
+                                  placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const SizedBox.shrink(),
                                 ),
                               ),
-                              onPressed: () {
-                                _clean(context);
-                              },
-                              icon: Iconify(
-                                IconParkSolid.clear_format,
-                                color: Colors.red,
-                              ),
-                              label: Text(ConstantString().clearData),
-                            ),
-                          if (state.tcNo.isEmpty) SizedBox(height: 48),
-                          VirtualKeypad(pageType: state.pageType),
-                          Visibility(
-                            visible: state.pageType == PageType.auth,
-                            child: LanguageButtonWidget(),
-                          ),
-                          // KioskCardWidget(),
-                        ],
+                            ],
+                          );
+                        },
                       ),
                     ),
-                  ],
-                ),
-                if (state.pageType == PageType.auth)
-                  Positioned(
-                    right: 40,
-                    bottom: 40,
-                    child: Consumer<DynamicThemeProvider>(
-                      builder: (context, themeProvider, child) {
-                        final qrCodeUrl = themeProvider.qrCodeUrl;
-                        if (qrCodeUrl.isEmpty) return const SizedBox.shrink();
-
-                        return Column(
-                          spacing: 10,
-                          children: [
-                            Text(ConstantString().downloadOurApp),
-                            Container(
-                              width: 150,
-                              height: 150,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 10,
-                                    offset: Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              padding: const EdgeInsets.all(8),
-                              child: CachedNetworkImage(
-                                imageUrl: qrCodeUrl,
-                                fit: BoxFit.contain,
-                                placeholder: (context, url) =>
-                                    Center(child: CircularProgressIndicator()),
-                                errorWidget: (context, url, error) =>
-                                    const SizedBox.shrink(),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -231,7 +264,7 @@ class _PatientViewState extends State<PatientView> {
     switch (state.pageType) {
       case PageType.auth:
         return [
-          const SizedBox(height: 100),
+          const SizedBox(height: 20),
           Text(ConstantString().enterYourTurkishIdNumber),
           ValueListenableBuilder(
             valueListenable: _validateTc,
@@ -260,7 +293,7 @@ class _PatientViewState extends State<PatientView> {
         ];
       case PageType.register:
         return [
-          const SizedBox(height: 125),
+          const SizedBox(height: 20),
           Text(ConstantString().enterYourBirthDate),
           CustomInputContainer(
             type: EnumTextformfield.birthday,
@@ -281,7 +314,10 @@ class _PatientViewState extends State<PatientView> {
         ];
       case PageType.verifySms:
         return [
-          Text(ConstantString().pleaseEnterSmsCode),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Text(ConstantString().pleaseEnterSmsCode),
+          ),
           CircularCountdown(
             total: Duration(seconds: 30),
             size: 100,
@@ -336,7 +372,6 @@ class _PatientViewState extends State<PatientView> {
           if (state.tcNo.length != 11) {
             _validateTc.value = false;
           } else {
-            // TC validasyonu
             final tcError = EnumTextformfieldExtension.validateTC(state.tcNo);
             if (tcError != null) {
               _validateTc.value = false;
@@ -355,7 +390,6 @@ class _PatientViewState extends State<PatientView> {
               ConstantString().pleaseEnterValidBirthDate,
             );
           } else {
-            // Doğum tarihi validasyonu
             final birthDateError = EnumTextformfieldExtension.validateBirthDate(
               state.birthDate,
             );
