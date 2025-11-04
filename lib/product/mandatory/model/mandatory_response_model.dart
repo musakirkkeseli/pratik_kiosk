@@ -20,6 +20,8 @@ class MandatoryResponseModel {
   String? targetFieldDetailName;
   String? targetTableName;
   String? isNullable;
+  String? fieldValue;
+  String? objectType;
 
   MandatoryResponseModel({
     this.id,
@@ -43,6 +45,8 @@ class MandatoryResponseModel {
     this.targetFieldDetailName,
     this.targetTableName,
     this.isNullable,
+    this.fieldValue,
+    this.objectType,
   });
 
   MandatoryResponseModel.fromJson(Map<String, dynamic> json) {
@@ -67,6 +71,8 @@ class MandatoryResponseModel {
     targetFieldDetailName = json['TARGET_FIELD_DETAIL_NAME'];
     targetTableName = json['TARGET_TABLE_NAME'];
     isNullable = json['IS_NULLABLE'];
+    fieldValue = json['FIELD_VALUE'];
+    objectType = json['OBJECT_TYPE'];
   }
 
   Map<String, dynamic> toJson() {
@@ -92,6 +98,8 @@ class MandatoryResponseModel {
     data['TARGET_FIELD_DETAIL_NAME'] = targetFieldDetailName;
     data['TARGET_TABLE_NAME'] = targetTableName;
     data['IS_NULLABLE'] = isNullable;
+    data['FIELD_VALUE'] = fieldValue;
+    data['OBJECT_TYPE'] = objectType;
     return data;
   }
 }
