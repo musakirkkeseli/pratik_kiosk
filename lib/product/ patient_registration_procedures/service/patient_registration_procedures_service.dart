@@ -1,4 +1,5 @@
 import '../../../features/model/api_response_model.dart';
+import '../../../features/model/empty_response.dart';
 import '../../../features/model/patient_price_detail_model.dart';
 import '../model/patient_transaction_create_request_model.dart';
 import '../model/patient_transaction_create_response_model.dart';
@@ -38,14 +39,15 @@ class PatientRegistrationProceduresService
   }
 
   @override
-  Future<ApiResponse<PatientTransactionRevenueResponseModel>>
-  postPatientTransactionCancel(String patientId) async {
-    return http.request<PatientTransactionRevenueResponseModel>(
-      requestFunction: () =>
-          http.post(patientTransactionCancelPath, data: patientId),
-      fromJson: (json) => PatientTransactionRevenueResponseModel.fromJson(
-        json as Map<String, dynamic>,
+  Future<ApiResponse<EmptyResponse>> postPatientTransactionCancel(
+    String patientId,
+  ) async {
+    return http.request<EmptyResponse>(
+      requestFunction: () => http.post(
+        patientTransactionCancelPath,
+        data: {"patientId": patientId},
       ),
+      fromJson: (json) => EmptyResponse.fromJson(json as Map<String, dynamic>),
     );
   }
 

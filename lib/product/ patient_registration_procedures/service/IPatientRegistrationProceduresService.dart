@@ -1,5 +1,6 @@
 import '../../../core/utility/http_service.dart';
 import '../../../features/model/api_response_model.dart';
+import '../../../features/model/empty_response.dart';
 import '../../../features/model/patient_price_detail_model.dart';
 import '../model/patient_transaction_create_request_model.dart';
 import '../model/patient_transaction_create_response_model.dart';
@@ -31,11 +32,11 @@ abstract class IPatientRegistrationProceduresService {
   postPatientTransactionCreate(PatientTransactionCreateRequestModel request);
   Future<ApiResponse<PatientTransactionRevenueResponseModel>>
   postPatientTransactionRevenue(PatientTransactionDetailsResponseModel request);
-  Future<ApiResponse<PatientTransactionRevenueResponseModel>>
-  postPatientTransactionCancel(String patientId);
-  Future<ApiResponse<PatientTransactionDetailsResponseModel>> postPatientTransactionDetails(
+  Future<ApiResponse<EmptyResponse>> postPatientTransactionCancel(
     String patientId,
   );
+  Future<ApiResponse<PatientTransactionDetailsResponseModel>>
+  postPatientTransactionDetails(String patientId);
 }
 
 enum IPatientRegistrationProceduresServicePath {
