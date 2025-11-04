@@ -61,7 +61,10 @@ enum EnumPatientRegistrationProcedures {
           ),
         );
       case EnumPatientRegistrationProcedures.price:
-        return PriceView(patientId: model.patientId ?? "");
+        return PriceView(
+          patientContent: model.patientContent,
+          paymentContentList: model.paymentContentList ?? [],
+        );
       case EnumPatientRegistrationProcedures.payment:
         return PaymentView(
           patientPriceDetailModel: model.patientPriceDetailModel!,
