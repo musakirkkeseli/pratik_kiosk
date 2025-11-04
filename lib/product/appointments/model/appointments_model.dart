@@ -45,20 +45,20 @@ class AppointmentsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['TCKNo'] = this.tCKNo;
-    data['PassportNo'] = this.passportNo;
-    data['UPN'] = this.uPN;
-    data['HospitalID'] = this.hospitalID;
-    data['DepartmentID'] = this.departmentID;
-    data['DepartmentName'] = this.departmentName;
-    data['BranchID'] = this.branchID;
-    data['BranchName'] = this.branchName;
-    data['DoctorID'] = this.doctorID;
-    data['DoctorName'] = this.doctorName;
-    data['AppointmentID'] = this.appointmentID;
-    data['AppointmentTime'] = this.appointmentTime;
-    data['GUID'] = this.gUID;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['TCKNo'] = tCKNo;
+    data['PassportNo'] = passportNo;
+    data['UPN'] = uPN;
+    data['HospitalID'] = hospitalID;
+    data['DepartmentID'] = departmentID;
+    data['DepartmentName'] = departmentName;
+    data['BranchID'] = branchID;
+    data['BranchName'] = branchName;
+    data['DoctorID'] = doctorID;
+    data['DoctorName'] = doctorName;
+    data['AppointmentID'] = appointmentID;
+    data['AppointmentTime'] = appointmentTime;
+    data['GUID'] = gUID;
     return data;
   }
 }
