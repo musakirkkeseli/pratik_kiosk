@@ -93,25 +93,27 @@ class PatientRegistrationProceduresCubit
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
     PatientRegistrationProceduresModel model = state.model;
     try {
-      final res = await service.postPatientTransactionCreate(
-        PatientTransactionCreateRequestModel(
-          associationId: int.tryParse(model.assocationId ?? ""),
-          departmentId: model.departmentId,
-          doctorId: model.doctorId,
-          appointmentID: model.appointmentID,
-          mandatoryFields: mandatoryModelList,
-        ),
-      );
+      PatientTransactionCreateRequestModel request =
+          PatientTransactionCreateRequestModel(
+            associationId: int.tryParse(model.assocationId ?? ""),
+            departmentId: model.departmentId,
+            doctorId: model.doctorId,
+            appointmentId: model.appointmentId,
+            mandatoryFields: mandatoryModelList,
+          );
+      final res = await service.postPatientTransactionCreate(request);
 
       if (res.success &&
           res.data is PatientTransactionCreateResponseModel &&
           res.data!.patientId is String) {
         model.patientId = res.data!.patientId ?? "";
-        emit(
-          state.copyWith(status: EnumGeneralStateStatus.success, model: model),
-        );
-        nextStep();
+        fetchPatientPrice(model);
+        // emit(
+        //   state.copyWith(status: EnumGeneralStateStatus.success, model: model),
+        // );
+        // nextStep();
       } else {
+        patientTransactionCancel();
         safeEmit(
           state.copyWith(
             status: EnumGeneralStateStatus.failure,
@@ -120,6 +122,7 @@ class PatientRegistrationProceduresCubit
         );
       }
     } on NetworkException catch (e) {
+      patientTransactionCancel();
       safeEmit(
         state.copyWith(
           status: EnumGeneralStateStatus.failure,
@@ -127,6 +130,64 @@ class PatientRegistrationProceduresCubit
         ),
       );
     } catch (e) {
+      patientTransactionCancel();
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: ConstantString().errorOccurred,
+        ),
+      );
+    }
+  }
+
+  Future<void> fetchPatientPrice(
+    PatientRegistrationProceduresModel model,
+  ) async {
+    try {
+      final res = await service.postPatientTransactionDetails(model.patientId!);
+      if (res.success && res.data is PatientTransactionDetailsResponseModel) {
+        _log.d(res);
+        List<PaymentContent>? paymentContentList = res.data!.paymentContent;
+        PatientContent? patientContent = res.data!.patientContent;
+        if (paymentContentList is List<PaymentContent> &&
+            patientContent is PatientContent) {
+          model.patientContent = patientContent;
+          model.paymentContentList = paymentContentList;
+          emit(
+            state.copyWith(
+              status: EnumGeneralStateStatus.success,
+              model: model,
+            ),
+          );
+          nextStep();
+        } else {
+          patientTransactionCancel();
+          safeEmit(
+            state.copyWith(
+              status: EnumGeneralStateStatus.failure,
+              message: res.message,
+            ),
+          );
+        }
+      } else {
+        patientTransactionCancel();
+        safeEmit(
+          state.copyWith(
+            status: EnumGeneralStateStatus.failure,
+            message: res.message,
+          ),
+        );
+      }
+    } on NetworkException catch (e) {
+      patientTransactionCancel();
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: e.message,
+        ),
+      );
+    } catch (e) {
+      patientTransactionCancel();
       safeEmit(
         state.copyWith(
           status: EnumGeneralStateStatus.failure,
@@ -140,10 +201,11 @@ class PatientRegistrationProceduresCubit
     List<PaymentContent> paymentContentList,
     PatientContent? patientContent,
   ) {
-    PatientPriceDetailModel patientPriceDetailModel = PatientPriceDetailModel(
-      patientContent: patientContent,
-      paymentContent: paymentContentList,
-    );
+    PatientTransactionDetailsResponseModel patientPriceDetailModel =
+        PatientTransactionDetailsResponseModel(
+          patientContent: patientContent,
+          paymentContent: paymentContentList,
+        );
     final updatedModel = state.model;
     updatedModel.patientPriceDetailModel = patientPriceDetailModel;
     emit(state.copyWith(model: updatedModel));
@@ -151,7 +213,7 @@ class PatientRegistrationProceduresCubit
   }
 
   Future<void> patientTransactionRevenue(
-    PatientPriceDetailModel patientPriceDetailModel,
+    PatientTransactionDetailsResponseModel patientPriceDetailModel,
   ) async {
     try {
       final res = await service.postPatientTransactionRevenue(
@@ -163,19 +225,16 @@ class PatientRegistrationProceduresCubit
           state.copyWith(paymentResultType: EnumPaymentResultType.success),
         );
       } else {
-        patientTransactionCancel();
         safeEmit(
           state.copyWith(paymentResultType: EnumPaymentResultType.failure),
         );
       }
     } on NetworkException catch (e) {
       _log.d("NetworkException $e");
-      patientTransactionCancel();
       safeEmit(
         state.copyWith(paymentResultType: EnumPaymentResultType.success),
       );
     } catch (e) {
-      patientTransactionCancel();
       safeEmit(
         state.copyWith(paymentResultType: EnumPaymentResultType.success),
       );
@@ -187,7 +246,7 @@ class PatientRegistrationProceduresCubit
     String? patientId = model.patientId;
     if (patientId is String) {
       try {
-        final res = await service.postPatientTransactionCancel(patientId);
+        await service.postPatientTransactionCancel(patientId);
       } on NetworkException catch (e) {
         safeEmit(
           state.copyWith(
@@ -242,6 +301,9 @@ class PatientRegistrationProceduresCubit
         emit(state.copyWith(model: model));
         break;
       case EnumPatientRegistrationProcedures.mandatory:
+        model.assocationId = null;
+        model.assocationName = null;
+        emit(state.copyWith(model: model));
         break;
       case EnumPatientRegistrationProcedures.price:
         break;
