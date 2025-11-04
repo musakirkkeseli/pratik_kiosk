@@ -6,21 +6,23 @@ class PatientRegistrationProceduresModel {
   int? branchId;
   int? departmentId;
   String? branchName;
-  String? appointmentID;
+  String? appointmentId;
   String? assocationId;
   String? assocationName;
   String? gssAssocationId;
   String? insuredTypeId;
   String? insuredTypeName;
   String? patientId;
-  PatientPriceDetailModel? patientPriceDetailModel;
+  PatientTransactionDetailsResponseModel? patientPriceDetailModel;
+  List<PaymentContent>? paymentContentList;
+  PatientContent? patientContent;
   PatientRegistrationProceduresModel({
     this.doctorId,
     this.doctorName,
     this.branchId,
     this.departmentId,
     this.branchName,
-    this.appointmentID,
+    this.appointmentId,
     this.assocationId,
     this.assocationName,
     this.gssAssocationId,
@@ -28,16 +30,7 @@ class PatientRegistrationProceduresModel {
     this.insuredTypeName,
     this.patientId,
     this.patientPriceDetailModel,
+    this.paymentContentList,
+    this.patientContent,
   });
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['doctorId'] = doctorId;
-    data['branchId'] = branchId;
-    data['departmentId'] = departmentId;
-    data['appointmentID'] = appointmentID;
-    data['assocationId'] = assocationId;
-    data['insuredTypeId'] = insuredTypeId;
-    return data;
-  }
 }
