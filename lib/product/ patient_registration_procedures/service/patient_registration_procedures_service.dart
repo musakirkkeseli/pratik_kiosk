@@ -25,7 +25,9 @@ class PatientRegistrationProceduresService
 
   @override
   Future<ApiResponse<PatientTransactionRevenueResponseModel>>
-  postPatientTransactionRevenue(PatientPriceDetailModel request) async {
+  postPatientTransactionRevenue(
+    PatientTransactionDetailsResponseModel request,
+  ) async {
     return http.request<PatientTransactionRevenueResponseModel>(
       requestFunction: () =>
           http.post(patientTransactionRevenuePath, data: request.toJson()),
@@ -42,6 +44,20 @@ class PatientRegistrationProceduresService
       requestFunction: () =>
           http.post(patientTransactionCancelPath, data: patientId),
       fromJson: (json) => PatientTransactionRevenueResponseModel.fromJson(
+        json as Map<String, dynamic>,
+      ),
+    );
+  }
+
+  @override
+  Future<ApiResponse<PatientTransactionDetailsResponseModel>>
+  postPatientTransactionDetails(String patientId) async {
+    return http.request<PatientTransactionDetailsResponseModel>(
+      requestFunction: () => http.post(
+        patientTransactionDetailsPath,
+        data: {'PatientID': patientId},
+      ),
+      fromJson: (json) => PatientTransactionDetailsResponseModel.fromJson(
         json as Map<String, dynamic>,
       ),
     );
