@@ -76,5 +76,6 @@
   "examinationRegistrationCreated": "تم إنشاء تسجيل الفحص الخاص بك",
   "paymentCompletedSuccessfully": "تم إكمال عملية الدفع بنجاح.",
   "selectDepartment": "اختر القسم",
-  "welcomeWithName": "مرحبًا، {}"
+  "welcomeUser": "مرحبًا، {}",
+  "examinationDetails": "تفاصيل الفحص"
 }

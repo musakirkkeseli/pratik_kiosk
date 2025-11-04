@@ -118,4 +118,5 @@ class ConstantString {
   String paymentCompletedSuccessfully =
       LocaleKeys.paymentCompletedSuccessfully.locale;
   String selectDepartment = LocaleKeys.selectDepartment.locale;
+  String examinationDetails = LocaleKeys.examinationDetails.locale;
 }

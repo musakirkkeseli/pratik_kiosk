@@ -75,5 +75,6 @@
   "examinationRegistrationCreated": "Your examination registration has been created",
   "paymentCompletedSuccessfully": "Your payment has been completed successfully.",
   "selectDepartment": "Select Department",
-  "welcomeWithName": "Welcome, {}"
+  "welcomeUser": "Welcome, {}",
+  "examinationDetails": "Examination Details"
 }

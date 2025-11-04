@@ -6,6 +6,7 @@ class PatientRegistrationProceduresState {
   final EnumGeneralStateStatus status;
   final String? message;
   final EnumPaymentResultType? paymentResultType;
+  final String? totalAmount;
 
   const PatientRegistrationProceduresState({
     required this.model,
@@ -13,6 +14,7 @@ class PatientRegistrationProceduresState {
     this.status = EnumGeneralStateStatus.initial,
     this.message,
     this.paymentResultType,
+    this.totalAmount,
   });
 
   PatientRegistrationProceduresState copyWith({
@@ -21,6 +23,7 @@ class PatientRegistrationProceduresState {
     EnumGeneralStateStatus? status,
     String? message,
     EnumPaymentResultType? paymentResultType,
+    String? totalAmount,
   }) {
     return PatientRegistrationProceduresState(
       currentStep: currentStep ?? this.currentStep,
@@ -28,6 +31,7 @@ class PatientRegistrationProceduresState {
       status: status ?? this.status,
       message: message,
       paymentResultType: paymentResultType ?? this.paymentResultType,
+      totalAmount: totalAmount ?? this.totalAmount,
     );
   }
 }

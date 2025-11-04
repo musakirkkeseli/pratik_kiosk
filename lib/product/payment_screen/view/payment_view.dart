@@ -19,8 +19,11 @@ class PaymentView extends StatefulWidget {
 }
 
 class _PaymentViewState extends State<PaymentView> {
+  String totalAmount = "";
   @override
   void initState() {
+    totalAmount =
+        widget.patientPriceDetailModel.patientContent?.totalPrice ?? "0";
     final inactivity = context.read<InactivityController>();
     inactivity.bump(customTimeout: Duration(seconds: 50));
     Future.delayed(Duration(seconds: 5), () {
@@ -28,6 +31,7 @@ class _PaymentViewState extends State<PaymentView> {
           .read<PatientRegistrationProceduresCubit>()
           .patientTransactionRevenue(widget.patientPriceDetailModel);
     });
+
     super.initState();
   }
 
@@ -40,7 +44,9 @@ class _PaymentViewState extends State<PaymentView> {
           children: [
             Text(
               ConstantString().paymentProcessing,
-              style: context.bodyPrimary,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge!.copyWith(fontSize: 20),
             ),
             Lottie.asset(
               ConstantString.paymentLoading,
@@ -72,7 +78,7 @@ class _PaymentViewState extends State<PaymentView> {
                     style: context.cardTitle,
                   ),
                   Text(
-                    "1420,00 TL",
+                    totalAmount,
                     style: context.sectionTitle.copyWith(fontSize: 24),
                   ),
                 ],

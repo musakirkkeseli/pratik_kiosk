@@ -5,7 +5,9 @@ import 'package:pdfx/pdfx.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
+import '../../features/utility/const/constant_string.dart';
 import 'view/widget/signature_view.dart';
+
 
 class PdfViewerWithSignature extends StatefulWidget {
   final String pdfUrl;
@@ -19,6 +21,8 @@ class PdfViewerWithSignature extends StatefulWidget {
 class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
   PdfControllerPinch? pdfController;
   bool isLoading = true;
+  bool hasError = false;
+  String? errorMessage;
   Uint8List? signatureBytes;
   int currentPage = 1;
   int totalPages = 0;
@@ -31,7 +35,6 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
 
   Future<void> _loadPdf() async {
     try {
-      // Önce temp klasörünü temizle
       final dir = await getTemporaryDirectory();
       final tempFile = File('${dir.path}/temp_document.pdf');
       if (await tempFile.exists()) {
@@ -40,29 +43,51 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
 
       // PDF'i indir
       final response = await http.get(Uri.parse(widget.pdfUrl));
+      
+      // HTTP hata kontrolü
+      if (response.statusCode != 200) {
+        throw Exception('PDF indirilemedi. HTTP Durum Kodu: ${response.statusCode}');
+      }
+      
       final bytes = response.bodyBytes;
+      
+      // Boş dosya kontrolü
+      if (bytes.isEmpty) {
+        throw Exception('PDF dosyası boş');
+      }
+      
       final file = File('${dir.path}/temp_document.pdf');
       await file.writeAsBytes(bytes);
+
+      // PDF dokümanını aç ve doğrula
+      final document = await PdfDocument.openFile(file.path);
+      
+      if (document.pagesCount == 0) {
+        throw Exception('PDF dosyası geçersiz veya sayfa içermiyor');
+      }
 
       setState(() {
         pdfController = PdfControllerPinch(
           document: PdfDocument.openFile(file.path),
         );
-        isLoading = false;
-      });
-
-      // Sayfa sayısını al
-      final document = await PdfDocument.openFile(file.path);
-      setState(() {
         totalPages = document.pagesCount;
+        isLoading = false;
+        hasError = false;
       });
     } catch (e) {
       setState(() {
         isLoading = false;
+        hasError = true;
+        errorMessage = e.toString();
       });
+      
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('PDF yüklenirken hata oluştu: $e')),
+          SnackBar(
+            content: Text('PDF yüklenirken hata oluştu: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+          ),
         );
       }
     }
@@ -89,7 +114,7 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
       appBar: AppBar(
         title: const Text('PDF Görüntüleyici'),
         actions: [
-          if (pdfController != null)
+          if (pdfController != null && !hasError)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton.icon(
@@ -108,9 +133,101 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : pdfController == null
-          ? const Center(child: Text('PDF yüklenemedi'))
-          : Stack(
+          : hasError
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          size: 80,
+                          color: Colors.red.shade400,
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          ConstantString().errorOccurred,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'PDF dosyası yüklenemedi veya geçersiz',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey.shade700,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        if (errorMessage != null) ...[
+                          const SizedBox(height: 12),
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade50,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.red.shade200),
+                            ),
+                            child: Text(
+                              errorMessage!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.red.shade900,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                        const SizedBox(height: 32),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              isLoading = true;
+                              hasError = false;
+                              errorMessage = null;
+                            });
+                            _loadPdf();
+                          },
+                          icon: const Icon(Icons.refresh),
+                          label: const Text('Tekrar Dene'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 32,
+                              vertical: 16,
+                            ),
+                            backgroundColor: Theme.of(context).primaryColor,
+                            foregroundColor: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        OutlinedButton.icon(
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: const Icon(Icons.arrow_back),
+                          label: const Text('Geri Dön'),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 32,
+                              vertical: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : pdfController == null
+                  ? Center(
+                      child: Text(
+                        ConstantString().errorOccurred,
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    )
+                  : Stack(
               children: [
                 PdfViewPinch(
                   controller: pdfController!,

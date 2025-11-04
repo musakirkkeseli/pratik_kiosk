@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../pdf_viewer_with_signature.dart';
+
+import '../../pdf_viewer_with_signature.dart';
 
 class PdfTestButton extends StatelessWidget {
   const PdfTestButton({super.key});
@@ -12,7 +13,7 @@ class PdfTestButton extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => const PdfViewerWithSignature(
-              pdfUrl: 'https://dokuman.osym.gov.tr/pdfdokuman/2025/YKS/TSK/yks_tyt_2025_kitapcik_d250.pdf',
+              pdfUrl: 'https://demo7.lond.net/report/1760537100_ornek-pdf.pdf',
             ),
           ),
         );

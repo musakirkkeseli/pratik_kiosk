@@ -8,7 +8,13 @@ import '../../../../features/utility/extension/color_extension.dart';
 
 class PaymentResultWidget extends StatelessWidget {
   final EnumPaymentResultType paymentResultType;
-  const PaymentResultWidget({super.key, required this.paymentResultType});
+  final String? totalAmount;
+  
+  const PaymentResultWidget({
+    super.key,
+    required this.paymentResultType,
+    this.totalAmount,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +59,7 @@ class PaymentResultWidget extends StatelessWidget {
                   children: [
                     _PaymentInfoRow(
                       label: "Ödenen Tutar",
-                      value: "1.420 TL",
+                      value: "${totalAmount ?? '0'} ₺",
                       valueColor: context.primaryColor,
                       valueSize: 32,
                       valueBold: true,
@@ -89,7 +95,7 @@ class PaymentResultWidget extends StatelessWidget {
                   children: [
                     Center(
                       child: Text(
-                        "Randevu Detayları",
+                        ConstantString().examinationDetails,
                         style: context.sectionTitle.copyWith(
                           fontSize: 24,
                           color: Colors.white,

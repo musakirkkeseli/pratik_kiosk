@@ -204,7 +204,7 @@ class PriceSuccessWidget extends StatelessWidget {
                 onPressed: () {
                   context
                       .read<PatientRegistrationProceduresCubit>()
-                      .paymentAction(paymentContentList, patientContent);
+                      .paymentAction();
                 },
               ),
             ),

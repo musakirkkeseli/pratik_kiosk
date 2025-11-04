@@ -61,7 +61,10 @@ class PatientRegistrationProceduresView extends StatelessWidget {
 
   _body(BuildContext context, PatientRegistrationProceduresState state) {
     if (state.paymentResultType is EnumPaymentResultType) {
-      return PaymentResultWidget(paymentResultType: state.paymentResultType!);
+      return PaymentResultWidget(
+        paymentResultType: state.paymentResultType!,
+        totalAmount: state.totalAmount,
+      );
     }
     return ProceduresWidget(
       iColor: Colors.grey.shade300,

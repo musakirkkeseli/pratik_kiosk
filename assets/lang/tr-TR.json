@@ -75,5 +75,6 @@
   "examinationRegistrationCreated": "Muayene Kaydınız Oluşturuldu",
   "paymentCompletedSuccessfully": "Ödeme işleminiz başarıyla tamamlandı.",
   "selectDepartment": "Bölüm Seç",
-  "welcomeWithName": "Hoşgeldiniz Sayın {}"
+  "welcomeUser": "Hoşgeldiniz Sayın {}",
+  "examinationDetails": "Muayene Detayları"
 }

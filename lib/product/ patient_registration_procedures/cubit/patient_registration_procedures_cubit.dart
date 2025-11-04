@@ -197,16 +197,13 @@ class PatientRegistrationProceduresCubit
     }
   }
 
-  void paymentAction(
-    List<PaymentContent> paymentContentList,
-    PatientContent? patientContent,
-  ) {
+  void paymentAction() {
+    final updatedModel = state.model;
     PatientTransactionDetailsResponseModel patientPriceDetailModel =
         PatientTransactionDetailsResponseModel(
-          patientContent: patientContent,
-          paymentContent: paymentContentList,
+          patientContent: updatedModel.patientContent,
+          paymentContent: updatedModel.paymentContentList,
         );
-    final updatedModel = state.model;
     updatedModel.patientPriceDetailModel = patientPriceDetailModel;
     emit(state.copyWith(model: updatedModel));
     nextStep();
@@ -219,24 +216,40 @@ class PatientRegistrationProceduresCubit
       final res = await service.postPatientTransactionRevenue(
         patientPriceDetailModel,
       );
+      
+      // Total amount'u al
+      final totalAmount = patientPriceDetailModel.patientContent?.totalPrice ?? "0";
+      
       if (res.success) {
         _log.d("Ödeme Tamamlandı");
         safeEmit(
-          state.copyWith(paymentResultType: EnumPaymentResultType.success),
+          state.copyWith(
+            paymentResultType: EnumPaymentResultType.success,
+            totalAmount: totalAmount,
+          ),
         );
       } else {
         safeEmit(
-          state.copyWith(paymentResultType: EnumPaymentResultType.failure),
+          state.copyWith(
+            paymentResultType: EnumPaymentResultType.failure,
+            totalAmount: totalAmount,
+          ),
         );
       }
     } on NetworkException catch (e) {
       _log.d("NetworkException $e");
       safeEmit(
-        state.copyWith(paymentResultType: EnumPaymentResultType.success),
+        state.copyWith(
+          paymentResultType: EnumPaymentResultType.success,
+          totalAmount: patientPriceDetailModel.patientContent?.totalPrice ?? "0",
+        ),
       );
     } catch (e) {
       safeEmit(
-        state.copyWith(paymentResultType: EnumPaymentResultType.success),
+        state.copyWith(
+          paymentResultType: EnumPaymentResultType.success,
+          totalAmount: patientPriceDetailModel.patientContent?.totalPrice ?? "0",
+        ),
       );
     }
   }
