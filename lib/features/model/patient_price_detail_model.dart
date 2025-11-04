@@ -1,10 +1,10 @@
-class PatientPriceDetailModel {
+class PatientTransactionDetailsResponseModel {
   List<PaymentContent>? paymentContent;
   PatientContent? patientContent;
 
-  PatientPriceDetailModel({this.paymentContent, this.patientContent});
+  PatientTransactionDetailsResponseModel({this.paymentContent, this.patientContent});
 
-  PatientPriceDetailModel.fromJson(Map<String, dynamic> json) {
+  PatientTransactionDetailsResponseModel.fromJson(Map<String, dynamic> json) {
     if (json['paymentContent'] != null) {
       paymentContent = <PaymentContent>[];
       json['paymentContent'].forEach((v) {
