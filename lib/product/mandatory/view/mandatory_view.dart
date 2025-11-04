@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiosk/core/utility/logger_service.dart';
 import 'package:kiosk/features/utility/custom_textfield_widget.dart';
 import 'package:kiosk/features/utility/enum/enum_textformfield.dart';
 import 'package:kiosk/product/mandatory/cubit/mandatory_cubit.dart';
@@ -28,15 +29,7 @@ class _State extends State<MandatoryView> {
   final Map<String, FocusNode> _focusNodes = {};
   final List<String> _editableFields = [];
   final ScrollController _scrollController = ScrollController();
-
-  final Map<String, String> _fakeData = {
-    'TC': '41467192600',
-    'T.C': '41467192600',
-    'T.C.': '41467192600',
-    'TCKN': '41467192600',
-    'Adres': 'Atatürk Mah. Cumhuriyet Cad. No:123 Daire:4 Beşiktaş/İstanbul',
-    'Address': 'Atatürk Mah. Cumhuriyet Cad. No:123 Daire:4 Beşiktaş/İstanbul',
-  };
+  final MyLog _log = MyLog('MandatoryView');
 
   @override
   void dispose() {
@@ -48,16 +41,6 @@ class _State extends State<MandatoryView> {
       focusNode.dispose();
     }
     super.dispose();
-  }
-
-  String? _getFakeData(String label) {
-    final normalizedLabel = label.trim().toUpperCase();
-    for (var key in _fakeData.keys) {
-      if (normalizedLabel.contains(key.toUpperCase())) {
-        return _fakeData[key];
-      }
-    }
-    return null;
   }
 
   void _focusNextEmptyField(
@@ -155,21 +138,23 @@ class _State extends State<MandatoryView> {
                     padding: const EdgeInsets.only(right: 40),
                     itemCount: state.data.length,
                     itemBuilder: (context, index) {
+                      TextInputType? keyboardType;
                       MandatoryResponseModel item = state.data[index];
                       final itemId = item.id ?? '';
                       final label = item.labelCaption ?? "";
+                      if (item.objectType == "integer") {
+                        keyboardType = TextInputType.number;
+                      }
 
                       _controllers.putIfAbsent(itemId, () {
-                        final fakeData = _getFakeData(label);
-                        final controller = TextEditingController(
-                          text: fakeData,
-                        );
-
-                        if (fakeData == null &&
-                            !_editableFields.contains(itemId)) {
-                          _editableFields.add(itemId);
+                        TextEditingController controller =
+                            TextEditingController(text: item.fieldValue ?? "");
+                        if (item.fieldValue == null ||
+                            item.fieldValue!.isEmpty) {
+                          if (!_editableFields.contains(itemId)) {
+                            _editableFields.add(itemId);
+                          }
                         }
-
                         return controller;
                       });
 
@@ -189,6 +174,7 @@ class _State extends State<MandatoryView> {
                             focusNode: focusNode,
                             readOnly: isReadOnly,
                             textInputAction: TextInputAction.next,
+                            keyboardType: keyboardType,
                             onFieldSubmitted: () {
                               _focusNextEmptyField(index, state.data);
                             },
