@@ -101,7 +101,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                                       appointment.doctorID ?? "",
                                     ),
                                     doctorName: appointment.doctorName,
-                                    appointmentID: appointment.appointmentID,
+                                    appointmentId: appointment.appointmentID,
                                   ),
                                 },
                               );
