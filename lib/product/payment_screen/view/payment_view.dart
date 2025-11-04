@@ -11,7 +11,7 @@ import '../../../features/utility/inactivity_controller.dart';
 import '../../../features/utility/extension/text_theme_extension.dart';
 
 class PaymentView extends StatefulWidget {
-  final PatientPriceDetailModel patientPriceDetailModel;
+  final PatientTransactionDetailsResponseModel patientPriceDetailModel;
   const PaymentView({super.key, required this.patientPriceDetailModel});
 
   @override
