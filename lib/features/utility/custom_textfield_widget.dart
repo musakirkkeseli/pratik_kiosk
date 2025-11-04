@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kiosk/features/utility/custom_input_container.dart';
 import 'package:kiosk/features/utility/enum/enum_textformfield.dart';
+import 'package:kiosk/features/utility/extension/input_decoration_extension.dart';
 
 class CustomTextfieldWidget extends StatelessWidget {
   final EnumTextformfield type;
@@ -16,6 +17,7 @@ class CustomTextfieldWidget extends StatelessWidget {
   final FocusNode? focusNode; // Focus yönetimi
   final TextInputAction? textInputAction; // Enter aksiyonu
   final void Function()? onFieldSubmitted; // Enter'a basıldığında
+  final TextInputType? keyboardType;
 
   const CustomTextfieldWidget({
     super.key,
@@ -31,6 +33,7 @@ class CustomTextfieldWidget extends StatelessWidget {
     this.focusNode,
     this.textInputAction,
     this.onFieldSubmitted,
+    this.keyboardType,
   });
 
   @override
@@ -38,36 +41,36 @@ class CustomTextfieldWidget extends StatelessWidget {
     return CustomInputContainer(
       type: type,
       customLabel: customLabel,
-      child: TextFormField(
-        controller: controller,
-        obscureText: type.obscureText,
-        keyboardType: type.keyboardType,
-        inputFormatters: customInputFormatters ?? type.inputFormatters,
-        maxLength: customMaxLength ?? type.maxLength,
-        validator: customValidator ?? type.validator,
-        onChanged: onChanged,
-        onSaved: onSaved,
-        readOnly: readOnly,
-        focusNode: focusNode,
-        textInputAction: textInputAction ?? TextInputAction.next,
-        onFieldSubmitted: (_) => onFieldSubmitted?.call(),
-        cursorColor: Colors.grey.shade700,
-        style: TextStyle(
-          fontSize: 25,
-          color: readOnly ? Colors.grey.shade600 : Colors.black,
-        ),
-        decoration: InputDecoration(
-          fillColor: Colors.grey.shade200,
-          filled: false,
-          border: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-          focusedErrorBorder: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          counterText: '',
-        ),
-      ),
+      child: readOnly
+          ? InputDecorator(
+              isFocused: false,
+              decoration: InputDecoration().mandatoryDecoration,
+              child: SelectionArea(
+                child: SelectableText(
+                  controller.text,
+                  maxLines: 1,
+                  showCursor: true,
+                  style: TextStyle(fontSize: 25, color: Colors.grey.shade600),
+                ),
+              ),
+            )
+          : TextFormField(
+              controller: controller,
+              obscureText: type.obscureText,
+              keyboardType: keyboardType ?? type.keyboardType,
+              inputFormatters: customInputFormatters ?? type.inputFormatters,
+              maxLength: customMaxLength ?? type.maxLength,
+              validator: customValidator ?? type.validator,
+              onChanged: onChanged,
+              onSaved: onSaved,
+              readOnly: readOnly,
+              focusNode: focusNode,
+              textInputAction: textInputAction ?? TextInputAction.next,
+              onFieldSubmitted: (_) => onFieldSubmitted?.call(),
+              cursorColor: Colors.grey.shade700,
+              style: TextStyle(fontSize: 25, color: Colors.black),
+              decoration: InputDecoration().mandatoryDecoration,
+            ),
     );
   }
 }
