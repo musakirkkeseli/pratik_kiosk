@@ -7,7 +7,7 @@ import 'package:kiosk/features/utility/user_http_service.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../cubit/section_search_cubit.dart';
 import '../service/section_search_service.dart';
-import 'widget/section_search_body_widget.dart';
+import 'widget/section_search_list_view_widget.dart';
 
 class SectionSearchView extends StatefulWidget {
   const SectionSearchView({super.key});
@@ -36,7 +36,7 @@ class _SectionSearchViewState extends State<SectionSearchView> {
       case EnumGeneralStateStatus.loading:
         return LoadingWidget();
       case EnumGeneralStateStatus.success:
-        return SectionSearchBodyWidget(sectionItemList: state.data);
+        return SectionSearchListViewWidget(sectionItemList: state.data);
       default:
         return Center(
           child: Text(state.message ?? ConstantString().errorOccurred),

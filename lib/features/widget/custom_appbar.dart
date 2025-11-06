@@ -13,30 +13,25 @@ class CustomAppBar extends StatelessWidget {
     final logoUrl = themeProvider.logoUrl;
 
     return SizedBox(
-      width: double.infinity,
-      height: 200,
+      height: 130,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (logoUrl.isNotEmpty)
             CachedNetworkImage(
               imageUrl: logoUrl,
-              width: 200,
-              height: 150,
               fit: BoxFit.contain,
               placeholder: (context, url) => SizedBox(
-                width: 200,
-                height: 150,
                 child: Center(
                   child: CircularProgressIndicator(color: Colors.white),
                 ),
               ),
               errorWidget: (context, url, error) {
-                return Icon(Icons.business, size: 80, color: Colors.white);
+                return SizedBox();
               },
             )
           else
-            Icon(Icons.business, size: 80, color: Colors.white),
+            SizedBox(),
         ],
       ),
     );

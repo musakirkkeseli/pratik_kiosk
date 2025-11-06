@@ -1,37 +1,24 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/utility/language_manager.dart';
+import '../../cubit/patient_login_cubit.dart';
 
 class LanguageButtonWidget extends StatelessWidget {
-  const LanguageButtonWidget({super.key});
+  final BuildContext cubitContext;
+  const LanguageButtonWidget({super.key, required this.cubitContext});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       spacing: 16,
       children: LanguageManager.instance.appSupportLanguageList.map((language) {
         final isSelected = context.locale == language.locale;
-
         return OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: Theme.of(context).primaryColor,
-            elevation: isSelected ? 4 : 0,
-            shadowColor: isSelected
-                ? Theme.of(context).primaryColor.withOpacity(0.5)
-                : null,
-            side: BorderSide(
-              color: Theme.of(context).primaryColor,
-              width: isSelected ? 2.5 : 1.5,
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
           onPressed: () async {
+            cubitContext.read<PatientLoginCubit>().onChanged('force');
             await context.setLocale(language.locale);
             LanguageManager.instance.setLocale(language.locale);
           },

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kiosk/core/utility/logger_service.dart';
 import 'package:kiosk/features/utility/custom_textfield_widget.dart';
 import 'package:kiosk/features/utility/enum/enum_textformfield.dart';
+import 'package:kiosk/features/widget/custom_button.dart';
 import 'package:kiosk/product/mandatory/cubit/mandatory_cubit.dart';
 import 'package:kiosk/product/mandatory/service/mandatory_service.dart';
 
@@ -30,7 +30,7 @@ class _State extends State<MandatoryView> {
   final Map<String, FocusNode> _focusNodes = {};
   final List<String> _editableFields = [];
   final ScrollController _scrollController = ScrollController();
-  final MyLog _log = MyLog('MandatoryView');
+  // final MyLog _log = MyLog('MandatoryView');
 
   @override
   void dispose() {
@@ -48,7 +48,6 @@ class _State extends State<MandatoryView> {
     int currentIndex,
     List<MandatoryResponseModel> data,
   ) {
-    // Bir sonraki boş alanı bul
     for (int i = currentIndex + 1; i < data.length; i++) {
       final nextId = data[i].id ?? '';
       if (_editableFields.contains(nextId)) {
@@ -56,7 +55,6 @@ class _State extends State<MandatoryView> {
         return;
       }
     }
-    // Eğer sonuna geldiyse klavyeyi kapat
     FocusScope.of(context).unfocus();
   }
 
@@ -86,19 +84,10 @@ class _State extends State<MandatoryView> {
               padding: EdgeInsets.symmetric(
                 vertical: MediaQuery.of(context).size.height * 0.02,
               ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: context.primaryColor,
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
+              child: CustomButton(
+                width: MediaQuery.of(context).size.width * 0.3,
+                height: MediaQuery.of(context).size.height * 0.06,
+                label: ConstantString().completeRegistration,
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
                     _formKey.currentState!.save();
@@ -107,24 +96,42 @@ class _State extends State<MandatoryView> {
                         .mandatoryCheck(state.patientMandatoryData);
                   }
                 },
-                child: Text(ConstantString().completeRegistration),
               ),
             ),
-            Row(
-              spacing: MediaQuery.of(context).size.width * 0.01,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(Icons.person, color: context.primaryColor),
-                Text(
-                  ConstantString().patientInformation,
-                  style: context.sectionTitle,
-                ),
-              ],
+            ListTile(
+              title: Text(
+                ConstantString().patientInformation,
+                style: context.sectionTitle,
+              ),
+              leading: Icon(
+                Icons.person,
+                color: context.primaryColor,
+                size: 40,
+              ),
+              subtitle: Text(
+                ConstantString().filledFieldInfo,
+                textAlign: TextAlign.start,
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: const Divider(height: 24),
-            ),
+            // Row(
+            //   spacing: 10,
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     Icon(Icons.person, color: context.primaryColor),
+            //     Text(
+            //       ConstantString().patientInformation,
+            //       style: context.sectionTitle,
+            //     ),
+            //   ],
+            // ),
+            // SizedBox(
+            //   width: MediaQuery.of(context).size.width * 0.5,
+            //   child: Text(
+            //     ConstantString().filledFieldInfo,
+            //     textAlign: TextAlign.start,
+            //   ),
+            // ),
+            const Divider(height: 30),
             Expanded(
               child: Form(
                 key: _formKey,

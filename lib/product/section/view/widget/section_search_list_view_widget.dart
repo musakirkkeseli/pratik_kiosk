@@ -11,24 +11,23 @@ class SectionSearchListViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
+    return ListView.separated(
       shrinkWrap: true,
       itemCount: sectionItemList.length,
       itemBuilder: (context, index) {
         SectionItems section = sectionItemList[index];
         return ItemButton(
-          title: section.sectionName ==
-                  "ConstantString().otherBranches.locale"
+          title: section.sectionName == "ConstantString().otherBranches.locale"
               ? "ConstantString().nutritionAndDietetics.locale"
               : section.sectionName ?? "",
           onTap: () {
-            context
-                .read<PatientRegistrationProceduresCubit>()
-                .selectSection(section);
+            context.read<PatientRegistrationProceduresCubit>().selectSection(
+              section,
+            );
           },
         );
       },
+      separatorBuilder: (context, index) => const SizedBox(height: 12),
     );
   }
 }

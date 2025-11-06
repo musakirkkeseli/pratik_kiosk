@@ -24,7 +24,6 @@
   "patientTransaction": "Patient Operations",
   "mandatoryFields": "Mandatory Fields",
   "payment": "Payment",
-  "paymentAction": "Make Payment",
   "total": "Total",
   "insurance": "Insurance",
   "enterTurkishIdNumber": "Please enter your Turkish ID Number",
@@ -76,5 +75,12 @@
   "paymentCompletedSuccessfully": "Your payment has been completed successfully.",
   "selectDepartment": "Select Department",
   "welcomeUser": "Welcome, {}",
-  "examinationDetails": "Examination Details"
+  "examinationDetails": "Examination Details",
+  "username": "Username",
+  "password": "Password",
+  "turkishIdNumber": "Turkish ID Number",
+  "smsCode": "Code sent via SMS",
+  "elevenDigitTurkishIdInfo": "11-digit Turkish ID information",
+  "makeSecurePayment": "Make a Secure Payment",
+  "welcome": "Welcome"
 }

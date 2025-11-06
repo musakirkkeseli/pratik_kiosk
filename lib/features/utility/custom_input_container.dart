@@ -9,6 +9,8 @@ class CustomInputContainer extends StatelessWidget {
   final String? errorMessage;
   final String currentValue; // Mevcut değer (karakter sayısı için)
   final VoidCallback? onClear; // Temizle butonu callback
+  final bool obscureText; // Gizli metin (şifre gibi)
+  final VoidCallback? onToggleVisibility; // Görünürlük toggle callback
 
   const CustomInputContainer({
     super.key,
@@ -19,6 +21,8 @@ class CustomInputContainer extends StatelessWidget {
     this.errorMessage,
     this.currentValue = '',
     this.onClear,
+    this.obscureText = false,
+    this.onToggleVisibility,
   });
 
   @override
@@ -56,7 +60,36 @@ class CustomInputContainer extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (type.maxLength != null && (onClear == null || currentValue.isEmpty))
+              // Göz ikonu (eğer onToggleVisibility callback'i varsa)
+              if (onToggleVisibility != null && currentValue.isNotEmpty)
+                Positioned(
+                  right: 16,
+                  top: 0,
+                  bottom: 0,
+                  child: Center(
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: onToggleVisibility,
+                        borderRadius: BorderRadius.circular(20),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey.shade600,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              // Karakter sayısı (sadece göz ikonu yoksa göster)
+              if (type.maxLength != null && 
+                  currentValue.isNotEmpty && 
+                  onToggleVisibility == null)
                 Positioned(
                   right: 16,
                   top: 0,
@@ -85,38 +118,17 @@ class CustomInputContainer extends StatelessWidget {
                       color: Colors.transparent,
                       child: InkWell(
                         onTap: onClear,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
-                          ),
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: Colors.red.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.red,
-                              width: 1.5,
-                            ),
+                            shape: BoxShape.circle,
                           ),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.clear,
-                                size: 18,
-                                color: Colors.red,
-                              ),
-                              SizedBox(width: 4),
-                              Text(
-                                'Temizle',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ],
+                          child: const Icon(
+                            Icons.close,
+                            size: 20,
+                            color: Colors.red,
                           ),
                         ),
                       ),
@@ -126,19 +138,23 @@ class CustomInputContainer extends StatelessWidget {
             ],
           ),
         ),
-        // Hata mesajı göster
-        if (!isValid && errorMessage != null)
-          Padding(
-            padding: const EdgeInsets.only(left: 10, top: 8),
-            child: Text(
-              errorMessage!,
-              style: const TextStyle(
-                color: Colors.red,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
+        // Hata mesajı alanı - her zaman aynı yükseklikte (görünür veya görünmez)
+        SizedBox(
+          height: 30, // Sabit yükseklik
+          child: (!isValid && errorMessage != null)
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 8),
+                  child: Text(
+                    errorMessage!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink(),
+        ),
       ],
     );
   }

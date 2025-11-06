@@ -78,7 +78,7 @@ class _PaymentViewState extends State<PaymentView> {
                     style: context.cardTitle,
                   ),
                   Text(
-                    totalAmount,
+                    "$totalAmount ₺",
                     style: context.sectionTitle.copyWith(fontSize: 24),
                   ),
                 ],

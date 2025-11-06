@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/material_symbols.dart';
 
+import '../../../../core/utility/user_login_status_service.dart';
 import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/enum/enum_payment_result_type.dart';
@@ -9,7 +12,7 @@ import '../../../../features/utility/extension/color_extension.dart';
 class PaymentResultWidget extends StatelessWidget {
   final EnumPaymentResultType paymentResultType;
   final String? totalAmount;
-  
+
   const PaymentResultWidget({
     super.key,
     required this.paymentResultType,
@@ -22,14 +25,96 @@ class PaymentResultWidget extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.2,
-            vertical: MediaQuery.of(context).size.height * 0.1,
+            horizontal: MediaQuery.of(context).size.width * 0.05,
           ),
           child: Column(
             spacing: 10,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        if (Navigator.of(context).canPop()) {
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[300],
+                        foregroundColor: Colors.grey[800],
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      icon: Icon(
+                        Icons.arrow_back,
+                        size: 20,
+                        color: Colors.grey[800],
+                      ),
+                      label: Text(
+                        ConstantString().homePageTitle,
+
+                        style: context.cardTitle.copyWith(
+                          fontSize: 14,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SizedBox(
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          foregroundColor: context.primaryColor,
+                          elevation: 0,
+                          side: BorderSide(
+                            color: context.primaryColor,
+                            width: 2,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 32,
+                            vertical: 12,
+                          ),
+                        ),
+                        onPressed: () {
+                          UserLoginStatusService().logout();
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Iconify(
+                              MaterialSymbols.exit_to_app,
+                              color: context.primaryColor,
+                            ),
+                            Text(
+                              ConstantString().logout,
+                              style: context.buttonText.copyWith(
+                                color: context.primaryColor,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Icon(
                 Icons.check_circle,
                 color: paymentResultType == EnumPaymentResultType.success

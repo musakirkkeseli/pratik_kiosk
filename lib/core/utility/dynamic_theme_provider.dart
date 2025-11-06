@@ -24,7 +24,7 @@ class DynamicThemeProvider extends ChangeNotifier {
     } else {
       _hospitalName = "";
     }
-    
+
     final primaryColorHex = config.color?.primaryColor;
     if (primaryColorHex != null) {
       final color = primaryColorHex.toColor();
@@ -35,11 +35,16 @@ class DynamicThemeProvider extends ChangeNotifier {
           style: OutlinedButton.styleFrom(
             foregroundColor: color,
             side: BorderSide(color: color, width: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: color,
+            foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(22.0),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kiosk/features/utility/const/constant_string.dart';
 
 enum EnumTextformfield {
   hospitalUserName,
@@ -14,17 +15,17 @@ extension EnumTextformfieldExtension on EnumTextformfield {
   String get label {
     switch (this) {
       case EnumTextformfield.hospitalUserName:
-        return 'Kullanıcı Adı';
+        return ConstantString().username;
       case EnumTextformfield.hospitalUserPassword:
-        return 'Şifre';
+        return ConstantString().password;
       case EnumTextformfield.tc:
-        return 'T.C. Kimlik No';
+        return ConstantString().turkishIdNumber;
       case EnumTextformfield.birthday:
-        return 'Doğum Tarihi';
+        return ConstantString().birthDate;
       case EnumTextformfield.mandatory:
-        return ''; // Dinamik olarak dışarıdan verilecek
+        return '';
       case EnumTextformfield.otpCode:
-        return 'SMS ile gönderilen kod';
+        return ConstantString().smsCode;
     }
   }
 
@@ -33,9 +34,9 @@ extension EnumTextformfieldExtension on EnumTextformfield {
       case EnumTextformfield.hospitalUserName:
         return '';
       case EnumTextformfield.hospitalUserPassword:
-        return ''; // Hint gösterme
+        return '';
       case EnumTextformfield.tc:
-        return '11 haneli TC bilgisi';
+        return ConstantString().elevenDigitTurkishIdInfo;
       case EnumTextformfield.birthday:
         return 'gg/aa/yyyy';
       case EnumTextformfield.mandatory:
@@ -212,11 +213,12 @@ extension EnumTextformfieldExtension on EnumTextformfield {
     final raw = value.replaceAll(RegExp(r'\D'), '');
     if (raw.isEmpty) return 'T.C. Kimlik No zorunludur';
     if (raw.length != 11) return '11 haneli olmalıdır';
-    
+
     // TC Kimlik No algoritması
     if (!RegExp(r'^\d{11}$').hasMatch(raw)) return 'Geçersiz T.C. Kimlik No';
     if (raw[0] == '0') return 'T.C. Kimlik No 0 ile başlayamaz';
-    if (RegExp(r'^(\d)\1{10}$').hasMatch(raw)) return 'Tüm rakamlar aynı olamaz';
+    if (RegExp(r'^(\d)\1{10}$').hasMatch(raw))
+      return 'Tüm rakamlar aynı olamaz';
 
     final d = raw.split('').map(int.parse).toList();
     final sumOdd = d[0] + d[2] + d[4] + d[6] + d[8];
@@ -226,14 +228,14 @@ extension EnumTextformfieldExtension on EnumTextformfield {
     final d11 = (d.take(10).reduce((a, b) => a + b)) % 10;
 
     if (d[9] != d10 || d[10] != d11) return 'Geçersiz T.C. Kimlik No';
-    
+
     return null; // Geçerli
   }
 
   static String? validateBirthDate(String value) {
     final trimmed = value.trim();
     if (trimmed.isEmpty) return 'Doğum tarihi zorunludur';
-    
+
     // Beklenen: gg/aa/yyyy
     final parts = trimmed.split('/');
     if (parts.length != 3) return 'gg/aa/yyyy formatında giriniz';
@@ -241,7 +243,7 @@ extension EnumTextformfieldExtension on EnumTextformfield {
     final day = int.tryParse(parts[0]);
     final month = int.tryParse(parts[1]);
     final year = int.tryParse(parts[2]);
-    
+
     if (day == null || month == null || year == null) {
       return 'Geçersiz tarih formatı';
     }
@@ -287,7 +289,6 @@ class DateDottedFormatter extends TextInputFormatter {
       if (i == 3 && digits.length > 4) formatted += '.';
     }
 
-    // İmleci sonuna koy
     return TextEditingValue(
       text: formatted,
       selection: TextSelection.collapsed(offset: formatted.length),
@@ -301,17 +302,14 @@ class PhoneFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    // Sadece rakamları al
     var digits = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
 
-    // Maksimum 10 hane
     if (digits.length > 10) {
       digits = digits.substring(0, 10);
     }
 
     String formatted = '';
 
-    // Format: 0(5##) ### ## ##
     for (int i = 0; i < digits.length; i++) {
       if (i == 0) {
         formatted += digits[i]; // 0

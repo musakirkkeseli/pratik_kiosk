@@ -18,13 +18,11 @@ class _State extends State<InfoContainerWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.50,
+      width: 550,
       decoration: BoxDecoration(
         color: Colors.grey[100],
         borderRadius: BorderRadius.circular(12),
-        border: Border(
-          left: BorderSide(color: context.primaryColor, width: 8),
-        ),
+        border: Border(left: BorderSide(color: context.primaryColor, width: 8)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -34,15 +32,29 @@ class _State extends State<InfoContainerWidget> {
         ],
       ),
       child: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(  context).size.width * 0.02),
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.02,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            infoWidget(ConstantString().section, widget.model.branchName, context),
+            infoWidget(
+              ConstantString().section,
+              widget.model.branchName,
+              context,
+            ),
             _DashedDivider(),
-            infoWidget(ConstantString().doctor, widget.model.doctorName, context),
+            infoWidget(
+              ConstantString().doctor,
+              widget.model.doctorName,
+              context,
+            ),
             _DashedDivider(),
-            infoWidget(ConstantString().insurance, widget.model.assocationName, context),
+            infoWidget(
+              ConstantString().insurance,
+              widget.model.assocationName,
+              context,
+            ),
           ],
         ),
       ),
@@ -79,13 +91,9 @@ class _DashedLinePainter extends CustomPainter {
     const dashWidth = 5.0;
     const dashSpace = 3.0;
     double startX = 0;
-    
+
     while (startX < size.width) {
-      canvas.drawLine(
-        Offset(startX, 0),
-        Offset(startX + dashWidth, 0),
-        paint,
-      );
+      canvas.drawLine(Offset(startX, 0), Offset(startX + dashWidth, 0), paint);
       startX += dashWidth + dashSpace;
     }
   }
@@ -102,13 +110,19 @@ infoWidget(String title, String? text, BuildContext context) {
         Row(
           children: [
             Text("$title: ", style: context.cardTitle),
-            text != null && text.isNotEmpty
-                ? Text(text, textAlign: TextAlign.center, style: context.bodyPrimary)
-                : Text("-", style: context.bodySecondary),
+            Expanded(
+              child: text != null && text.isNotEmpty
+                  ? Text(
+                      text,
+                      textAlign: TextAlign.left,
+                      style: context.bodyPrimary,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    )
+                  : Text("-", style: context.bodySecondary),
+            ),
           ],
         ),
-
-       
       ],
     ),
   );

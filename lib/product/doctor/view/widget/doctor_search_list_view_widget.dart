@@ -7,31 +7,28 @@ import '../../model/doctor_model.dart';
 
 class DoctorListTileWidget extends StatelessWidget {
   final List<DoctorItems> doctorItemList;
-  const DoctorListTileWidget({
-    super.key,
-    required this.doctorItemList,
-  });
+  const DoctorListTileWidget({super.key, required this.doctorItemList});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: doctorItemList.length,
       itemBuilder: (context, index) {
         DoctorItems doctor = doctorItemList[index];
         return ItemButton(
-          title: doctor.doctorName ==
-                  "ConstantString().otherBranches.locale"
+          title: doctor.doctorName == "ConstantString().otherBranches.locale"
               ? "ConstantString().nutritionAndDietetics.locale"
               : doctor.doctorName ?? "",
           onTap: () {
-            context
-                .read<PatientRegistrationProceduresCubit>()
-                .selectDoctor(doctor);
+            context.read<PatientRegistrationProceduresCubit>().selectDoctor(
+              doctor,
+            );
           },
         );
       },
+      separatorBuilder: (context, index) => const SizedBox(height: 12),
     );
   }
 }

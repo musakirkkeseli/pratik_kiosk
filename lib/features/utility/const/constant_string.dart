@@ -64,7 +64,7 @@ class ConstantString {
   String patientTransaction = LocaleKeys.patientTransaction.locale;
   String mandatoryFields = LocaleKeys.mandatoryFields.locale;
   String payment = LocaleKeys.payment.locale;
-  String paymentAction = LocaleKeys.paymentAction.locale;
+  String makeSecurePayment = LocaleKeys.makeSecurePayment.locale;
   String total = LocaleKeys.total.locale;
   String insurance = LocaleKeys.insurance.locale;
   String enterYourTurkishIdNumber = LocaleKeys.enterYourTurkishIdNumber.locale;
@@ -119,4 +119,12 @@ class ConstantString {
       LocaleKeys.paymentCompletedSuccessfully.locale;
   String selectDepartment = LocaleKeys.selectDepartment.locale;
   String examinationDetails = LocaleKeys.examinationDetails.locale;
+  String username = LocaleKeys.username.locale;
+  String password = LocaleKeys.password.locale;
+  String turkishIdNumber = LocaleKeys.turkishIdNumber.locale;
+  String smsCode = LocaleKeys.smsCode.locale;
+  String elevenDigitTurkishIdInfo = LocaleKeys.elevenDigitTurkishIdInfo.locale;
+  String filledFieldInfo =
+      "Mevcut bilgileri değişmek için Hasta Kabule müracaat ediniz. Eksik Bilgileri tamamlayabilirsiniz. "; 
+  String welcome = LocaleKeys.welcome.locale;
 }

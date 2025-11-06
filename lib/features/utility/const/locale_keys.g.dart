@@ -28,7 +28,7 @@ abstract class LocaleKeys {
   static const patientTransaction = 'patientTransaction';
   static const mandatoryFields = 'mandatoryFields';
   static const payment = 'payment';
-  static const paymentAction = 'paymentAction';
+  static const makeSecurePayment = 'makeSecurePayment';
   static const total = 'total';
   static const insurance = 'insurance';
   static const enterYourTurkishIdNumber = 'enterYourTurkishIdNumber';
@@ -82,4 +82,10 @@ abstract class LocaleKeys {
   static const selectDepartment = 'selectDepartment';
   static const welcomeUser = 'welcomeUser';
   static const examinationDetails = 'examinationDetails';
+  static const username = 'username';
+  static const password = 'password';
+  static const turkishIdNumber = 'turkishIdNumber';
+  static const smsCode = 'smsCode';
+  static const elevenDigitTurkishIdInfo = 'elevenDigitTurkishIdInfo';
+  static const welcome = 'welcome';
 }

@@ -10,7 +10,6 @@ import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/extension/text_theme_extension.dart';
 import '../../../../features/utility/extension/color_extension.dart';
-import 'price_info_card_widget.dart';
 
 class PriceSuccessWidget extends StatelessWidget {
   final List<PaymentContent> paymentContentList;
@@ -29,6 +28,23 @@ class PriceSuccessWidget extends StatelessWidget {
           spacing: 30,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.02,
+                ),
+                child: CustomButton(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  label: ConstantString().makeSecurePayment,
+                  onPressed: () {
+                    context
+                        .read<PatientRegistrationProceduresCubit>()
+                        .paymentAction();
+                  },
+                ),
+              ),
+            ),
             Divider(color: ConstColor.textfieldColor),
             Row(
               spacing: 10,
@@ -61,11 +77,10 @@ class PriceSuccessWidget extends StatelessWidget {
                   ),
                 ),
                 columnWidths: const {
-                  0: FlexColumnWidth(7),
-                  1: FlexColumnWidth(20),
+                  0: FlexColumnWidth(3),
+                  1: FlexColumnWidth(1),
                 },
                 children: [
-                  // Başlık satırı
                   TableRow(
                     decoration: BoxDecoration(
                       color: Colors.grey.shade100,
@@ -80,7 +95,7 @@ class PriceSuccessWidget extends StatelessWidget {
                         child: Text(
                           ConstantString().description,
                           style: context.cardTitle.copyWith(fontSize: 25),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                         ),
                       ),
                       Padding(
@@ -88,7 +103,7 @@ class PriceSuccessWidget extends StatelessWidget {
                         child: Text(
                           ConstantString().amount,
                           style: context.cardTitle.copyWith(fontSize: 25),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.right,
                         ),
                       ),
                     ],
@@ -100,16 +115,20 @@ class PriceSuccessWidget extends StatelessWidget {
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
                             paymentContent.paymentName ?? "",
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.left,
                             style: context.bodyPrimary.copyWith(fontSize: 20),
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
-                            paymentContent.price.toString(),
-                            textAlign: TextAlign.center,
+                            "${paymentContent.price} ₺",
+                            textAlign: TextAlign.right,
                             style: context.cardTitle.copyWith(fontSize: 20),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -160,7 +179,7 @@ class PriceSuccessWidget extends StatelessWidget {
                       const SizedBox(width: 16),
                       Text(
                         ConstantString().totalAmount,
-                        style: context.pageTitle.copyWith(
+                        style: context.priceTitle.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
@@ -183,31 +202,23 @@ class PriceSuccessWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Text(
-                      "${patientContent!.totalPrice ?? "-"} ₺",
-                      style: context.pageTitle.copyWith(
-                        color: context.primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "${patientContent!.totalPrice ?? "-"} ₺ - KDV dahildir.",
+                          style: context.priceTitle.copyWith(
+                            color: context.primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-            PriceInfoCardWidget(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: CustomButton(
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.height * 0.06,
-                label: ConstantString().paymentAction,
-                onPressed: () {
-                  context
-                      .read<PatientRegistrationProceduresCubit>()
-                      .paymentAction();
-                },
-              ),
-            ),
+
+            // PriceInfoCardWidget(),
           ],
         ),
       );

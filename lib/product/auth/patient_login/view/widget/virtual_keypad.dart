@@ -16,7 +16,7 @@ class _VirtualKeypadState extends State<VirtualKeypad> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * .25,
+      width: 270,
       child: GridView.builder(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),

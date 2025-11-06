@@ -9,6 +9,11 @@ extension AppTextTheme on BuildContext {
   TextStyle get pageTitle =>
       textTheme.headlineLarge!.copyWith(color: Theme.of(this).primaryColor);
 
+  TextStyle get priceTitle => textTheme.headlineMedium!.copyWith(
+    color: Theme.of(this).primaryColor,
+    fontSize: 23,
+  );
+
   TextStyle get sectionTitle =>
       textTheme.titleLarge!.copyWith(color: Theme.of(this).primaryColor);
 

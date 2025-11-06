@@ -24,7 +24,6 @@
   "patientTransaction": "إجراءات المريض",
   "mandatoryFields": "حقول إلزامية",
   "payment": "الدفع",
-  "paymentAction": "إتمام الدفع",
   "total": "الإجمالي",
   "insurance": "التأمين",
   "enterTurkishIdNumber": "يرجى إدخال رقم الهوية التركية",
@@ -77,5 +76,12 @@
   "paymentCompletedSuccessfully": "تم إكمال عملية الدفع بنجاح.",
   "selectDepartment": "اختر القسم",
   "welcomeUser": "مرحبًا، {}",
-  "examinationDetails": "تفاصيل الفحص"
+  "examinationDetails": "تفاصيل الفحص",
+  "username": "اسم المستخدم",
+  "password": "كلمة المرور",
+  "turkishIdNumber": "رقم الهوية التركية",
+  "smsCode": "الرمز المرسل عبر الرسائل القصيرة",
+  "elevenDigitTurkishIdInfo": "معلومات الهوية التركية ذات 11 رقمًا",
+  "makeSecurePayment": "ادفع بأمان",
+  "welcome": "مرحبًا السيد/السيدة"
 }

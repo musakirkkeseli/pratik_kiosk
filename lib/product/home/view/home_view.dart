@@ -23,25 +23,25 @@ class _HomeViewState extends State<HomeView> {
       body: Column(
         children: [
           CustomAppBar(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20.0,
-                  horizontal: 20.0,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(ConstantString().welcome, style: context.pageTitle),
+                    Text(
+                      UserLoginStatusService().userName ?? "",
+                      style: context.pageTitle.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-                child: Text(
-                  ConstantString().welcomeUser(
-                    UserLoginStatusService().userName ?? "",
-                  ),
-                  style: context.pageTitle,
-                ),
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SizedBox(
+                const Spacer(),
+                SizedBox(
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -78,8 +78,8 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(

@@ -30,8 +30,8 @@ class PatientTransactionDetailsResponseModel {
 
 class PaymentContent {
   String? paymentName;
-  int? price;
-  int? tax;
+  String? price;
+  String? tax;
   bool? isContributionFee;
 
   PaymentContent({

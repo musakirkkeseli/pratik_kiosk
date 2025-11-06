@@ -62,35 +62,46 @@ class PatientTransactionView extends StatelessWidget {
                         return Center(
                           child: Material(
                             borderRadius: BorderRadius.circular(12),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Align(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Align(
                                     alignment: Alignment.topRight,
                                     child: IconButton(
-                                      icon: const Icon(Icons.close),
+                                      icon: const Icon(Icons.close, size: 50),
                                       onPressed: () {
                                         NavigationService.ns.goBack();
                                       },
                                     ),
                                   ),
-                                  Text(
-                                    ConstantString().associationGssInfoMessage,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  state.insuranceData.isNotEmpty
-                                      ? Expanded(
-                                          child: ListView.builder(
+                                ),
+                                Text(
+                                  ConstantString().associationGssInfoMessage,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 16),
+                                state.insuranceData.isNotEmpty
+                                    ? Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0,
+                                          ),
+                                          child: ListView.separated(
                                             shrinkWrap: true,
-                                            itemCount: state.insuranceData.length,
+                                            itemCount:
+                                                state.insuranceData.length,
+                                            separatorBuilder: (_, __) =>
+                                                const SizedBox(height: 12),
                                             itemBuilder: (_, index) {
                                               final insuranceItem =
                                                   state.insuranceData[index];
                                               return ItemButton(
-                                                title: insuranceItem.insuredTypeName ?? '',
+                                                title:
+                                                    insuranceItem
+                                                        .insuredTypeName ??
+                                                    '',
                                                 onTap: () {
                                                   NavigationService.ns.goBack();
                                                   context
@@ -101,8 +112,8 @@ class PatientTransactionView extends StatelessWidget {
                                                         AssocationModel(
                                                           assocationId:
                                                               item.assocationId,
-                                                          assocationName:
-                                                              item.assocationName,
+                                                          assocationName: item
+                                                              .assocationName,
                                                         ),
                                                         insuranceItem,
                                                       );
@@ -110,10 +121,10 @@ class PatientTransactionView extends StatelessWidget {
                                               );
                                             },
                                           ),
-                                        )
-                                      : Text(ConstantString().errorOccurred),
-                                ],
-                              ),
+                                        ),
+                                      )
+                                    : Text(ConstantString().errorOccurred),
+                              ],
                             ),
                           ),
                         );

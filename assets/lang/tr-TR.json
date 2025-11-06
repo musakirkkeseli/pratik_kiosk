@@ -24,7 +24,6 @@
   "patientTransaction": "Hasta İşlemleri",
   "mandatoryFields": "Zorunlu Alanlar",
   "payment": "Ödeme",
-  "paymentAction": "Ödeme Yap",
   "total": "Toplam",
   "insurance": "Sigorta",
   "enterTurkishIdNumber": "TC Kimlik Numaranızı Giriniz",
@@ -76,5 +75,12 @@
   "paymentCompletedSuccessfully": "Ödeme işleminiz başarıyla tamamlandı.",
   "selectDepartment": "Bölüm Seç",
   "welcomeUser": "Hoşgeldiniz Sayın {}",
-  "examinationDetails": "Muayene Detayları"
+  "examinationDetails": "Muayene Detayları",
+  "username": "Kullanıcı Adı",
+  "password": "Şifre",
+  "turkishIdNumber": "T.C. Kimlik No",
+  "smsCode": "SMS ile gönderilen kod",
+  "elevenDigitTurkishIdInfo": "11 haneli TC bilgisi",
+  "makeSecurePayment": "Güvenli Ödeme Yap",
+  "welcome": "Hoşgeldiniz Sayın"
 }
