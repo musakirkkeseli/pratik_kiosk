@@ -1,7 +1,8 @@
 import '../../../../core/utility/http_service.dart';
 import '../../../../features/model/api_response_model.dart';
 import '../model/config_response_model.dart';
-import '../model/hospital_login_model.dart';
+import '../model/hospital_login_request_model.dart';
+import '../model/hospital_login_response_model.dart';
 import '../model/refresh_token_mode.dart';
 
 abstract class IHospitalAndUserLoginServices {
@@ -19,10 +20,8 @@ abstract class IHospitalAndUserLoginServices {
 
   Future<ApiResponse<ConfigResponseModel>> getConfig();
 
-  Future<ApiResponse<HospitalLoginModel>> postLogin(
-    String userName,
-    String password,
-    int kioskDeviceId,
+  Future<ApiResponse<HospitalLoginResponseModel>> postLogin(
+    HospitalLoginRequestModel requestModel,
   );
 
   Future<ApiResponse<RefreshTokenResponseModel>> postRefreshToken(

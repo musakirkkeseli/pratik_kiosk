@@ -1,35 +1,10 @@
-class Tokens {
-  String? accessToken;
-  String? refreshToken;
-  String? expiresIn;
-
-  Tokens({this.accessToken, this.refreshToken, this.expiresIn});
-
-  Tokens.fromJson(Map<String, dynamic> json) {
-    accessToken =
-        (json['accessToken'] ??
-                json['access_token'] ??
-                json['token'] ??
-                json['jwt'])
-            ?.toString();
-    refreshToken = (json['refreshToken'] ?? json['refresh_token'])?.toString();
-    expiresIn = json['expiresIn']?.toString();
-  }
-
-  Map<String, dynamic> toJson() => {
-    'accessToken': accessToken,
-    'refreshToken': refreshToken,
-    'expiresIn': expiresIn,
-  };
-}
-
-class HospitalLoginModel {
+class HospitalLoginResponseModel {
   int? kioskDeviceId;
   Tokens? tokens;
 
-  HospitalLoginModel({this.kioskDeviceId, this.tokens});
+  HospitalLoginResponseModel({this.kioskDeviceId, this.tokens});
 
-  HospitalLoginModel.fromJson(Map<String, dynamic> json) {
+  HospitalLoginResponseModel.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic>? tokensMap;
     if (json['tokens'] is Map<String, dynamic>) {
       tokensMap = json['tokens'] as Map<String, dynamic>;
@@ -58,4 +33,29 @@ class HospitalLoginModel {
     if (tokens != null) data['tokens'] = tokens!.toJson();
     return data;
   }
+}
+
+class Tokens {
+  String? accessToken;
+  String? refreshToken;
+  String? expiresIn;
+
+  Tokens({this.accessToken, this.refreshToken, this.expiresIn});
+
+  Tokens.fromJson(Map<String, dynamic> json) {
+    accessToken =
+        (json['accessToken'] ??
+                json['access_token'] ??
+                json['token'] ??
+                json['jwt'])
+            ?.toString();
+    refreshToken = (json['refreshToken'] ?? json['refresh_token'])?.toString();
+    expiresIn = json['expiresIn']?.toString();
+  }
+
+  Map<String, dynamic> toJson() => {
+    'accessToken': accessToken,
+    'refreshToken': refreshToken,
+    'expiresIn': expiresIn,
+  };
 }

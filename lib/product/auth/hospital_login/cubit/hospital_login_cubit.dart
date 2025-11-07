@@ -6,13 +6,14 @@ import '../../../../core/utility/dynamic_theme_provider.dart';
 import '../../../../core/utility/logger_service.dart';
 import '../../../../core/utility/login_status_service.dart';
 import '../model/config_response_model.dart';
-import '../model/hospital_login_model.dart';
+import '../model/hospital_login_request_model.dart';
+import '../model/hospital_login_response_model.dart';
 import '../services/IHospital_and_user_login_services.dart';
 
 part 'hospital_login_state.dart';
 
 class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
-  final int kioskDeviceId;
+  final String kioskDeviceId;
   final IHospitalAndUserLoginServices service;
   HospitalLoginCubit({required this.service, required this.kioskDeviceId})
     : super(HospitalLoginState());
@@ -24,12 +25,16 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
     required String password,
   }) async {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
-
+    HospitalLoginRequestModel requestModel = HospitalLoginRequestModel(
+      username: username,
+      password: password,
+      kioskDeviceId: kioskDeviceId,
+    );
     try {
-      final resp = await service.postLogin(username, password, kioskDeviceId);
+      final resp = await service.postLogin(requestModel);
 
-      if (resp.success && (resp.data is HospitalLoginModel)) {
-        HospitalLoginModel hospitalLoginModel = resp.data!;
+      if (resp.success && (resp.data is HospitalLoginResponseModel)) {
+        HospitalLoginResponseModel hospitalLoginModel = resp.data!;
         Tokens tokens = hospitalLoginModel.tokens ?? Tokens();
         final access = tokens.accessToken;
         final refresh = tokens.refreshToken;
