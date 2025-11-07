@@ -1,8 +1,7 @@
-import 'package:kiosk/features/model/empty_response.dart';
-
 import '../../../../core/utility/http_service.dart';
 import '../../../features/model/api_list_response_model.dart';
 import '../../../features/model/api_response_model.dart';
+import '../../../features/model/empty_response.dart';
 import '../model/appointments_model.dart';
 import '../model/cancel_appointment_request_model.dart';
 
