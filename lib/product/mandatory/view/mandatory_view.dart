@@ -123,7 +123,7 @@ class _State extends State<MandatoryView> {
               itemCount: state.requiredWarning.length,
               itemBuilder: (context, index) {
                 String warning = state.requiredWarning[index];
-                return Text(warning);
+                return Text("* $warning", style: context.errorText);
               },
             ),
             Expanded(
@@ -190,7 +190,10 @@ class _State extends State<MandatoryView> {
                                   (value == null || value.isEmpty)) {
                                 cubitContext
                                     .read<MandatoryCubit>()
-                                    .mandatoryRequiredWarningSave(label);
+                                    .mandatoryRequiredWarningSave(
+                                      label,
+                                      ConstantString().fieldRequired,
+                                    );
                                 MyLog.debug(
                                   "Mandatory Field Validation Failed: $label",
                                 );
@@ -198,8 +201,14 @@ class _State extends State<MandatoryView> {
                               }
                               if (item.minValue != null) {
                                 int minLength =
-                                    int.tryParse(item.minValue!) ?? 0;
+                                    int.tryParse(item.minValue ?? "") ?? 0;
                                 if ((value ?? "").length < minLength) {
+                                  cubitContext
+                                      .read<MandatoryCubit>()
+                                      .mandatoryRequiredWarningSave(
+                                        label,
+                                        "${ConstantString().minLengthError} $minLength",
+                                      );
                                   return "${ConstantString().minLengthError} $minLength";
                                 }
                               }

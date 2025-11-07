@@ -66,9 +66,9 @@ class MandatoryCubit extends BaseCubit<MandatoryState> {
     }
   }
 
-  mandatoryRequiredWarningSave(String warning) {
+  mandatoryRequiredWarningSave(String warning, String message) {
     List<String> requiredWarning = state.requiredWarning;
-    requiredWarning.add(warning);
+    requiredWarning.add("$warning $message");
     safeEmit(state.copyWith(requiredWarning: requiredWarning));
   }
 
