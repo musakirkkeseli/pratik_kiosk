@@ -105,6 +105,7 @@ class HttpService implements IHttpService {
                 "endpoint": response.requestOptions.path,
                 "duration_ms": stopwatch.elapsedMilliseconds,
                 "status_code": response.statusCode,
+                "patient_id": "musa",
               },
             );
           }

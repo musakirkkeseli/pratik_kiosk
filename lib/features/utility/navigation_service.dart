@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../core/utility/analytics_service.dart';
 import '../../core/utility/logger_service.dart';
 
-
 class NavigationService extends NavigatorObserver {
   NavigationService._();
 
@@ -17,9 +16,10 @@ class NavigationService extends NavigatorObserver {
     MyLog("Navigated to:").d(currentRoute);
 
     if (currentRoute != null) {
-      AnalyticsService().trackEvent("Sayfa Açıldı", properties: {
-        "sayfa": currentRoute!,
-      });
+      AnalyticsService().trackEvent(
+        "Sayfa Açıldı",
+        properties: {"sayfa": currentRoute!, "patient_id": "musa"},
+      );
     }
   }
 
@@ -43,14 +43,18 @@ class NavigationService extends NavigatorObserver {
 
   /// Ana sayfaya yönlendir
   Future<dynamic> gotoMain() async {
-    return navigatorKey.currentState
-        ?.pushNamedAndRemoveUntil('/', (val) => false);
+    return navigatorKey.currentState?.pushNamedAndRemoveUntil(
+      '/',
+      (val) => false,
+    );
   }
 
   /// Zorunlu güncelleme ekranına yönlendir
   Future<dynamic> gotoForceUpdate() async {
-    return navigatorKey.currentState
-        ?.pushNamedAndRemoveUntil('forceUpdate', (val) => false);
+    return navigatorKey.currentState?.pushNamedAndRemoveUntil(
+      'forceUpdate',
+      (val) => false,
+    );
   }
 
   /// Geri git
