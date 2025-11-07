@@ -20,6 +20,13 @@ Future<void> main() async {
   await AppInitialize.initialize();
   var connectivityResult = await (Connectivity().checkConnectivity());
 
+  // // Her saat başı backend'e health check isteği at
+  // PeriodicHealthCheckService().start(
+  //   baseUrl: Environment.backendUrl,
+  //   endpoint: '/health', // Backend'inizdeki uygun endpoint'i buraya yazın
+  //   interval: const Duration(hours: 1), // Her saat başı
+  // );
+
   runApp(
     EasyLocalization(
       supportedLocales: ConstantString.SUPPORTED_LOCALE,
