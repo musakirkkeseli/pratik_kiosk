@@ -88,4 +88,6 @@ abstract class LocaleKeys {
   static const smsCode = 'smsCode';
   static const elevenDigitTurkishIdInfo = 'elevenDigitTurkishIdInfo';
   static const welcome = 'welcome';
+  static const vatIncluded = 'vatIncluded';
+  static const otherBranches = 'otherBranches';
 }

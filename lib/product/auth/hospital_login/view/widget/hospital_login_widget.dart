@@ -47,7 +47,7 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
               child: PlasmaRenderer(
                 type: PlasmaType.infinity,
                 particles: 10,
-                color: Color(0x4423c2e4),
+                color: ConstColor.prizmaColor,
                 blur: 0.4,
                 size: 1,
                 speed: 3.75,
@@ -93,7 +93,7 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
                         ),
                         CustomButton(
                           label: ConstantString().signIn,
-                          backgroundColor: Colors.red,
+                          backgroundColor: ConstColor.red,
                           height: MediaQuery.of(context).size.height / 12,
                           borderRadius: 20,
                           onPressed: () {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:simple_animations/simple_animations.dart';
+import '../../../../../features/utility/const/constant_color.dart';
 import '../../../../../features/utility/const/constant_string.dart';
 import '../../../../../features/utility/extension/text_theme_extension.dart';
 
@@ -23,14 +24,14 @@ class _ConfigWidgetState extends State<ConfigWidget> {
                 tileMode: TileMode.mirror,
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Colors.red, Colors.white, Colors.red],
+                colors: [ConstColor.red, ConstColor.white, ConstColor.red,],
               ),
               backgroundBlendMode: BlendMode.srcOver,
             ),
             child: PlasmaRenderer(
               type: PlasmaType.infinity,
               particles: 10,
-              color: Color(0x4423c2e4),
+              color: ConstColor.prizmaColor,
               blur: 0.4,
               size: 1,
               speed: 3.75,
@@ -63,7 +64,7 @@ class _ConfigWidgetState extends State<ConfigWidget> {
                 ConstantString().settingsApplying,
                 textAlign: TextAlign.center,
                 style: context.sectionTitle.copyWith(
-                  color: Colors.black,
+                  color: ConstColor.black,
                   fontSize: 20,
                 ),
               ),

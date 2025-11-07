@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:kiosk/features/utility/extension/color_extension.dart';
 
-
 class CircularCountdown extends StatefulWidget {
   const CircularCountdown({
     super.key,
@@ -28,11 +27,13 @@ class CircularCountdown extends StatefulWidget {
 
 class _CircularCountdownState extends State<CircularCountdown> {
   late Duration _left;
+  late Duration _initialTotal;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+    _initialTotal = widget.total;
     _left = widget.total;
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted) return;
@@ -44,6 +45,14 @@ class _CircularCountdownState extends State<CircularCountdown> {
   }
 
   @override
+  void didUpdateWidget(CircularCountdown oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.total != widget.total) {
+      _left = widget.total;
+    }
+  }
+
+  @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
@@ -51,7 +60,10 @@ class _CircularCountdownState extends State<CircularCountdown> {
 
   @override
   Widget build(BuildContext context) {
-    final totalMs = widget.total.inMilliseconds.clamp(1, 1 << 31);
+    final totalMs = _initialTotal.inMilliseconds.clamp(
+      1,
+      1 << 31,
+    ); // İlk total değerini kullan
     final leftMs = _left.inMilliseconds.clamp(0, totalMs);
     final progress = leftMs / totalMs; // 1.0 -> 0.0
     final color = context.primaryColor;

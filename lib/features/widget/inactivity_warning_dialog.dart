@@ -27,7 +27,6 @@ class InactivityWarningDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme.primary;
-    // final onPrimary = Theme.of(context).colorScheme.onPrimary;
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Row(

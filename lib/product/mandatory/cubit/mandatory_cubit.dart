@@ -66,6 +66,16 @@ class MandatoryCubit extends BaseCubit<MandatoryState> {
     }
   }
 
+  mandatoryRequiredWarningSave(String warning) {
+    List<String> requiredWarning = state.requiredWarning;
+    requiredWarning.add(warning);
+    safeEmit(state.copyWith(requiredWarning: requiredWarning));
+  }
+
+  mandatoryRequiredWarningClear() {
+    safeEmit(state.copyWith(requiredWarning: []));
+  }
+
   void mandatoryValueSave(String id, String value) {
     List<PatientMandatoryModel> patientMandatoryList =
         state.patientMandatoryData;

@@ -10,6 +10,8 @@ class ConstColor {
   static const infoCardColor = Color(0xFFE2E8F0);
   static const black = Colors.black;
   static const grey = Colors.grey;
+  static const prizmaColor = Color(0x4423c2e4);
+  static const red = Colors.red;
 
 
 }

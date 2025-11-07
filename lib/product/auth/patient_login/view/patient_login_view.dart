@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/icon_park_solid.dart';
 import 'package:kiosk/features/utility/extension/color_extension.dart';
+import 'package:kiosk/features/utility/extension/text_theme_extension.dart';
 import 'package:kiosk/features/utility/navigation_service.dart';
 import 'package:kiosk/product/auth/patient_login/services/patient_services.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../core/utility/logger_service.dart';
 import '../../../../core/widget/snackbar_service.dart';
+import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/custom_input_container.dart';
 import '../../../../features/utility/enum/enum_general_state_status.dart';
@@ -153,12 +155,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                         alignment: Alignment.center,
                         child: Text(
                           hospitalName,
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: context.backgroundColor,
-                            letterSpacing: 0.5,
-                          ),
+                          style: context.hospitalNameText,
                         ),
                       );
                     },
@@ -173,7 +170,6 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      // Sol köşe - Dil butonları
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 20.0,
@@ -194,10 +190,10 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                               state.tcNo.isNotEmpty
                                   ? OutlinedButton.icon(
                                       style: OutlinedButton.styleFrom(
-                                        iconColor: Colors.red,
-                                        foregroundColor: Colors.red,
+                                        iconColor: ConstColor.red,
+                                        foregroundColor: ConstColor.red,
                                         side: const BorderSide(
-                                          color: Colors.red,
+                                          color: ConstColor.red,
                                           width: 1.5,
                                         ),
                                       ),
@@ -206,7 +202,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                                       },
                                       icon: Iconify(
                                         IconParkSolid.clear_format,
-                                        color: Colors.red,
+                                        color: ConstColor.red,
                                       ),
                                       label: Text(ConstantString().clearData),
                                     )
@@ -236,7 +232,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                                   width: 150,
                                   height: 150,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: ConstColor.white,
                                     borderRadius: BorderRadius.circular(12),
                                     boxShadow: [
                                       BoxShadow(
@@ -309,11 +305,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                                   ? '*' * state.tcNo.length
                                   : state.tcNo,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 2,
-                              ),
+                              style: context.tcLoginText,
                             ),
                           ),
                         ),
@@ -373,20 +365,16 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                     child: Text(
                       state.birthDate.isEmpty ? '' : state.birthDate,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 2,
-                      ),
+                      style: context.birthDayLoginText,
                     ),
                   ),
                 ),
                 if (state.birthDate.isNotEmpty) ...[
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
                   Padding(
                     padding: EdgeInsets.only(
                       bottom:
-                          MediaQuery.of(context).size.height * 0.06 / 2 - 18,
+                          MediaQuery.of(context).size.height * 0.11 / 2 - 18,
                     ),
                     child: InkWell(
                       onTap: () {
@@ -441,20 +429,16 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                         child: Text(
                           state.otpCode,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 8,
-                          ),
+                          style: context.otpLoginText,
                         ),
                       ),
                     ),
                     if (state.otpCode.isNotEmpty) ...[
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 10),
                       Padding(
                         padding: EdgeInsets.only(
                           bottom:
-                              MediaQuery.of(context).size.height * 0.06 / 2 -
+                              MediaQuery.of(context).size.height * 0.11 / 2 -
                               18,
                         ),
                         child: InkWell(
@@ -582,7 +566,6 @@ class _PatientLoginViewState extends State<PatientLoginView> {
     _isOpenWarningPhoneNumberDialog;
     _validateOtp.value = true;
 
-    // Dili Türkçe'ye çevir
     await ctx.setLocale(ConstantString.TR_LOCALE);
     LanguageManager.instance.setLocale(ConstantString.TR_LOCALE);
 

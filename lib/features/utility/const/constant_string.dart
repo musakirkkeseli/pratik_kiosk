@@ -127,4 +127,6 @@ class ConstantString {
   String filledFieldInfo =
       "Mevcut bilgileri değişmek için Hasta Kabule müracaat ediniz. Eksik Bilgileri tamamlayabilirsiniz. "; 
   String welcome = LocaleKeys.welcome.locale;
+  String vatIncluded = LocaleKeys.vatIncluded.locale;
+  String otherBranches = LocaleKeys.otherBranches.locale;
 }

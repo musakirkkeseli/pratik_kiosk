@@ -82,5 +82,7 @@
   "smsCode": "SMS ile gönderilen kod",
   "elevenDigitTurkishIdInfo": "11 haneli TC bilgisi",
   "makeSecurePayment": "Güvenli Ödeme Yap",
-  "welcome": "Hoşgeldiniz Sayın"
+  "welcome": "Hoşgeldiniz Sayın",
+  "vatIncluded": "KDV dahildir",
+  "otherBranches": "Diğer Bölümler"
 }

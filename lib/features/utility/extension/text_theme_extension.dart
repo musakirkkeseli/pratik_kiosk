@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../const/constant_color.dart';
+
 /// TextTheme için kolay kullanım extension'ı
 /// Uygulama genelinde tutarlı text stilleri için
 extension AppTextTheme on BuildContext {
@@ -42,4 +44,19 @@ extension AppTextTheme on BuildContext {
 
   TextStyle get successText =>
       textTheme.bodyLarge!.copyWith(color: Colors.green, fontSize: 20);
+
+  TextStyle get hospitalNameText => textTheme.bodyLarge!.copyWith(
+    color: ConstColor.white,
+    fontSize: 28,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 0.5,
+  );
+  TextStyle get tcLoginText =>
+      textTheme.bodyMedium!.copyWith(color: ConstColor.black, fontSize: 38);
+  TextStyle get birthDayLoginText =>
+      textTheme.bodyMedium!.copyWith(color: ConstColor.black, fontSize: 28);
+  TextStyle get otpLoginText =>
+      textTheme.bodyMedium!.copyWith(color: ConstColor.black, fontSize: 28);
+        TextStyle get languageFlag =>
+      textTheme.bodyMedium!.copyWith(fontSize: 35);
 }

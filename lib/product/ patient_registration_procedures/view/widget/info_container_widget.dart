@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/extension/color_extension.dart';
 import '../../../../features/utility/extension/text_theme_extension.dart';
@@ -71,7 +72,7 @@ class _DashedDivider extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: CustomPaint(
         size: Size(double.infinity, 1),
-        painter: _DashedLinePainter(color: Colors.grey[400]!),
+        painter: _DashedLinePainter(color: ConstColor.grey[400]!),
       ),
     );
   }

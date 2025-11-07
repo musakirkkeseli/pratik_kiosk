@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiosk/features/utility/extension/text_theme_extension.dart';
 
 import '../../../../../core/utility/language_manager.dart';
 import '../../cubit/patient_login_cubit.dart';
@@ -26,7 +27,7 @@ class LanguageButtonWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             spacing: 5,
             children: [
-              Text(language.flag, style: const TextStyle(fontSize: 40)),
+              Text(language.flag, style: context.languageFlag),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,

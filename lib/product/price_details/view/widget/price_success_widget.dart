@@ -205,7 +205,7 @@ class PriceSuccessWidget extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          "${patientContent!.totalPrice ?? "-"} ₺ - KDV dahildir.",
+                          "${patientContent!.totalPrice} ₺ - ${ConstantString().vatIncluded}",
                           style: context.priceTitle.copyWith(
                             color: context.primaryColor,
                             fontWeight: FontWeight.bold,

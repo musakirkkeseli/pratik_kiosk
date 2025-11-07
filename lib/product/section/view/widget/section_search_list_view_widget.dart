@@ -17,9 +17,7 @@ class SectionSearchListViewWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         SectionItems section = sectionItemList[index];
         return ItemButton(
-          title: section.sectionName == "ConstantString().otherBranches.locale"
-              ? "ConstantString().nutritionAndDietetics.locale"
-              : section.sectionName ?? "",
+          title: section.sectionName ?? "",
           onTap: () {
             context.read<PatientRegistrationProceduresCubit>().selectSection(
               section,

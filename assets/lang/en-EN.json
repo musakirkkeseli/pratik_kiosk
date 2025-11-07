@@ -82,5 +82,7 @@
   "smsCode": "Code sent via SMS",
   "elevenDigitTurkishIdInfo": "11-digit Turkish ID information",
   "makeSecurePayment": "Make a Secure Payment",
-  "welcome": "Welcome"
+  "welcome": "Welcome",
+  "vatIncluded": "VAT included",
+  "otherBranches": "Other Departments"
 }

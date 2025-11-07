@@ -18,9 +18,7 @@ class DoctorListTileWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         DoctorItems doctor = doctorItemList[index];
         return ItemButton(
-          title: doctor.doctorName == "ConstantString().otherBranches.locale"
-              ? "ConstantString().nutritionAndDietetics.locale"
-              : doctor.doctorName ?? "",
+          title: doctor.doctorName ?? "",
           onTap: () {
             context.read<PatientRegistrationProceduresCubit>().selectDoctor(
               doctor,

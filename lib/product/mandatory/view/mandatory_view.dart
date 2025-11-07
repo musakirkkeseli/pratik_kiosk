@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiosk/core/utility/logger_service.dart';
 import 'package:kiosk/features/utility/custom_textfield_widget.dart';
 import 'package:kiosk/features/utility/enum/enum_textformfield.dart';
 import 'package:kiosk/features/widget/custom_button.dart';
@@ -67,13 +68,13 @@ class _State extends State<MandatoryView> {
       )..fetchMandatory(),
       child: BlocBuilder<MandatoryCubit, MandatoryState>(
         builder: (context, state) {
-          return _body(state);
+          return _body(context, state);
         },
       ),
     );
   }
 
-  _body(MandatoryState state) {
+  _body(BuildContext cubitContext, MandatoryState state) {
     switch (state.status) {
       case EnumGeneralStateStatus.loading:
         return const Center(child: CircularProgressIndicator());
@@ -89,6 +90,9 @@ class _State extends State<MandatoryView> {
                 height: MediaQuery.of(context).size.height * 0.06,
                 label: ConstantString().completeRegistration,
                 onPressed: () {
+                  cubitContext
+                      .read<MandatoryCubit>()
+                      .mandatoryRequiredWarningClear();
                   if (_formKey.currentState?.validate() ?? false) {
                     _formKey.currentState!.save();
                     context
@@ -113,25 +117,15 @@ class _State extends State<MandatoryView> {
                 textAlign: TextAlign.start,
               ),
             ),
-            // Row(
-            //   spacing: 10,
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   children: [
-            //     Icon(Icons.person, color: context.primaryColor),
-            //     Text(
-            //       ConstantString().patientInformation,
-            //       style: context.sectionTitle,
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(
-            //   width: MediaQuery.of(context).size.width * 0.5,
-            //   child: Text(
-            //     ConstantString().filledFieldInfo,
-            //     textAlign: TextAlign.start,
-            //   ),
-            // ),
             const Divider(height: 30),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.requiredWarning.length,
+              itemBuilder: (context, index) {
+                String warning = state.requiredWarning[index];
+                return Text(warning);
+              },
+            ),
             Expanded(
               child: Form(
                 key: _formKey,
@@ -194,6 +188,12 @@ class _State extends State<MandatoryView> {
                             customValidator: (value) {
                               if (item.isNullable == "0" &&
                                   (value == null || value.isEmpty)) {
+                                cubitContext
+                                    .read<MandatoryCubit>()
+                                    .mandatoryRequiredWarningSave(label);
+                                MyLog.debug(
+                                  "Mandatory Field Validation Failed: $label",
+                                );
                                 return ConstantString().fieldRequired;
                               }
                               if (item.minValue != null) {
