@@ -8,6 +8,7 @@ import 'core/utility/dynamic_theme_provider.dart';
 import 'core/utility/language_manager.dart';
 import 'core/utility/login_status_service.dart';
 import 'core/utility/network_status_service.dart';
+import 'core/utility/periodic_health_check_service.dart';
 import 'core/utility/user_login_status_service.dart';
 import 'core/widget/network_aware_widget.dart';
 import 'features/utility/app_initialize.dart';
@@ -19,13 +20,7 @@ import 'features/utility/route_generator.dart';
 Future<void> main() async {
   await AppInitialize.initialize();
   var connectivityResult = await (Connectivity().checkConnectivity());
-
-  // // Her saat başı backend'e health check isteği at
-  // PeriodicHealthCheckService().start(
-  //   baseUrl: Environment.backendUrl,
-  //   endpoint: '/health', // Backend'inizdeki uygun endpoint'i buraya yazın
-  //   interval: const Duration(hours: 1), // Her saat başı
-  // );
+  PeriodicHealthCheckService().start();
 
   runApp(
     EasyLocalization(
