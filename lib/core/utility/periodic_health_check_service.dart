@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import '../../features/utility/const/constant_string.dart';
+import 'device_info_service.dart';
 import 'logger_service.dart';
 
 /// Uygulama açıkken her saat başı backend'e health check isteği atan servis
 class PeriodicHealthCheckService {
-  static final PeriodicHealthCheckService _instance = PeriodicHealthCheckService._internal();
+  static final PeriodicHealthCheckService _instance =
+      PeriodicHealthCheckService._internal();
   factory PeriodicHealthCheckService() => _instance;
   PeriodicHealthCheckService._internal();
 
@@ -13,37 +16,34 @@ class PeriodicHealthCheckService {
   final Dio _dio = Dio();
   bool _isRunning = false;
   final MyLog _log = MyLog('PeriodicHealthCheckService');
+  String? _deviceId;
 
   /// Servisi başlatır - her saat başı health check yapar
-  void start({
-    required String baseUrl,
-    String endpoint = '/health',
-    Duration interval = const Duration(hours: 1),
-    Map<String, String>? headers,
-  }) {
+  Future<void> start() async {
     if (_isRunning) {
       _log.w('Service already running');
       return;
     }
+    Duration interval = const Duration(hours: 1);
+    _deviceId = await DeviceInfoService().getDeviceId();
+    _log.i('Device ID loaded: $_deviceId');
 
     _isRunning = true;
-    _log.i('Starting periodic health check - Interval: ${interval.inMinutes} minutes');
+    _log.i(
+      'Starting periodic health check - Interval: ${interval.inMinutes} minutes',
+    );
 
     // İlk isteği hemen gönder
-    _sendHealthCheck(baseUrl, endpoint, headers);
+    await _sendHealthCheck();
 
     // Periyodik timer başlat
     _timer = Timer.periodic(interval, (_) {
-      _sendHealthCheck(baseUrl, endpoint, headers);
+      _sendHealthCheck();
     });
   }
 
   /// Health check isteği gönderir
-  Future<void> _sendHealthCheck(
-    String baseUrl,
-    String endpoint,
-    Map<String, String>? headers,
-  ) async {
+  Future<void> _sendHealthCheck() async {
     try {
       // Network kontrolü
       final connectivity = await Connectivity().checkConnectivity();
@@ -54,13 +54,12 @@ class PeriodicHealthCheckService {
         _log.w('No internet connection - skipping health check');
         return;
       }
-
-      _log.i('Sending health check to: $baseUrl$endpoint');
-      
-      final response = await _dio.get(
-        '$baseUrl$endpoint',
+      String url = '${ConstantString.backendUrl}/kiosk-device/ping';
+      _log.i('Sending health check to $url');
+      final response = await _dio.post(
+        url,
+        data: {"kiosk_id": "lokmanEtlik", "is_login": true},
         options: Options(
-          headers: headers,
           sendTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 10),
         ),
@@ -92,12 +91,8 @@ class PeriodicHealthCheckService {
   bool get isRunning => _isRunning;
 
   /// Manuel olarak tek bir health check yapar
-  Future<void> triggerManualCheck({
-    required String baseUrl,
-    String endpoint = '/health',
-    Map<String, String>? headers,
-  }) async {
+  Future<void> triggerManualCheck() async {
     _log.i('Manual health check triggered');
-    await _sendHealthCheck(baseUrl, endpoint, headers);
+    await _sendHealthCheck();
   }
 }
