@@ -22,10 +22,10 @@ dependencies:
   easy_localization: ^3.0.3
   pdfx: ^2.7.0
   path_provider: ^2.1.4
-  http: ^1.2.2
+  device_info_plus: ^12.2.0
 
   #cache
-  shared_preferences: ^2.5.3
+  # shared_preferences: ^2.5.3
 
   # debug
   logger: ^2.5.0
@@ -50,6 +50,7 @@ dependencies:
 
   # http
   dio: ^5.9.0
+  # http: ^1.2.2
   
 dev_dependencies:
   flutter_test:
