@@ -65,6 +65,7 @@
   "no": "Hayır",
   "isThisNumberYoursWithPhone": "{} numarası size mi ait?",
   "warning": "Uyarı",
+  "phoneNumberNotFound": "İşlemlere devam edemiyoruz. Sistemde kayıtlı telefon numaranız mevcut değil veya hatalı. Hasta kabüle müracaat ederek sistemdeki telefon numaranızı güncelleyebilirsiniz.",
   "updatePhoneAtAdmission": "Hasta kabüle müracaat ederek sistemdeki telefon numaranızı güncelleyebilirsiniz.",
   "yes": "Evet",
   "clearData": "Verileri Temizle",

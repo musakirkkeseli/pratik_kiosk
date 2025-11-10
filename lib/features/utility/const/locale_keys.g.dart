@@ -70,6 +70,7 @@ abstract class LocaleKeys {
   static const pleaseProceedToPatientAdmission =
       'pleaseProceedToPatientAdmission';
   static const warning = 'warning';
+  static const phoneNumberNotFound = 'phoneNumberNotFound';
   static const updatePhoneAtAdmission = 'updatePhoneAtAdmission';
   static const yes = 'yes';
   static const clearData = 'clearData';

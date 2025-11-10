@@ -104,6 +104,7 @@ class ConstantString {
   String pleaseProceedToPatientAdmission =
       LocaleKeys.pleaseProceedToPatientAdmission.locale;
   String warning = LocaleKeys.warning.locale;
+  String phoneNumberNotFound = LocaleKeys.phoneNumberNotFound.locale;
   String updatePhoneAtAdmission = LocaleKeys.updatePhoneAtAdmission.locale;
   String yes = LocaleKeys.yes.locale;
   String enterYourBirthDate = "Doğum Tarihinizi Giriniz";

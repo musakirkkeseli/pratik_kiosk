@@ -65,6 +65,7 @@
   "no": "No",
   "isThisNumberYoursWithPhone": "Is the number {} yours?",
   "warning": "Warning",
+  "phoneNumberNotFound": "We cannot proceed with the operations. Your registered phone number is not found or incorrect in the system. You can update your phone number in the system by applying to patient admission.",
   "updatePhoneAtAdmission": "You can update your phone number in the system by applying to patient admission.",
   "yes": "Yes",
   "clearData": "Clear Data",
