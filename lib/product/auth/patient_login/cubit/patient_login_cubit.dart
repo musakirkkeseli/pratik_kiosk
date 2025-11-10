@@ -176,7 +176,7 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
       if (resp.success && resp.data is PatientValidateIdentityResponseModel) {
         String? phoneNumber = resp.data!.phoneNumber;
         String? encryptedUserData = resp.data!.encryptedUserData;
-        if (phoneNumber is String && encryptedUserData is String) {
+        if (encryptedUserData is String) {
           _log.d("data doğru");
           safeEmit(
             state.copyWith(

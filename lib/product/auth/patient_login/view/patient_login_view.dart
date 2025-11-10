@@ -114,7 +114,11 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                   } else {
                     AppDialog(context).infoDialog(
                       ConstantString().warning,
-                      ConstantString().updatePhoneAtAdmission,
+                      ConstantString().phoneNumberNotFound,
+                      afterFunc: (onValue) {
+                        _isOpenVerifyPhoneNumberDialog = false;
+                        _isOpenWarningPhoneNumberDialog = false;
+                      },
                     );
                   }
                 }
