@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:kiosk/core/utility/logger_service.dart';
 
+import '../../core/utility/session_manager.dart';
 import '../../core/utility/user_login_status_service.dart';
 import '../widget/inactivity_warning_dialog.dart';
 import 'navigation_service.dart';
@@ -88,7 +89,8 @@ class InactivityController extends ChangeNotifier {
 
   Future<void> _performCleanup() async {
     try {
-      await UserLoginStatusService().logout();
+      await UserLoginStatusService()
+          .logout(reason: SessionEndReason.timeout);
     } catch (_) {}
   }
 

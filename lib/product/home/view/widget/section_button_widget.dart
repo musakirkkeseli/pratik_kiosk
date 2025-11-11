@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/teenyicons.dart';
 
+import '../../../../core/utility/analytics_service.dart';
 import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/enum/enum_patient_registration_procedures.dart';
@@ -24,6 +25,10 @@ class _SectionButtonWidgetState extends State<SectionButtonWidget> {
 
       child: ElevatedButton(
         onPressed: () {
+          AnalyticsService().trackButtonClicked(
+            'start_patient_registration',
+            screenName: 'home',
+          );
           NavigationService.ns.routeTo(
             "PatientRegistrationProceduresView",
             arguments: {"startStep": EnumPatientRegistrationProcedures.section},

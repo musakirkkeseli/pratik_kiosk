@@ -1,4 +1,5 @@
 import '../../../core/exception/network_exception.dart';
+import '../../../core/utility/analytics_service.dart';
 import '../../../core/utility/base_cubit.dart';
 import '../../../core/utility/logger_service.dart';
 import '../../../features/model/patient_price_detail_model.dart';
@@ -37,12 +38,21 @@ class PatientRegistrationProceduresCubit
 
   final MyLog _log = MyLog('PatientRegistrationProceduresCubit');
 
+  void _trackButton(String name, {Map<String, dynamic>? extra}) {
+    AnalyticsService().trackButtonClicked(
+      name,
+      screenName: 'patient_registration',
+      extra: extra,
+    );
+  }
+
   void selectSection(SectionItems section) {
     if (section.sectionId != null && section.sectionName != null) {
       final updatedModel = state.model;
       updatedModel.branchId = section.sectionId;
       updatedModel.branchName = section.sectionName;
       emit(state.copyWith(model: updatedModel));
+      _trackButton('select_section');
       nextStep();
     }
   }
@@ -54,6 +64,7 @@ class PatientRegistrationProceduresCubit
       updatedModel.departmentId = section.departmentId;
       updatedModel.doctorName = section.doctorName;
       emit(state.copyWith(model: updatedModel));
+      _trackButton('select_doctor');
       nextStep();
     }
   }
@@ -65,6 +76,10 @@ class PatientRegistrationProceduresCubit
       updatedModel.assocationName = section.assocationName;
       updatedModel.gssAssocationId = section.gssAssocationId ?? "";
       emit(state.copyWith(model: updatedModel));
+      _trackButton('select_association', extra: {
+        'association_id': section.assocationId,
+        'association_name': section.assocationName,
+      });
       nextStep();
     }
   }
@@ -79,6 +94,10 @@ class PatientRegistrationProceduresCubit
       updatedModel.assocationName = section.assocationName;
       updatedModel.gssAssocationId = section.gssAssocationId ?? "";
       emit(state.copyWith(model: updatedModel));
+      _trackButton('select_association_with_insurance', extra: {
+        'association_id': section.assocationId,
+        'insurance_type_id': insurance.insuredTypeId,
+      });
       nextStep();
     }
   }
@@ -206,6 +225,11 @@ class PatientRegistrationProceduresCubit
         );
     updatedModel.patientPriceDetailModel = patientPriceDetailModel;
     emit(state.copyWith(model: updatedModel));
+    AnalyticsService().trackPaymentScreenOpened(
+      amount: double.tryParse(
+        updatedModel.patientContent?.totalPrice ?? '0',
+      ),
+    );
     nextStep();
   }
 
@@ -222,6 +246,9 @@ class PatientRegistrationProceduresCubit
       
       if (res.success) {
         _log.d("Ödeme Tamamlandı");
+        AnalyticsService().trackPaymentSuccess(
+          amount: double.tryParse(totalAmount),
+        );
         safeEmit(
           state.copyWith(
             paymentResultType: EnumPaymentResultType.success,
@@ -229,6 +256,10 @@ class PatientRegistrationProceduresCubit
           ),
         );
       } else {
+        AnalyticsService().trackPaymentFailed(
+          amount: double.tryParse(totalAmount),
+          reason: res.message,
+        );
         safeEmit(
           state.copyWith(
             paymentResultType: EnumPaymentResultType.failure,
@@ -238,6 +269,12 @@ class PatientRegistrationProceduresCubit
       }
     } on NetworkException catch (e) {
       _log.d("NetworkException $e");
+      AnalyticsService().trackPaymentFailed(
+        amount: double.tryParse(
+          patientPriceDetailModel.patientContent?.totalPrice ?? '0',
+        ),
+        reason: e.message,
+      );
       safeEmit(
         state.copyWith(
           paymentResultType: EnumPaymentResultType.success,
@@ -245,6 +282,12 @@ class PatientRegistrationProceduresCubit
         ),
       );
     } catch (e) {
+      AnalyticsService().trackPaymentFailed(
+        amount: double.tryParse(
+          patientPriceDetailModel.patientContent?.totalPrice ?? '0',
+        ),
+        reason: e.toString(),
+      );
       safeEmit(
         state.copyWith(
           paymentResultType: EnumPaymentResultType.success,

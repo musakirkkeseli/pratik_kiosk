@@ -98,15 +98,12 @@ class HttpService implements IHttpService {
           stopwatch?.stop();
 
           if (stopwatch != null) {
-            AnalyticsService().trackEvent(
-              "API Başarılı",
-              properties: {
-                "method": response.requestOptions.method,
-                "endpoint": response.requestOptions.path,
-                "duration_ms": stopwatch.elapsedMilliseconds,
-                "status_code": response.statusCode,
-                "patient_id": "musa",
-              },
+            AnalyticsService().trackApiCall(
+              method: response.requestOptions.method,
+              endpoint: response.requestOptions.path,
+              duration: stopwatch.elapsed,
+              statusCode: response.statusCode,
+              success: true,
             );
           }
 
@@ -141,6 +138,15 @@ class HttpService implements IHttpService {
               'response': e.response?.data?.toString(),
             },
           );
+          if (stopwatch != null) {
+            AnalyticsService().trackApiCall(
+              method: e.requestOptions.method,
+              endpoint: e.requestOptions.path,
+              duration: stopwatch.elapsed,
+              statusCode: e.response?.statusCode,
+              success: false,
+            );
+          }
           if (e.response?.statusCode == 400) {
             final data = e.response?.data;
             if (data is Map &&

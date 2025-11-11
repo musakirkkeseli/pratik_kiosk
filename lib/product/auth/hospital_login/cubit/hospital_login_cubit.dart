@@ -1,6 +1,7 @@
 import 'package:kiosk/features/utility/enum/enum_general_state_status.dart';
 
 import '../../../../core/exception/network_exception.dart';
+import '../../../../core/utility/analytics_service.dart';
 import '../../../../core/utility/base_cubit.dart';
 import '../../../../core/utility/dynamic_theme_provider.dart';
 import '../../../../core/utility/logger_service.dart';
@@ -20,11 +21,22 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
 
   final MyLog _log = MyLog('HospitalLoginCubit');
 
+  void _trackButton(String name, {Map<String, dynamic>? extra}) {
+    AnalyticsService().trackButtonClicked(
+      name,
+      screenName: 'hospital_login',
+      extra: extra,
+    );
+  }
+
   Future<void> postHospitalLoginCubit({
     required String username,
     required String password,
   }) async {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
+    _trackButton('hospital_login_submit', extra: {
+      'username_length': username.length,
+    });
     HospitalLoginRequestModel requestModel = HospitalLoginRequestModel(
       username: username,
       password: password,

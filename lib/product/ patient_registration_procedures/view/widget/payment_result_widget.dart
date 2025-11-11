@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/material_symbols.dart';
 
+import '../../../../core/utility/session_manager.dart';
 import '../../../../core/utility/user_login_status_service.dart';
 import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
@@ -92,7 +93,8 @@ class PaymentResultWidget extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          UserLoginStatusService().logout();
+                          UserLoginStatusService()
+                              .logout(reason: SessionEndReason.completed);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

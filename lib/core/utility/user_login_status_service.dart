@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../features/utility/inactivity_controller.dart';
 import '../../features/utility/navigation_service.dart';
 import 'analytics_service.dart';
+import 'session_manager.dart';
 import 'logger_service.dart';
 
 enum UserLoginStatus { online, offline }
@@ -51,13 +52,14 @@ class UserLoginStatusService {
     _userName = name;
     _controller.add(UserLoginStatus.online);
     _inactivityStartSafe();
-    // AnalyticsService().identifyUser(userId.toString());
-    // AnalyticsService().setUserProperties({
-    //   "Name": name,
-    //   "Phone": phone,
-    //   "Company City": cityName,
-    //   "Login Time": DateTime.now().toIso8601String(),
-    // });
+  await AnalyticsService().identifyUser(userId.toString());
+  await AnalyticsService().startSession(origin: 'patient_login');
+    await AnalyticsService().setUserProperties({
+      "Name": "Lokman Hekim 3.kat",
+      // "Phone": phone,
+      // "Company City": cityName,
+      // "Login Time": DateTime.now().toIso8601String(),
+    });
     MyLog.debug("UserLoginStatusService login");
   }
 
@@ -65,10 +67,10 @@ class UserLoginStatusService {
     _accessToken = accessToken;
   }
 
-  Future<void> logout() async {
+  Future<void> logout({SessionEndReason reason = SessionEndReason.manual}) async {
     _accessToken = null;
     _userName = null;
-    AnalyticsService().reset();
+    await AnalyticsService().endSession(reason);
     _controller.add(UserLoginStatus.offline);
     _inactivityStopSafe();
     NavigationService.ns.gotoMain();

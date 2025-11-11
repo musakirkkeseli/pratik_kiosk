@@ -4,6 +4,7 @@ import 'package:kiosk/features/utility/const/constant_string.dart';
 
 import '../../../../core/exception/network_exception.dart';
 import '../../../../core/utility/base_cubit.dart';
+import '../../../../core/utility/analytics_service.dart';
 import '../../../../core/utility/logger_service.dart';
 import '../../../../core/utility/user_login_status_service.dart';
 import '../../../../features/utility/enum/enum_general_state_status.dart';
@@ -20,8 +21,21 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   PatientLoginCubit({required this.service}) : super(PatientLoginState());
 
   final MyLog _log = MyLog('PatientLoginCubit');
+
+  void _trackButton(String name, {Map<String, dynamic>? extra}) {
+    AnalyticsService().trackButtonClicked(
+      name,
+      screenName: 'patient_login',
+      extra: extra,
+    );
+  }
+
   Future<void> userLogin() async {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
+    _trackButton('patient_login_submit', extra: {
+      'otp_length': state.otpCode.length,
+      'encrypted_payload': state.encryptedUserData?.isNotEmpty == true,
+    });
     PatientLoginRequestModel patientLoginRequestModel =
         PatientLoginRequestModel(
           encryptedUserData: state.encryptedUserData,
@@ -101,6 +115,9 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   Future<void> userRegister() async {
     _startOrResetTimer();
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
+    _trackButton('patient_register_submit', extra: {
+      'birth_date_filled': state.birthDate.isNotEmpty,
+    });
 
     try {
       final resp = await service.postUserRegister(
@@ -170,6 +187,9 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   Future<void> validateIdentity() async {
     _startOrResetTimer();
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
+    _trackButton('patient_validate_identity', extra: {
+      'tc_entered': state.tcNo.isNotEmpty,
+    });
     try {
       final resp = await service.postValidateIdentify(state.tcNo);
 
@@ -235,6 +255,9 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   Future<void> sendOtpCode() async {
     _startOrResetTimer();
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
+    _trackButton('patient_send_otp', extra: {
+      'encrypted_payload': state.encryptedUserData?.isNotEmpty == true,
+    });
     String? encryptedUserData = state.encryptedUserData;
     if (encryptedUserData is String) {
       try {

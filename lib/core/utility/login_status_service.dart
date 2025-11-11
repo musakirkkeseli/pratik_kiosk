@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import '../../features/utility/navigation_service.dart';
-import 'analytics_service.dart';
 
 enum LoginStatus { online, offline }
 
@@ -47,12 +46,6 @@ class LoginStatusService {
   Future<void> login() async {
     if (_accessToken is String && _refreshToken is String) {
       _controller.add(LoginStatus.online);
-      AnalyticsService().identifyUser("userId".toString());
-      AnalyticsService().setUserProperties({
-        "Name": "Lokman Hekim",
-        "Company City": "Ankara",
-        "Login Time": DateTime.now().toIso8601String(),
-      });
     }
   }
 
@@ -64,7 +57,6 @@ class LoginStatusService {
   Future<void> logout() async {
     _accessToken = null;
     _refreshToken = null;
-    AnalyticsService().reset();
     _controller.add(LoginStatus.offline);
     NavigationService.ns.gotoMain();
   }

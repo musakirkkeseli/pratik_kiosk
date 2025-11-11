@@ -12,15 +12,29 @@ class NavigationService extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
-    currentRoute = route.settings.name;
-    MyLog("Navigated to:").d(currentRoute);
+  final routeName = route.settings.name ?? route.runtimeType.toString();
+  currentRoute = routeName;
+  MyLog("Navigated to:").d(currentRoute);
 
-    if (currentRoute != null) {
-      AnalyticsService().trackEvent(
-        "Sayfa Açıldı",
-        properties: {"sayfa": currentRoute!, "patient_id": "musa"},
-      );
+    final args = route.settings.arguments;
+    Map<String, dynamic>? analyticsArgs;
+    if (args is Map) {
+      final extracted = <String, dynamic>{};
+      args.forEach((key, value) {
+        if (key is String &&
+            (value is num || value is String || value is bool)) {
+          extracted['arg_$key'] = value;
+        }
+      });
+      if (extracted.isNotEmpty) {
+        analyticsArgs = extracted;
+      }
     }
+
+    AnalyticsService().trackScreenView(
+      routeName,
+      extra: analyticsArgs,
+    );
   }
 
   @override

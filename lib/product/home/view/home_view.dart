@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/material_symbols.dart';
 
+import '../../../core/utility/session_manager.dart';
 import '../../../core/utility/user_login_status_service.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_home_item.dart';
@@ -17,6 +18,11 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +64,8 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                     onPressed: () {
-                      UserLoginStatusService().logout();
+                      UserLoginStatusService()
+                          .logout(reason: SessionEndReason.manual);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

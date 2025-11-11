@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../core/utility/http_service.dart';
+import '../../core/utility/session_manager.dart';
 import '../../core/utility/user_login_status_service.dart';
 
 class UserHttpService extends HttpService {
@@ -22,7 +23,8 @@ class UserHttpService extends HttpService {
                 status == 403 ||
                 status == 429 ||
                 status == 409) {
-              UserLoginStatusService().logout();
+              UserLoginStatusService()
+                  .logout(reason: SessionEndReason.error);
             }
             handler.next(e);
           },
