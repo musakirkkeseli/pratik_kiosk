@@ -4,18 +4,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/core/utility/logger_service.dart';
 import 'package:kiosk/features/utility/custom_textfield_widget.dart';
 import 'package:kiosk/features/utility/enum/enum_textformfield.dart';
+import 'package:kiosk/features/utility/extension/input_decoration_extension.dart';
 import 'package:kiosk/features/widget/custom_button.dart';
 import 'package:kiosk/product/mandatory/cubit/mandatory_cubit.dart';
 import 'package:kiosk/product/mandatory/service/mandatory_service.dart';
 
 import '../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
 import '../../../features/utility/const/constant_string.dart';
+import '../../../features/utility/custom_input_container.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/user_http_service.dart';
 import '../../../features/utility/extension/text_theme_extension.dart';
 import '../../../features/utility/extension/color_extension.dart';
 import '../model/mandatory_request_model.dart';
 import '../model/mandatory_response_model.dart';
+import '../../../features/utility/enum/enum_object_type.dart';
 
 class MandatoryView extends StatefulWidget {
   final MandatoryRequestModel mandatoryRequestModel;
@@ -95,6 +98,16 @@ class _State extends State<MandatoryView> {
                       .mandatoryRequiredWarningClear();
                   if (_formKey.currentState?.validate() ?? false) {
                     _formKey.currentState!.save();
+                    MyLog.debug("Mandatory Form Validated Successfully");
+                    for (var element in state.data) {
+                      if (element.fieldValue != null &&
+                          (element.fieldValue ?? "").isNotEmpty) {
+                        cubitContext.read<MandatoryCubit>().mandatoryValueSave(
+                          element.id ?? '',
+                          element.fieldValue ?? '',
+                        );
+                      }
+                    }
                     context
                         .read<PatientRegistrationProceduresCubit>()
                         .mandatoryCheck(state.patientMandatoryData);
@@ -140,92 +153,7 @@ class _State extends State<MandatoryView> {
                     padding: const EdgeInsets.only(right: 40),
                     itemCount: state.data.length,
                     itemBuilder: (context, index) {
-                      TextInputType? keyboardType;
-                      MandatoryResponseModel item = state.data[index];
-                      final itemId = item.id ?? '';
-                      final label = item.labelCaption ?? "";
-                      if (item.objectType == "integer") {
-                        keyboardType = TextInputType.number;
-                      }
-
-                      _controllers.putIfAbsent(itemId, () {
-                        TextEditingController controller =
-                            TextEditingController(text: item.fieldValue ?? "");
-                        if (item.fieldValue == null ||
-                            item.fieldValue!.isEmpty) {
-                          if (!_editableFields.contains(itemId)) {
-                            _editableFields.add(itemId);
-                          }
-                        }
-                        return controller;
-                      });
-
-                      _focusNodes.putIfAbsent(itemId, () => FocusNode());
-
-                      final controller = _controllers[itemId]!;
-                      final focusNode = _focusNodes[itemId]!;
-                      final isReadOnly = controller.text.isNotEmpty;
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomTextfieldWidget(
-                            type: EnumTextformfield.mandatory,
-                            customLabel: label,
-                            controller: controller,
-                            focusNode: focusNode,
-                            readOnly: isReadOnly,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: keyboardType,
-                            customInputFormatters: [
-                              ...?item.objectType == "integer"
-                                  ? [FilteringTextInputFormatter.digitsOnly]
-                                  : null,
-                            ],
-                            onFieldSubmitted: () {
-                              _focusNextEmptyField(index, state.data);
-                            },
-                            customValidator: (value) {
-                              if (item.isNullable == "0" &&
-                                  (value == null || value.isEmpty)) {
-                                cubitContext
-                                    .read<MandatoryCubit>()
-                                    .mandatoryRequiredWarningSave(
-                                      label,
-                                      ConstantString().fieldRequired,
-                                    );
-                                MyLog.debug(
-                                  "Mandatory Field Validation Failed: $label",
-                                );
-                                return ConstantString().fieldRequired;
-                              }
-                              if (item.minValue != null) {
-                                int minLength =
-                                    int.tryParse(item.minValue ?? "") ?? 0;
-                                if ((value ?? "").length < minLength) {
-                                  cubitContext
-                                      .read<MandatoryCubit>()
-                                      .mandatoryRequiredWarningSave(
-                                        label,
-                                        "${ConstantString().minLengthError} $minLength",
-                                      );
-                                  return "${ConstantString().minLengthError} $minLength";
-                                }
-                              }
-                              return null;
-                            },
-                            customMaxLength: item.maxValue != null
-                                ? int.tryParse(item.maxValue!)
-                                : null,
-                            onSaved: (newValue) {
-                              context.read<MandatoryCubit>().mandatoryValueSave(
-                                itemId,
-                                newValue ?? "",
-                              );
-                            },
-                          ),
-                        ],
-                      );
+                      return inputAreas(state, index, cubitContext);
                     },
                   ),
                 ),
@@ -236,5 +164,143 @@ class _State extends State<MandatoryView> {
       default:
         return Center(child: Text(ConstantString().errorOccurred));
     }
+  }
+
+  inputAreas(MandatoryState state, int index, BuildContext cubitContext) {
+    TextInputType? keyboardType;
+    MandatoryResponseModel item = state.data[index];
+    final itemId = item.id ?? '';
+    final label = item.labelCaption ?? "";
+    if (item.objectType == ObjectType.integer) {
+      keyboardType = TextInputType.number;
+    }
+
+    _controllers.putIfAbsent(itemId, () {
+      TextEditingController controller = TextEditingController(
+        text: item.fieldValue ?? "",
+      );
+      if (item.fieldValue == null || item.fieldValue!.isEmpty) {
+        if (!_editableFields.contains(itemId)) {
+          _editableFields.add(itemId);
+        }
+      }
+      return controller;
+    });
+
+    _focusNodes.putIfAbsent(itemId, () => FocusNode());
+
+    final controller = _controllers[itemId]!;
+    final focusNode = _focusNodes[itemId]!;
+    final isReadOnly =
+        item.fieldValue != null && (item.fieldValue ?? "").isNotEmpty;
+    if (isReadOnly && item.objectType != ObjectType.dropdown) {
+      return CustomInputContainer(
+        type: EnumTextformfield.mandatory,
+        customLabel: label,
+        child: InputDecorator(
+          isFocused: false,
+          decoration: InputDecoration().mandatoryDecoration,
+          child: SelectionArea(
+            child: SelectableText(
+              controller.text,
+              maxLines: 1,
+              showCursor: true,
+              style: TextStyle(fontSize: 25, color: Colors.grey.shade600),
+            ),
+          ),
+        ),
+      );
+    }
+    if (item.objectType == ObjectType.dropdown && item.dropdownItems != null) {
+      return CustomInputContainer(
+        type: EnumTextformfield.mandatory,
+        customLabel: label,
+        child: DropdownButtonFormField<String>(
+          initialValue: controller.text.isNotEmpty ? controller.text : null,
+          decoration: InputDecoration().mandatoryDecoration,
+          hint: Text(ConstantString().select),
+          disabledHint: controller.text.isNotEmpty
+              ? Text(controller.text)
+              : null,
+          items: item.dropdownItems!
+              .map(
+                (dropdownItem) => DropdownMenuItem<String>(
+                  value: dropdownItem.value.toString(),
+                  child: Text(dropdownItem.text ?? ""),
+                ),
+              )
+              .toList(),
+          onChanged: isReadOnly
+              ? null
+              : (newValue) {
+                  controller.text = newValue ?? "";
+                },
+          onSaved: (newValue) {
+            cubitContext.read<MandatoryCubit>().mandatoryValueSave(
+              itemId,
+              newValue ?? "",
+            );
+          },
+          validator: (value) {
+            if (item.isNullable == "0" && (value == null || value.isEmpty)) {
+              cubitContext.read<MandatoryCubit>().mandatoryRequiredWarningSave(
+                label,
+                ConstantString().fieldRequired,
+              );
+              MyLog.debug("Mandatory Field Validation Failed: $label");
+              return ConstantString().fieldRequired;
+            }
+            return null;
+          },
+        ),
+      );
+    }
+    return CustomTextfieldWidget(
+      type: EnumTextformfield.mandatory,
+      customLabel: label,
+      controller: controller,
+      focusNode: focusNode,
+      readOnly: isReadOnly,
+      textInputAction: TextInputAction.next,
+      keyboardType: keyboardType,
+      customInputFormatters: [
+        ...?(item.objectType == ObjectType.integer
+            ? [FilteringTextInputFormatter.digitsOnly]
+            : null),
+      ],
+      onFieldSubmitted: () {
+        _focusNextEmptyField(index, state.data);
+      },
+      customValidator: (value) {
+        if (item.isNullable == "0" && (value == null || value.isEmpty)) {
+          cubitContext.read<MandatoryCubit>().mandatoryRequiredWarningSave(
+            label,
+            ConstantString().fieldRequired,
+          );
+          MyLog.debug("Mandatory Field Validation Failed: $label");
+          return ConstantString().fieldRequired;
+        }
+        if (item.minValue != null) {
+          int minLength = int.tryParse(item.minValue ?? "") ?? 0;
+          if ((value ?? "").length < minLength) {
+            cubitContext.read<MandatoryCubit>().mandatoryRequiredWarningSave(
+              label,
+              "${ConstantString().minLengthError} $minLength",
+            );
+            return "${ConstantString().minLengthError} $minLength";
+          }
+        }
+        return null;
+      },
+      customMaxLength: item.maxValue != null
+          ? int.tryParse(item.maxValue!)
+          : null,
+      onSaved: (newValue) {
+        cubitContext.read<MandatoryCubit>().mandatoryValueSave(
+          itemId,
+          newValue ?? "",
+        );
+      },
+    );
   }
 }
