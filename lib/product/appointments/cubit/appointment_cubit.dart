@@ -72,7 +72,10 @@ class AppointmentCubit extends BaseCubit<AppointmentState> {
 
         _log.d("Cancel response: ${res.data}");
       } on NetworkException catch (e) {
-      } catch (e) {}
+        _log.e("Cancel appointment failed: ${e.message}");
+      } catch (e) {
+        _log.e("Cancel appointment failed: ${e.toString()}");
+      }
     }
   }
 
