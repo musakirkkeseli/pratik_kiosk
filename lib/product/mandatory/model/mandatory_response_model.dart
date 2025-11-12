@@ -34,9 +34,9 @@ class MandatoryResponseModel {
     fieldValue = json['FIELD_VALUE'];
     objectType = ObjectTypeHelper.fromString(json['OBJECT_TYPE'] as String?);
     if (json['DROPDOWN_ITEMS'] != null) {
-      dropdownItems = <DropdownModel<String>>[];
+      dropdownItems = <DropdownModel>[];
       json['DROPDOWN_ITEMS'].forEach((v) {
-        dropdownItems!.add(DropdownModel<String>.fromJson(v));
+        dropdownItems!.add(DropdownModel.fromJson(v));
       });
     }
   }
