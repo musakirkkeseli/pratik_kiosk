@@ -76,10 +76,13 @@ class PatientRegistrationProceduresCubit
       updatedModel.assocationName = section.assocationName;
       updatedModel.gssAssocationId = section.gssAssocationId ?? "";
       emit(state.copyWith(model: updatedModel));
-      _trackButton('select_association', extra: {
-        'association_id': section.assocationId,
-        'association_name': section.assocationName,
-      });
+      _trackButton(
+        'select_association',
+        extra: {
+          'association_id': section.assocationId,
+          'association_name': section.assocationName,
+        },
+      );
       nextStep();
     }
   }
@@ -94,10 +97,13 @@ class PatientRegistrationProceduresCubit
       updatedModel.assocationName = section.assocationName;
       updatedModel.gssAssocationId = section.gssAssocationId ?? "";
       emit(state.copyWith(model: updatedModel));
-      _trackButton('select_association_with_insurance', extra: {
-        'association_id': section.assocationId,
-        'insurance_type_id': insurance.insuredTypeId,
-      });
+      _trackButton(
+        'select_association_with_insurance',
+        extra: {
+          'association_id': section.assocationId,
+          'insurance_type_id': insurance.insuredTypeId,
+        },
+      );
       nextStep();
     }
   }
@@ -226,9 +232,7 @@ class PatientRegistrationProceduresCubit
     updatedModel.patientPriceDetailModel = patientPriceDetailModel;
     emit(state.copyWith(model: updatedModel));
     AnalyticsService().trackPaymentScreenOpened(
-      amount: double.tryParse(
-        updatedModel.patientContent?.totalPrice ?? '0',
-      ),
+      amount: double.tryParse(updatedModel.patientContent?.totalPrice ?? '0'),
     );
     nextStep();
   }
@@ -240,10 +244,11 @@ class PatientRegistrationProceduresCubit
       final res = await service.postPatientTransactionRevenue(
         patientPriceDetailModel,
       );
-      
+
       // Total amount'u al
-      final totalAmount = patientPriceDetailModel.patientContent?.totalPrice ?? "0";
-      
+      final totalAmount =
+          patientPriceDetailModel.patientContent?.totalPrice ?? "0";
+
       if (res.success) {
         _log.d("Ödeme Tamamlandı");
         AnalyticsService().trackPaymentSuccess(
@@ -278,7 +283,8 @@ class PatientRegistrationProceduresCubit
       safeEmit(
         state.copyWith(
           paymentResultType: EnumPaymentResultType.success,
-          totalAmount: patientPriceDetailModel.patientContent?.totalPrice ?? "0",
+          totalAmount:
+              patientPriceDetailModel.patientContent?.totalPrice ?? "0",
         ),
       );
     } catch (e) {
@@ -291,7 +297,8 @@ class PatientRegistrationProceduresCubit
       safeEmit(
         state.copyWith(
           paymentResultType: EnumPaymentResultType.success,
-          totalAmount: patientPriceDetailModel.patientContent?.totalPrice ?? "0",
+          totalAmount:
+              patientPriceDetailModel.patientContent?.totalPrice ?? "0",
         ),
       );
     }
