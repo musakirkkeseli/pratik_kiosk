@@ -12,11 +12,11 @@ class CustomTextfieldWidget extends StatelessWidget {
   final String? Function(String?)? customValidator;
   final int? customMaxLength;
   final List<TextInputFormatter>? customInputFormatters;
-  final String? customLabel; // Dinamik label için
-  final bool readOnly; // Readonly özelliği
-  final FocusNode? focusNode; // Focus yönetimi
-  final TextInputAction? textInputAction; // Enter aksiyonu
-  final void Function()? onFieldSubmitted; // Enter'a basıldığında
+  final String? customLabel;
+  final bool readOnly;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final void Function()? onFieldSubmitted;
   final TextInputType? keyboardType;
 
   const CustomTextfieldWidget({
@@ -41,36 +41,23 @@ class CustomTextfieldWidget extends StatelessWidget {
     return CustomInputContainer(
       type: type,
       customLabel: customLabel,
-      child: readOnly
-          ? InputDecorator(
-              isFocused: false,
-              decoration: InputDecoration().mandatoryDecoration,
-              child: SelectionArea(
-                child: SelectableText(
-                  controller.text,
-                  maxLines: 1,
-                  showCursor: true,
-                  style: TextStyle(fontSize: 25, color: Colors.grey.shade600),
-                ),
-              ),
-            )
-          : TextFormField(
-              controller: controller,
-              obscureText: type.obscureText,
-              keyboardType: keyboardType ?? type.keyboardType,
-              inputFormatters: customInputFormatters ?? type.inputFormatters,
-              maxLength: customMaxLength ?? type.maxLength,
-              validator: customValidator ?? type.validator,
-              onChanged: onChanged,
-              onSaved: onSaved,
-              readOnly: readOnly,
-              focusNode: focusNode,
-              textInputAction: textInputAction ?? TextInputAction.next,
-              onFieldSubmitted: (_) => onFieldSubmitted?.call(),
-              cursorColor: Colors.grey.shade700,
-              style: TextStyle(fontSize: 25, color: Colors.black),
-              decoration: InputDecoration().mandatoryDecoration,
-            ),
+      child: TextFormField(
+        controller: controller,
+        obscureText: type.obscureText,
+        keyboardType: keyboardType ?? type.keyboardType,
+        inputFormatters: customInputFormatters ?? type.inputFormatters,
+        maxLength: customMaxLength ?? type.maxLength,
+        validator: customValidator ?? type.validator,
+        onChanged: onChanged,
+        onSaved: onSaved,
+        readOnly: readOnly,
+        focusNode: focusNode,
+        textInputAction: textInputAction ?? TextInputAction.next,
+        onFieldSubmitted: (_) => onFieldSubmitted?.call(),
+        cursorColor: Colors.grey.shade700,
+        style: TextStyle(fontSize: 25, color: Colors.black),
+        decoration: InputDecoration().mandatoryDecoration,
+      ),
     );
   }
 }
