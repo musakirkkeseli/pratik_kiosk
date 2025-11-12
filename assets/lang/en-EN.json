@@ -85,5 +85,8 @@
   "makeSecurePayment": "Make a Secure Payment",
   "welcome": "Welcome",
   "vatIncluded": "VAT included",
-  "otherBranches": "Other Departments"
+  "otherBranches": "Other Departments",
+  "scanQrToAccessForm": "You can access the Google Forms survey by scanning the QR code.",
+  "scanQrToFillSurvey": "Scan the QR code to fill out the survey",
+  "survey": "Survey"
 }

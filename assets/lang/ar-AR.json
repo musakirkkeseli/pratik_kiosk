@@ -86,5 +86,8 @@
   "makeSecurePayment": "ادفع بأمان",
   "welcome": "مرحبًا السيد/السيدة",
   "vatIncluded": "شامل ضريبة القيمة المضافة",
-  "otherBranches": "الأقسام الأخرى"
+  "otherBranches": "الأقسام الأخرى",
+  "scanQrToAccessForm": "يمكنك الوصول إلى استبيان Google Forms عن طريق مسح رمز الاستجابة السريعة.",
+  "scanQrToFillSurvey": "امسح رمز الاستجابة السريعة لملء الاستبيان",
+  "survey": "استبيان"
 }

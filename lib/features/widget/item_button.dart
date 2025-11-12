@@ -11,21 +11,33 @@ class ItemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.07,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-        border: Border.all(
-          width: 2,
-          color: context.primaryColor.withOpacity(0.3),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: const BorderRadius.all(Radius.circular(12)),
+      child: Ink(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.07,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          border: Border.all(
+            width: 2,
+            color: context.primaryColor.withOpacity(0.3),
+          ),
         ),
-      ),
-      alignment: Alignment.center,
-      child: ListTile(
-        title: Text(title, style: context.cardTitle),
-        trailing: Icon(Icons.arrow_forward_ios, color: context.primaryColor),
-        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: context.cardTitle,
+                ),
+              ),
+              Icon(Icons.arrow_forward_ios, color: context.primaryColor),
+            ],
+          ),
+        ),
       ),
     );
   }

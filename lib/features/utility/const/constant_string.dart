@@ -31,6 +31,7 @@ class ConstantString {
   static const configSetting = "assets/gif/config_setting.json";
   static const paymentLoading = "assets/gif/payment_loading.json";
   static const downloadImage = "assets/images/downloadImage.png";
+  static const form = "https://docs.google.com/forms/d/e/1FAIpQLSfndUVNdpeDg0Nh1Xwzkv8O2w2rg8UucMj_GQE1IvzFTkh5dw/viewform?usp=dialog";
 
   String isThisNumberYoursWithPhone(String phoneNumber) =>
       LocaleKeys.isThisNumberYoursWithPhone.localArg([phoneNumber]);
@@ -130,4 +131,7 @@ class ConstantString {
   String welcome = LocaleKeys.welcome.locale;
   String vatIncluded = LocaleKeys.vatIncluded.locale;
   String otherBranches = LocaleKeys.otherBranches.locale;
+  String scanQrToAccessForm = LocaleKeys.scanQrToAccessForm.locale;
+  String scanQrToFillSurvey = LocaleKeys.scanQrToFillSurvey.locale;
+  String survey = LocaleKeys.survey.locale;
 }

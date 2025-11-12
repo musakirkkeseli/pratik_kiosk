@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/material_symbols.dart';
-import 'package:kiosk/product/results/view/results_view.dart';
 
 import '../../../product/appointments/view/appointments_view.dart';
 import '../../../product/home/view/widget/section_button_widget.dart';
+import '../../../product/questionnaire/view/questionnaire_view.dart';
 import '../const/constant_string.dart';
 import '../extension/color_extension.dart';
 
 enum EnumHomeItem {
   appointments,
   registration,
-  results;
+  qr;
+  // results;
 
   String get label {
     switch (this) {
@@ -19,8 +20,8 @@ enum EnumHomeItem {
         return ConstantString().appointmentRegistration;
       case EnumHomeItem.registration:
         return ConstantString().registration;
-      case EnumHomeItem.results:
-        return ConstantString().tests;
+      case EnumHomeItem.qr:
+        return ConstantString().survey;
     }
   }
 
@@ -36,11 +37,8 @@ enum EnumHomeItem {
           MaterialSymbols.holiday_village_rounded,
           color: context.primaryColor,
         );
-      case EnumHomeItem.results:
-        return Iconify(
-          MaterialSymbols.view_list,
-          color: context.primaryColor,
-        );
+      case EnumHomeItem.qr:
+        return Iconify(MaterialSymbols.view_list, color: context.primaryColor);
     }
   }
 
@@ -50,8 +48,8 @@ enum EnumHomeItem {
         return AppointmentsView();
       case EnumHomeItem.registration:
         return SectionButtonWidget();
-      case EnumHomeItem.results:
-        return ResultsView();
+      case EnumHomeItem.qr:
+        return QuestionnaireView();
     }
   }
 }

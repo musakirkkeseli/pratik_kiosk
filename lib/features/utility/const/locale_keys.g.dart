@@ -91,4 +91,7 @@ abstract class LocaleKeys {
   static const welcome = 'welcome';
   static const vatIncluded = 'vatIncluded';
   static const otherBranches = 'otherBranches';
+  static const scanQrToAccessForm = 'scanQrToAccessForm';
+  static const scanQrToFillSurvey = 'scanQrToFillSurvey';
+  static const survey = 'survey';
 }

@@ -85,5 +85,10 @@
   "makeSecurePayment": "Güvenli Ödeme Yap",
   "welcome": "Hoşgeldiniz Sayın",
   "vatIncluded": "KDV dahildir",
-  "otherBranches": "Diğer Bölümler"
+  "otherBranches": "Diğer Bölümler",
+  "scanQrToAccessForm": "QR kodu tarayarak Google Forms anketine erişebilirsiniz",
+  "scanQrToFillSurvey": "Anketi doldurmak için QR kodu okutun",
+  "survey": "Anket"
+  
+  
 }
