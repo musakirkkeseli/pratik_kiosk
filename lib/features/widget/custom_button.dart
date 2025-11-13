@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../utility/const/constant_color.dart';
 import '../utility/extension/text_theme_extension.dart';
 
 class CustomButton extends StatelessWidget {
@@ -45,7 +46,7 @@ class CustomButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
-          foregroundColor: textColor ?? Colors.white,
+          foregroundColor: textColor ?? ConstColor.white,
           elevation: elevation ?? 2,
           padding: padding,
           shape: RoundedRectangleBorder(
@@ -60,14 +61,14 @@ class CustomButton extends StatelessWidget {
                   Icon(
                     icon,
                     size: iconSize ?? 24,
-                    color: textColor ?? Colors.white,
+                    color: textColor ?? ConstColor.white,
                   ),
                   SizedBox(width: iconSpacing ?? 8),
                   Text(
                     label,
                     style: context.buttonText.copyWith(
                       fontSize: fontSize ?? 16,
-                      color: textColor ?? Colors.white,
+                      color: textColor ?? ConstColor.white,
                       fontWeight: fontWeight,
                     ),
                   ),
@@ -77,7 +78,7 @@ class CustomButton extends StatelessWidget {
                 label,
                 style: context.buttonText.copyWith(
                   fontSize: fontSize ?? 16,
-                  color: textColor ?? Colors.white,
+                  color: textColor ?? ConstColor.white,
                   fontWeight: fontWeight,
                 ),
               ),

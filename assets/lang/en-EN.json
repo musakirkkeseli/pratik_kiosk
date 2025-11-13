@@ -88,5 +88,17 @@
   "otherBranches": "Other Departments",
   "scanQrToAccessForm": "You can access the Google Forms survey by scanning the QR code.",
   "scanQrToFillSurvey": "Scan the QR code to fill out the survey",
-  "survey": "Survey"
+  "survey": "Survey",
+  "usernameRequired": "Username is required",
+  "enterAtLeast3Characters": "Enter at least 3 characters",
+  "passwordRequired": "Password is required",
+  "passwordMinLength": "Password must be at least 6 characters",
+  "turkishIdRequired": "Turkish ID Number is required",
+  "mustBe11Digits": "Must be 11 digits",
+  "invalidTurkishId": "Invalid Turkish ID Number",
+  "birthDateRequired": "Birth date is required",
+  "enterValidDateFormat": "Enter a valid date in the format dd.mm.yyyy",
+  "save": "Save",
+  "pleaseSignFirst": "Please sign first",
+  "pleaseProvideSignature": "Please provide your signature"
 }

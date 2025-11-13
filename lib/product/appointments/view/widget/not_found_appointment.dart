@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
+import '../../../../features/utility/extension/text_theme_extension.dart';
 
 class NotFoundAppointment extends StatelessWidget {
   const NotFoundAppointment({super.key});
@@ -13,14 +15,13 @@ class NotFoundAppointment extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.event_busy, size: 48, color: Colors.grey[400]),
+            Icon(Icons.event_busy, size: 48, color: ConstColor.grey400),
             const SizedBox(height: 16),
             Text(
               ConstantString().noAppointments,
-              style: TextStyle(
-                fontSize: 18,
+              style: context.notFoundText.copyWith(
                 fontWeight: FontWeight.w600,
-                color: Colors.grey[600],
+                color: ConstColor.grey600,
               ),
             ),
           ],

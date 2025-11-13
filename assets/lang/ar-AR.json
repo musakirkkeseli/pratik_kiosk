@@ -89,5 +89,17 @@
   "otherBranches": "الأقسام الأخرى",
   "scanQrToAccessForm": "يمكنك الوصول إلى استبيان Google Forms عن طريق مسح رمز الاستجابة السريعة.",
   "scanQrToFillSurvey": "امسح رمز الاستجابة السريعة لملء الاستبيان",
-  "survey": "استبيان"
+  "survey": "استبيان",
+  "usernameRequired": "اسم المستخدم مطلوب",
+  "enterAtLeast3Characters": "أدخل 3 أحرف على الأقل",
+  "passwordRequired": "كلمة المرور مطلوبة",
+  "passwordMinLength": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+  "turkishIdRequired": "رقم الهوية التركية مطلوب",
+  "mustBe11Digits": "يجب أن يتكون من 11 رقمًا",
+  "invalidTurkishId": "رقم الهوية التركية غير صالح",
+  "birthDateRequired": "تاريخ الميلاد مطلوب",
+  "enterValidDateFormat": "أدخل تاريخًا صالحًا بالتنسيق dd.mm.yyyy",
+  "save": "حفظ",
+  "pleaseSignFirst": "يرجى التوقيع أولاً",
+  "pleaseProvideSignature": "يرجى وضع توقيعك"
 }

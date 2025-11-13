@@ -40,7 +40,7 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
                   tileMode: TileMode.mirror,
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Colors.red, Colors.white, Colors.red],
+                  colors: [ConstColor.red, ConstColor.white, ConstColor.red],
                 ),
                 backgroundBlendMode: BlendMode.srcOver,
               ),

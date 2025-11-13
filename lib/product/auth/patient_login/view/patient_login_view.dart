@@ -240,7 +240,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                                     borderRadius: BorderRadius.circular(12),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
+                                        color: ConstColor.black.withOpacity(0.1),
                                         blurRadius: 10,
                                         offset: Offset(0, 4),
                                       ),
@@ -334,13 +334,13 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: Colors.red.withOpacity(0.1),
+                                  color: ConstColor.red.withOpacity(0.1),
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(
                                   Icons.close,
                                   size: 20,
-                                  color: Colors.red,
+                                  color: ConstColor.red,
                                 ),
                               ),
                             ),
@@ -388,13 +388,13 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                       child: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.1),
+                          color: ConstColor.red.withOpacity(0.1),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
                           Icons.close,
                           size: 20,
-                          color: Colors.red,
+                          color: ConstColor.red,
                         ),
                       ),
                     ),
@@ -416,7 +416,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
               size: 100,
               strokeWidth: 8,
               color: Theme.of(context).colorScheme.primary,
-              backgroundColor: Colors.grey.shade300,
+              backgroundColor: ConstColor.grey300,
             ),
             ValueListenableBuilder(
               valueListenable: _validateOtp,
@@ -456,13 +456,13 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.red.withOpacity(0.1),
+                              color: ConstColor.red.withOpacity(0.1),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
                               Icons.close,
                               size: 20,
-                              color: Colors.red,
+                              color: ConstColor.red,
                             ),
                           ),
                         ),

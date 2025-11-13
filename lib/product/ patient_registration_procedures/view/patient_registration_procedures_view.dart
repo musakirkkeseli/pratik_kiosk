@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
+import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/enum/enum_patient_registration_procedures.dart';
 import '../../../features/utility/enum/enum_payment_result_type.dart';
@@ -67,7 +68,7 @@ class PatientRegistrationProceduresView extends StatelessWidget {
       );
     }
     return ProceduresWidget(
-      iColor: Colors.grey.shade300,
+      iColor: ConstColor.grey300,
       aColor: Theme.of(context).colorScheme.primary,
       textTheme: Theme.of(context).textTheme,
       startStep: startStep,

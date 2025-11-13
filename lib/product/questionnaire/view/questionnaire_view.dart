@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kiosk/features/utility/const/constant_color.dart';
+import 'package:kiosk/features/utility/extension/text_theme_extension.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../features/utility/const/constant_string.dart';
@@ -21,18 +23,18 @@ class _QuestionnaireViewState extends State<QuestionnaireView> {
         children: [
           Text(
             ConstantString().scanQrToFillSurvey,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: context.questionnaireText,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 40),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: ConstColor.white,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: ConstColor.black.withOpacity(0.1),
                   blurRadius: 20,
                   offset: const Offset(0, 4),
                 ),
@@ -42,7 +44,7 @@ class _QuestionnaireViewState extends State<QuestionnaireView> {
               data: _formUrl,
               version: QrVersions.auto,
               size: 150.0,
-              backgroundColor: Colors.white,
+              backgroundColor: ConstColor.white,
               errorCorrectionLevel: QrErrorCorrectLevel.H,
             ),
           ),
@@ -51,7 +53,7 @@ class _QuestionnaireViewState extends State<QuestionnaireView> {
             padding: EdgeInsets.symmetric(horizontal: 32.0),
             child: Text(
               ConstantString().scanQrToAccessForm,
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+              style: context.bodySecondary.copyWith(),
               textAlign: TextAlign.center,
             ),
           ),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:animated_flip_counter/animated_flip_counter.dart';
+import 'package:kiosk/features/utility/const/constant_color.dart';
 import 'package:kiosk/features/utility/extension/color_extension.dart';
 
 class CircularCountdown extends StatefulWidget {
@@ -67,7 +68,7 @@ class _CircularCountdownState extends State<CircularCountdown> {
     final leftMs = _left.inMilliseconds.clamp(0, totalMs);
     final progress = leftMs / totalMs; // 1.0 -> 0.0
     final color = context.primaryColor;
-    final bg = widget.backgroundColor ?? Colors.grey.shade300;
+    final bg = widget.backgroundColor ?? ConstColor.grey300;
     final textStyle =
         widget.textStyle ?? Theme.of(context).textTheme.headlineSmall;
 
@@ -84,7 +85,7 @@ class _CircularCountdownState extends State<CircularCountdown> {
               value: 1.0,
               strokeWidth: widget.strokeWidth,
               valueColor: AlwaysStoppedAnimation<Color>(bg),
-              backgroundColor: Colors.transparent,
+              backgroundColor: ConstColor.transparent,
             ),
           ),
           SizedBox(
@@ -94,7 +95,7 @@ class _CircularCountdownState extends State<CircularCountdown> {
               value: progress,
               strokeWidth: widget.strokeWidth,
               valueColor: AlwaysStoppedAnimation<Color>(color),
-              backgroundColor: Colors.transparent,
+              backgroundColor: ConstColor.transparent,
             ),
           ),
           AnimatedFlipCounter(
@@ -111,7 +112,7 @@ class _CircularCountdownState extends State<CircularCountdown> {
               'sn',
               style: Theme.of(
                 context,
-              ).textTheme.labelMedium?.copyWith(color: Colors.grey[700]),
+              ).textTheme.labelMedium?.copyWith(color: ConstColor.grey700),
             ),
           ),
         ],

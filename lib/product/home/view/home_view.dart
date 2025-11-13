@@ -4,6 +4,7 @@ import 'package:iconify_flutter/icons/material_symbols.dart';
 
 import '../../../core/utility/session_manager.dart';
 import '../../../core/utility/user_login_status_service.dart';
+import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_home_item.dart';
 import '../../../features/utility/extension/text_theme_extension.dart';
@@ -51,7 +52,7 @@ class _HomeViewState extends State<HomeView> {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
+                      backgroundColor: ConstColor.transparent,
                       foregroundColor: context.primaryColor,
                       elevation: 0,
                       side: BorderSide(color: context.primaryColor, width: 2),

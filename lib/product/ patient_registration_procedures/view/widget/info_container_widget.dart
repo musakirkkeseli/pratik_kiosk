@@ -21,12 +21,12 @@ class _State extends State<InfoContainerWidget> {
     return Container(
       width: 550,
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: ConstColor.grey100,
         borderRadius: BorderRadius.circular(12),
         border: Border(left: BorderSide(color: context.primaryColor, width: 8)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: ConstColor.black.withOpacity(0.1),
             blurRadius: 8,
             offset: Offset(0, 4),
           ),

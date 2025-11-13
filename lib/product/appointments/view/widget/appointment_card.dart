@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/const/constant_string.dart';
 import '../../../../features/utility/extension/text_theme_extension.dart';
 import '../../../../features/utility/extension/color_extension.dart';
@@ -36,7 +37,7 @@ class AppointmentCard extends StatelessWidget {
       highlightColor: context.primaryColor.withOpacity(0.05),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ConstColor.white,
           borderRadius: BorderRadius.circular(16),
           border: Border(
             left: BorderSide(color: context.primaryColor, width: 8),
@@ -44,7 +45,7 @@ class AppointmentCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               // ignore: deprecated_member_use
-              color: Colors.black.withOpacity(0.05),
+              color: ConstColor.black.withOpacity(0.05),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -121,8 +122,8 @@ class AppointmentCard extends StatelessWidget {
                     child: OutlinedButton(
                       onPressed: onCancel,
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.red,
-                        side: const BorderSide(color: Colors.red, width: 1.5),
+                        foregroundColor: ConstColor.red,
+                        side: const BorderSide(color: ConstColor.red, width: 1.5),
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       ),
                       child: Row(
@@ -130,14 +131,13 @@ class AppointmentCard extends StatelessWidget {
                         children: [
                           const Icon(
                             Icons.cancel_outlined,
-                            color: Colors.red,
+                            color: ConstColor.red,
                             size: 18,
                           ),
                           const SizedBox(width: 8),
                           Text(
                             "İptal Et",
-                            style: const TextStyle(
-                              color: Colors.red,
+                            style: context.errorText.copyWith(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -160,16 +160,15 @@ class AppointmentCard extends StatelessWidget {
                         children: [
                           Text(
                             ConstantString().select,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: context.whiteButtonText.copyWith(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           const SizedBox(width: 8),
                           const Icon(
-                            Icons.arrow_forward_rounded,
-                            color: Colors.white,
+                            Icons.arrow_forward,
+                            color: ConstColor.white,
                             size: 18,
                           ),
                         ],

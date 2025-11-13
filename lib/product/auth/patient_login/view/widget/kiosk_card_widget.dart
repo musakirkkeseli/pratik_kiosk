@@ -4,6 +4,7 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/line_md.dart';
 import 'package:iconify_flutter/icons/material_symbols.dart';
 
+import '../../../../../features/utility/const/constant_color.dart';
 import '../../../../../features/utility/const/constant_string.dart';
 import '../../../../../features/utility/extension/text_theme_extension.dart';
 import '../../../../../features/utility/extension/color_extension.dart';
@@ -37,7 +38,7 @@ class KioskCardWidget extends StatelessWidget {
                 icon: const HugeIcon(
                   icon: HugeIcons.strokeRoundedAppointment02,
                   size: 40,
-                  color: Colors.white,
+                  color: ConstColor.white,
                 ),
                 label: ConstantString().appointmentRegistration,
               ),
@@ -48,7 +49,7 @@ class KioskCardWidget extends StatelessWidget {
                 icon: const Iconify(
                   LineMd.account_add,
                   size: 40,
-                  color: Colors.white,
+                  color: ConstColor.white,
                 ),
                 label: ConstantString().patientRegistration,
               ),
@@ -59,7 +60,7 @@ class KioskCardWidget extends StatelessWidget {
                 icon: const Iconify(
                   MaterialSymbols.list_rounded,
                   size: 40,
-                  color: Colors.white,
+                  color: ConstColor.white,
                 ),
                 label: ConstantString().testQueue,
               ),

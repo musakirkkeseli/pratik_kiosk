@@ -96,7 +96,7 @@ class ProceduresWidget extends StatelessWidget {
                                       reachedDone ? Icons.check : Icons.circle,
                                       key: ValueKey<bool>(reachedDone),
                                       size: 20,
-                                      color: Colors.white,
+                                      color: ConstColor.white,
                                     ),
                                   ),
                                 ),
@@ -122,7 +122,7 @@ class ProceduresWidget extends StatelessWidget {
                                   .label;
                               final baseStyle =
                                   textTheme.labelMedium ??
-                                  const TextStyle(fontSize: 12);
+                                  context.caption;
                               final targetStyle = baseStyle.copyWith(
                                 fontWeight: reached
                                     ? FontWeight.w600
@@ -209,8 +209,8 @@ class _ButtonBar extends StatelessWidget {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[300],
-                    foregroundColor: Colors.grey[800],
+                    backgroundColor: ConstColor.grey300,
+                    foregroundColor: ConstColor.grey700,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -223,7 +223,7 @@ class _ButtonBar extends StatelessWidget {
                   icon: Icon(
                     Icons.arrow_back,
                     size: 20,
-                    color: Colors.grey[800],
+                    color: ConstColor.grey700,
                   ),
                   label: Text(
                     currentStep == startStep
@@ -235,7 +235,7 @@ class _ButtonBar extends StatelessWidget {
                         : '',
                     style: context.cardTitle.copyWith(
                       fontSize: 14,
-                      color: Colors.grey[800],
+                      color: ConstColor.grey700,
                     ),
                   ),
                 ),
@@ -247,7 +247,7 @@ class _ButtonBar extends StatelessWidget {
             height: 50,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent,
+                backgroundColor: ConstColor.transparent,
                 foregroundColor: context.primaryColor,
                 elevation: 0,
                 side: BorderSide(color: context.primaryColor, width: 2),

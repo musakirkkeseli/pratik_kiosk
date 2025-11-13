@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiosk/features/utility/const/constant_color.dart';
 import 'package:kiosk/features/utility/user_http_service.dart';
 import 'package:kiosk/product/appointments/services/appointment_services.dart';
 import 'package:kiosk/product/appointments/view/widget/appointment_card.dart';
@@ -172,8 +173,8 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                Colors.white,
-                                Colors.white.withOpacity(0),
+                                ConstColor.white,
+                                ConstColor.white.withOpacity(0),
                               ],
                             ),
                           ),

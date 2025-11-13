@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../features/utility/const/constant_color.dart';
 import '../../../../features/utility/extension/text_theme_extension.dart';
 
 class ResultsCard extends StatelessWidget {
@@ -9,12 +10,12 @@ class ResultsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: ConstColor.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(width: 2, color: Colors.grey.shade300),
+        border: Border.all(width: 2, color: ConstColor.grey300),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: ConstColor.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

@@ -12,7 +12,24 @@ class ConstColor {
   static const grey = Colors.grey;
   static const prizmaColor = Color(0x4423c2e4);
   static const red = Colors.red;
-
-
+  static const green = Colors.green;
+  static const transparent = Colors.transparent;
+  static const orange = Colors.orange;
+  static const blue = Colors.blue;
+  
+  // Shade colors
+  static final grey100 = Colors.grey.shade100;
+  static final grey200 = Colors.grey.shade200;
+  static final grey300 = Colors.grey.shade300;
+  static final grey400 = Colors.grey.shade400;
+  static final grey500 = Colors.grey.shade500;
+  static final grey600 = Colors.grey.shade600;
+  static final grey700 = Colors.grey.shade700;
+  
+  static final red50 = Colors.red.shade50;
+  static final red200 = Colors.red.shade200;
+  static final red400 = Colors.red.shade400;
+  static final red900 = Colors.red.shade900;
 }
+  
   

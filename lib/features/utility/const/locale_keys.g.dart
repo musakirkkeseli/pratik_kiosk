@@ -94,4 +94,16 @@ abstract class LocaleKeys {
   static const scanQrToAccessForm = 'scanQrToAccessForm';
   static const scanQrToFillSurvey = 'scanQrToFillSurvey';
   static const survey = 'survey';
+  static const usernameRequired = 'usernameRequired';
+  static const enterAtLeast3Characters = 'enterAtLeast3Characters';
+  static const passwordRequired = 'passwordRequired';
+  static const passwordMinLength = 'passwordMinLength';
+  static const turkishIdRequired = 'turkishIdRequired';
+  static const mustBe11Digits = 'mustBe11Digits';
+  static const invalidTurkishId = 'invalidTurkishId';
+  static const birthDateRequired = 'birthDateRequired';
+  static const enterValidDateFormat = 'enterValidDateFormat';
+  static const save = 'save';
+  static const pleaseSignFirst = 'pleaseSignFirst';
+  static const pleaseProvideSignature = 'pleaseProvideSignature';
 }

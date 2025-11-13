@@ -124,31 +124,31 @@ extension EnumTextformfieldExtension on EnumTextformfield {
       case EnumTextformfield.hospitalUserName:
         return (v) {
           final value = v?.trim() ?? '';
-          if (value.isEmpty) return 'Kullanıcı adı zorunludur';
-          if (value.length < 3) return 'En az 3 karakter girin';
+          if (value.isEmpty) return ConstantString().usernameRequired;
+          if (value.length < 3) return ConstantString().enterAtLeast3Characters;
           return null;
         };
       case EnumTextformfield.hospitalUserPassword:
         return (v) {
           final value = v ?? '';
-          if (value.isEmpty) return 'Şifre zorunludur';
-          if (value.length < 6) return 'Şifre en az 6 karakter olmalı';
+          if (value.isEmpty) return ConstantString().passwordRequired;
+          if (value.length < 6) return ConstantString().passwordMinLength;
           return null;
         };
       case EnumTextformfield.tc:
         return (v) {
           final raw = (v ?? '').replaceAll(RegExp(r'\D'), '');
-          if (raw.isEmpty) return 'T.C. Kimlik No zorunludur';
-          if (raw.length != 11) return '11 haneli olmalıdır';
-          if (!_isValidTCKN(raw)) return 'Geçersiz T.C. Kimlik No';
+          if (raw.isEmpty) return ConstantString().turkishIdRequired;
+          if (raw.length != 11) return ConstantString().mustBe11Digits;
+          if (!_isValidTCKN(raw)) return ConstantString().invalidTurkishId;
           return null;
         };
       case EnumTextformfield.birthday:
         return (v) {
           final value = (v ?? '').trim();
-          if (value.isEmpty) return 'Doğum tarihi zorunludur';
+          if (value.isEmpty) return ConstantString().birthDateRequired;
           if (!_isValidDate(value)) {
-            return 'gg.aa.yyyy biçiminde geçerli bir tarih girin';
+            return ConstantString().enterValidDateFormat;
           }
           return null;
         };

@@ -88,7 +88,17 @@
   "otherBranches": "Diğer Bölümler",
   "scanQrToAccessForm": "QR kodu tarayarak Google Forms anketine erişebilirsiniz",
   "scanQrToFillSurvey": "Anketi doldurmak için QR kodu okutun",
-  "survey": "Anket"
-  
-  
+  "survey": "Anket",
+  "usernameRequired": "Kullanıcı adı zorunludur",
+  "enterAtLeast3Characters": "En az 3 karakter girin",
+  "passwordRequired": "Şifre zorunludur",
+  "passwordMinLength": "Şifre en az 6 karakter olmalı",
+  "turkishIdRequired": "T.C. Kimlik No zorunludur",
+  "mustBe11Digits": "11 haneli olmalıdır",
+  "invalidTurkishId": "Geçersiz T.C. Kimlik No",
+  "birthDateRequired": "Doğum tarihi zorunludur",
+  "enterValidDateFormat": "gg.aa.yyyy biçiminde geçerli bir tarih girin",
+  "save": "Kaydet",
+  "pleaseSignFirst": "Lütfen önce imza atınız",
+  "pleaseProvideSignature": "İmzanızı Atınız"
 }

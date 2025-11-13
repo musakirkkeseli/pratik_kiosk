@@ -3,6 +3,7 @@ import 'package:lottie/lottie.dart';
 
 import '../utility/const/constant_color.dart';
 import '../utility/const/constant_string.dart';
+import '../utility/extension/text_theme_extension.dart';
 
 class AppDialog {
   late BuildContext context;
@@ -13,7 +14,7 @@ class AppDialog {
       context: context,
       builder: (context) => Dialog(
         insetPadding: const EdgeInsets.all(0),
-        backgroundColor: Colors.transparent,
+        backgroundColor: ConstColor.transparent,
         child: WillPopScope(
           child: Center(
             child: Lottie.asset(ConstantString.healthGif, width: 150),
@@ -80,7 +81,7 @@ class AppDialog {
     String? secondActionText,
   }) {
     return AlertDialog(
-      backgroundColor: Colors.white,
+      backgroundColor: ConstColor.white,
       title: Text(title),
       content: Text(descript),
       actions: [
@@ -91,7 +92,7 @@ class AppDialog {
                     : null,
                 child: Text(
                   secondActionText,
-                  style: TextStyle(color: ConstColor.black),
+                  style: context.dialogContent,
                 ),
               )
             : Container(),
@@ -103,7 +104,7 @@ class AppDialog {
                 },
           child: Text(
             firstActionText ?? ConstantString().close,
-            style: TextStyle(color: ConstColor.black),
+            style: context.dialogContent,
           ),
         ),
       ],

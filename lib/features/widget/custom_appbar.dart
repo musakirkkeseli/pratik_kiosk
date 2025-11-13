@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/utility/dynamic_theme_provider.dart';
+import '../utility/const/constant_color.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -23,7 +24,7 @@ class CustomAppBar extends StatelessWidget {
               fit: BoxFit.contain,
               placeholder: (context, url) => SizedBox(
                 child: Center(
-                  child: CircularProgressIndicator(color: Colors.white),
+                  child: CircularProgressIndicator(color: ConstColor.white),
                 ),
               ),
               errorWidget: (context, url, error) {

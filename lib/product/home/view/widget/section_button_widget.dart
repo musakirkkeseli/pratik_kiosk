@@ -52,7 +52,7 @@ class _SectionButtonWidgetState extends State<SectionButtonWidget> {
                   Text(
                     ConstantString().selectDepartment,
                     style: context.buttonText.copyWith(
-                      color: Colors.white,
+                      color: ConstColor.white,
                       fontSize: 25,
                     ),
                   ),
@@ -60,7 +60,7 @@ class _SectionButtonWidgetState extends State<SectionButtonWidget> {
               ),
               Icon(
                 Icons.arrow_forward_ios_rounded,
-                color: Colors.white,
+                color: ConstColor.white,
                 size: 28,
               ),
             ],

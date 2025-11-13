@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../features/utility/const/constant_color.dart';
+import '../../../../features/utility/extension/text_theme_extension.dart';
 import '../../pdf_viewer_with_signature.dart';
 
 class PdfTestButton extends StatelessWidget {
@@ -18,10 +20,10 @@ class PdfTestButton extends StatelessWidget {
           ),
         );
       },
-      icon: const Icon(Icons.picture_as_pdf, color: Colors.white),
-      label: const Text(
+      icon: const Icon(Icons.picture_as_pdf, color: ConstColor.white),
+      label: Text(
         'PDF Aç',
-        style: TextStyle(fontSize: 18, color: Colors.white),
+        style: context.saveButtonText,
       ),
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),

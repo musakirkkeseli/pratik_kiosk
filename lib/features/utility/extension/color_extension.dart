@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../const/constant_color.dart';
+
 /// Kolay renk erişimi için extension
 extension AppColors on BuildContext {
   ColorScheme get colorScheme => Theme.of(this).colorScheme;
@@ -12,12 +14,12 @@ extension AppColors on BuildContext {
   
   // Durum renkleri
   Color get errorColor => colorScheme.error;
-  Color get successColor => Colors.green;
-  Color get warningColor => Colors.orange;
-  Color get infoColor => Colors.blue;
+  Color get successColor => ConstColor.green;
+  Color get warningColor => ConstColor.orange;
+  Color get infoColor => ConstColor.blue;
   
   // Özel renkler
-  Color get textFieldBorderColor => Colors.grey[300]!;
-  Color get dividerColor => Colors.grey[200]!;
-  Color get cardBackgroundColor => Colors.white;
+  Color get textFieldBorderColor => ConstColor.grey300;
+  Color get dividerColor => ConstColor.grey200;
+  Color get cardBackgroundColor => ConstColor.white;
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kiosk/features/utility/const/constant_color.dart';
 import 'package:kiosk/features/utility/custom_input_container.dart';
 import 'package:kiosk/features/utility/enum/enum_textformfield.dart';
 import 'package:kiosk/features/utility/extension/input_decoration_extension.dart';
+import 'package:kiosk/features/utility/extension/text_theme_extension.dart';
 
 class CustomTextfieldWidget extends StatelessWidget {
   final EnumTextformfield type;
@@ -54,8 +56,8 @@ class CustomTextfieldWidget extends StatelessWidget {
         focusNode: focusNode,
         textInputAction: textInputAction ?? TextInputAction.next,
         onFieldSubmitted: (_) => onFieldSubmitted?.call(),
-        cursorColor: Colors.grey.shade700,
-        style: TextStyle(fontSize: 25, color: Colors.black),
+        cursorColor: ConstColor.grey700,
+        style: context.inputFieldText,
         decoration: InputDecoration().mandatoryDecoration,
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiosk/features/utility/const/constant_color.dart';
 import 'package:kiosk/features/utility/extension/text_theme_extension.dart';
 
 import '../../../../../core/utility/language_manager.dart';
@@ -36,16 +37,15 @@ class LanguageButtonWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? Theme.of(context).primaryColor
-                      : Colors.transparent,
+                      : ConstColor.transparent,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   language.language,
-                  style: TextStyle(
-                    fontSize: 18,
+                  style: context.languageText.copyWith(
                     fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
                     color: isSelected
-                        ? Colors.white
+                        ? ConstColor.white
                         : Theme.of(context).primaryColor,
                   ),
                 ),

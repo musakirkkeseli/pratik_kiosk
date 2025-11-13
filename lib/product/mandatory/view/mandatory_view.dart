@@ -10,6 +10,7 @@ import 'package:kiosk/product/mandatory/cubit/mandatory_cubit.dart';
 import 'package:kiosk/product/mandatory/service/mandatory_service.dart';
 
 import '../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
+import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/custom_input_container.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
@@ -205,7 +206,7 @@ class _State extends State<MandatoryView> {
               controller.text,
               maxLines: 1,
               showCursor: true,
-              style: TextStyle(fontSize: 25, color: Colors.grey.shade600),
+              style: context.inputFieldReadOnly,
             ),
           ),
         ),

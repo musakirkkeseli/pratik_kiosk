@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../const/constant_color.dart';
+
 extension ExtensionInputDecoration on InputDecoration {
   InputDecoration get mandatoryDecoration => InputDecoration(
-    fillColor: Colors.grey.shade200,
+    fillColor: ConstColor.grey200,
     filled: false,
     border: InputBorder.none,
     enabledBorder: InputBorder.none,

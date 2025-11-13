@@ -6,7 +6,9 @@ import 'package:pdfx/pdfx.dart';
 import 'package:path_provider/path_provider.dart';
 // import 'package:http/http.dart' as http;
 
+import '../../features/utility/const/constant_color.dart';
 import '../../features/utility/const/constant_string.dart';
+import '../../features/utility/extension/text_theme_extension.dart';
 import 'view/widget/signature_view.dart';
 
 class PdfViewerWithSignature extends StatefulWidget {
@@ -87,7 +89,7 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('PDF yüklenirken hata oluştu: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: ConstColor.red,
             duration: const Duration(seconds: 5),
           ),
         );
@@ -121,10 +123,10 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton.icon(
                 onPressed: _getSignature,
-                icon: const Icon(Icons.edit, color: Colors.white),
-                label: const Text(
+                icon: const Icon(Icons.edit, color: ConstColor.white),
+                label: Text(
                   'İmza Al',
-                  style: TextStyle(color: Colors.white),
+                  style: context.whiteButtonText,
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).primaryColor,
@@ -145,25 +147,21 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
                     Icon(
                       Icons.error_outline,
                       size: 80,
-                      color: Colors.red.shade400,
+                      color: ConstColor.red400,
                     ),
                     const SizedBox(height: 24),
                     Text(
                       ConstantString().errorOccurred,
-                      style: const TextStyle(
+                      style: context.errorText.copyWith(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.red,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
                     Text(
                       'PDF dosyası yüklenemedi veya geçersiz',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey.shade700,
-                      ),
+                      style: context.dialogContentSecondary,
                       textAlign: TextAlign.center,
                     ),
                     if (errorMessage != null) ...[
@@ -171,15 +169,15 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.red.shade50,
+                          color: ConstColor.red50,
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.red.shade200),
+                          border: Border.all(color: ConstColor.red200),
                         ),
                         child: Text(
                           errorMessage!,
-                          style: TextStyle(
+                          style: context.errorText.copyWith(
                             fontSize: 14,
-                            color: Colors.red.shade900,
+                            color: ConstColor.red900,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -203,7 +201,7 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
                           vertical: 16,
                         ),
                         backgroundColor: Theme.of(context).primaryColor,
-                        foregroundColor: Colors.white,
+                        foregroundColor: ConstColor.white,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -223,13 +221,13 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
               ),
             )
           : pdfController == null
-          ? Center(
-              child: Text(
-                ConstantString().errorOccurred,
-                style: const TextStyle(fontSize: 18),
-              ),
-            )
-          : Stack(
+              ? Center(
+                  child: Text(
+                    ConstantString().errorOccurred,
+                    style: context.regularText18,
+                  ),
+                )
+              : Stack(
               children: [
                 PdfViewPinch(
                   controller: pdfController!,
@@ -247,12 +245,12 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
                       width: 120,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey, width: 1),
+                        color: ConstColor.white,
+                        border: Border.all(color: ConstColor.grey, width: 1),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: ConstColor.black.withOpacity(0.2),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
@@ -276,13 +274,12 @@ class _PdfViewerWithSignatureState extends State<PdfViewerWithSignature> {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.6),
+                      color: ConstColor.black.withOpacity(0.6),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       '$currentPage / $totalPages',
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: context.whiteButtonText.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),

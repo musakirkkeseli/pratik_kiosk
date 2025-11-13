@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../features/utility/extension/text_theme_extension.dart';
+
 class WarningScreen extends StatelessWidget {
   final String title;
   final String desc;
@@ -35,15 +37,12 @@ class WarningScreen extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 23,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: context.warningTitle,
                     ),
                     const SizedBox(height: 20),
                     Text(
                       desc,
-                      style: const TextStyle(fontSize: 18),
+                      style: context.regularText18,
                       textAlign: TextAlign.center,
                     ),
                   ],

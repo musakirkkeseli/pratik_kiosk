@@ -83,7 +83,7 @@ class PriceSuccessWidget extends StatelessWidget {
                 children: [
                   TableRow(
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
+                      color: ConstColor.grey100,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(12),
                         topRight: Radius.circular(12),
@@ -167,12 +167,12 @@ class PriceSuccessWidget extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: ConstColor.white.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(
                           Icons.account_balance_wallet_rounded,
-                          color: Colors.white,
+                          color: ConstColor.white,
                           size: 32,
                         ),
                       ),
@@ -180,7 +180,7 @@ class PriceSuccessWidget extends StatelessWidget {
                       Text(
                         ConstantString().totalAmount,
                         style: context.priceTitle.copyWith(
-                          color: Colors.white,
+                          color: ConstColor.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -192,11 +192,11 @@ class PriceSuccessWidget extends StatelessWidget {
                       vertical: 12,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: ConstColor.white,
                       borderRadius: BorderRadius.circular(15),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: ConstColor.black.withOpacity(0.1),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kiosk/features/utility/const/constant_color.dart';
 import 'package:kiosk/features/utility/custom_extension.dart';
 import '../../product/auth/hospital_login/model/config_response_model.dart';
 
@@ -44,7 +45,7 @@ class DynamicThemeProvider extends ChangeNotifier {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: color,
-            foregroundColor: Colors.white,
+            foregroundColor: ConstColor.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(22.0),
             ),

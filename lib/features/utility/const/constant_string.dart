@@ -134,4 +134,16 @@ class ConstantString {
   String scanQrToAccessForm = LocaleKeys.scanQrToAccessForm.locale;
   String scanQrToFillSurvey = LocaleKeys.scanQrToFillSurvey.locale;
   String survey = LocaleKeys.survey.locale;
+  String usernameRequired = LocaleKeys.usernameRequired.locale;
+  String enterAtLeast3Characters = LocaleKeys.enterAtLeast3Characters.locale;
+  String passwordRequired = LocaleKeys.passwordRequired.locale;
+  String passwordMinLength = LocaleKeys.passwordMinLength.locale;
+  String turkishIdRequired = LocaleKeys.turkishIdRequired.locale;
+  String mustBe11Digits = LocaleKeys.mustBe11Digits.locale;
+  String invalidTurkishId = LocaleKeys.invalidTurkishId.locale;
+  String birthDateRequired = LocaleKeys.birthDateRequired.locale;
+  String enterValidDateFormat = LocaleKeys.enterValidDateFormat.locale;
+  String save = LocaleKeys.save.locale;
+  String pleaseSignFirst = LocaleKeys.pleaseSignFirst.locale;
+  String pleaseProvideSignature = LocaleKeys.pleaseProvideSignature.locale;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kiosk/core/utility/logger_service.dart';
+import 'package:kiosk/features/utility/const/constant_color.dart';
 import 'package:kiosk/features/utility/extension/color_extension.dart';
 import '../utility/const/constant_string.dart';
 import 'circular_countdown.dart';
@@ -54,7 +55,7 @@ class InactivityWarningDialog extends StatelessWidget {
             size: 120,
             strokeWidth: 8,
             color: color,
-            backgroundColor: Colors.grey.shade300,
+            backgroundColor: ConstColor.grey300,
           ),
         ],
       ),
@@ -66,7 +67,7 @@ class InactivityWarningDialog extends StatelessWidget {
               MyLog.debug("'onLogout tetiklendi'");
               onLogout!();
             },
-            style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
+            style: OutlinedButton.styleFrom(foregroundColor: ConstColor.red),
             child: Text(
               secondaryLabel ?? ConstantString().logout,
               style: context.buttonText,

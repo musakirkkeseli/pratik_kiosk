@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../features/utility/const/constant_color.dart';
+import '../../../../../features/utility/extension/text_theme_extension.dart';
 import '../../cubit/patient_login_cubit.dart';
 
 class VirtualKeypad extends StatefulWidget {
@@ -54,14 +55,14 @@ class _VirtualKeypadState extends State<VirtualKeypad> {
                 }
               },
               style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.white,
+                backgroundColor: ConstColor.white,
                 side: const BorderSide(color: ConstColor.grey, width: 1),
                 shape: const CircleBorder(),
                 padding: const EdgeInsets.all(20),
               ),
               child: Icon(
                 Icons.backspace_outlined,
-                color: Colors.red,
+                color: ConstColor.red,
                 size: 28,
               ),
             );
@@ -97,11 +98,7 @@ class _VirtualKeypadState extends State<VirtualKeypad> {
       child: Center(
         child: Text(
           (index).toString(),
-          style: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.w300,
-            color: ConstColor.black,
-          ),
+          style: context.keypadButtonText,
         ),
       ),
     );

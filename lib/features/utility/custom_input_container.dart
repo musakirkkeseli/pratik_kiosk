@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kiosk/features/utility/const/constant_color.dart';
 import 'package:kiosk/features/utility/enum/enum_textformfield.dart';
+import 'package:kiosk/features/utility/extension/text_theme_extension.dart';
 
 class CustomInputContainer extends StatelessWidget {
   final EnumTextformfield type;
@@ -34,17 +36,17 @@ class CustomInputContainer extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
           child: Text(
             customLabel ?? type.label,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: context.inputLabelText,
           ),
         ),
         Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height * 0.06,
           decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color: ConstColor.grey200,
             borderRadius: BorderRadius.circular(20.0),
             border: !isValid
-                ? Border.all(color: Colors.red, width: 2.0)
+                ? Border.all(color: ConstColor.red, width: 2.0)
                 : null,
           ),
           child: Stack(
@@ -54,10 +56,7 @@ class CustomInputContainer extends StatelessWidget {
                 Center(
                   child: Text(
                     type.hint,
-                    style: TextStyle(
-                      color: Colors.grey.shade500,
-                      fontSize: 16,
-                    ),
+                    style: context.inputHintText,
                   ),
                 ),
               // Göz ikonu (eğer onToggleVisibility callback'i varsa)
@@ -68,7 +67,7 @@ class CustomInputContainer extends StatelessWidget {
                   bottom: 0,
                   child: Center(
                     child: Material(
-                      color: Colors.transparent,
+                      color: ConstColor.transparent,
                       child: InkWell(
                         onTap: onToggleVisibility,
                         borderRadius: BorderRadius.circular(20),
@@ -78,7 +77,7 @@ class CustomInputContainer extends StatelessWidget {
                             obscureText
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                            color: Colors.grey.shade600,
+                            color: ConstColor.grey600,
                             size: 24,
                           ),
                         ),
@@ -97,12 +96,10 @@ class CustomInputContainer extends StatelessWidget {
                   child: Center(
                     child: Text(
                       '${currentValue.length}/${type.maxLength}',
-                      style: TextStyle(
+                      style: context.inputCounterText.copyWith(
                         color: currentValue.length > (type.maxLength ?? 0)
-                            ? Colors.red
-                            : Colors.grey.shade600,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                            ? ConstColor.red
+                            : ConstColor.grey600,
                       ),
                     ),
                   ),
@@ -115,20 +112,20 @@ class CustomInputContainer extends StatelessWidget {
                   bottom: 0,
                   child: Center(
                     child: Material(
-                      color: Colors.transparent,
+                      color: ConstColor.transparent,
                       child: InkWell(
                         onTap: onClear,
                         borderRadius: BorderRadius.circular(20),
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.red.withOpacity(0.1),
+                            color: ConstColor.red.withOpacity(0.1),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
                             Icons.close,
                             size: 20,
-                            color: Colors.red,
+                            color: ConstColor.red,
                           ),
                         ),
                       ),
@@ -146,11 +143,7 @@ class CustomInputContainer extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10, top: 8),
                   child: Text(
                     errorMessage!,
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: context.inputErrorText,
                   ),
                 )
               : const SizedBox.shrink(),

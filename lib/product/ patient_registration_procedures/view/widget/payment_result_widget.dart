@@ -44,8 +44,8 @@ class PaymentResultWidget extends StatelessWidget {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[300],
-                        foregroundColor: Colors.grey[800],
+                        backgroundColor: ConstColor.grey300,
+                        foregroundColor: ConstColor.grey700,
                         elevation: 0,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -58,14 +58,14 @@ class PaymentResultWidget extends StatelessWidget {
                       icon: Icon(
                         Icons.arrow_back,
                         size: 20,
-                        color: Colors.grey[800],
+                        color: ConstColor.grey700,
                       ),
                       label: Text(
                         ConstantString().homePageTitle,
 
                         style: context.cardTitle.copyWith(
                           fontSize: 14,
-                          color: Colors.grey[800],
+                          color: ConstColor.grey700,
                         ),
                       ),
                     ),
@@ -77,7 +77,7 @@ class PaymentResultWidget extends StatelessWidget {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
+                          backgroundColor: ConstColor.transparent,
                           foregroundColor: context.primaryColor,
                           elevation: 0,
                           side: BorderSide(
@@ -120,8 +120,8 @@ class PaymentResultWidget extends StatelessWidget {
               Icon(
                 Icons.check_circle,
                 color: paymentResultType == EnumPaymentResultType.success
-                    ? Colors.green
-                    : Colors.red,
+                    ? ConstColor.green
+                    : ConstColor.red,
                 size: 100,
               ),
               Text(paymentResultType.title, style: context.successText),
@@ -185,7 +185,7 @@ class PaymentResultWidget extends StatelessWidget {
                         ConstantString().examinationDetails,
                         style: context.sectionTitle.copyWith(
                           fontSize: 24,
-                          color: Colors.white,
+                          color: ConstColor.white,
                         ),
                       ),
                     ),
@@ -201,7 +201,7 @@ class PaymentResultWidget extends StatelessWidget {
                               Text(
                                 "Bölüm",
                                 style: context.caption.copyWith(
-                                  color: Colors.white70,
+                                  color: ConstColor.white.withOpacity(0.7),
                                 ),
                               ),
                               SizedBox(height: 8),
@@ -209,14 +209,14 @@ class PaymentResultWidget extends StatelessWidget {
                                 "Beyin ve Sinir Cerrahisi",
                                 style: context.cardTitle.copyWith(
                                   fontSize: 18,
-                                  color: Colors.white,
+                                  color: ConstColor.white,
                                 ),
                               ),
                               SizedBox(height: 20),
                               Text(
                                 "Tarih",
                                 style: context.caption.copyWith(
-                                  color: Colors.white70,
+                                  color: ConstColor.white.withOpacity(0.7),
                                 ),
                               ),
                               SizedBox(height: 8),
@@ -224,7 +224,7 @@ class PaymentResultWidget extends StatelessWidget {
                                 "25 Ekim 2023",
                                 style: context.cardTitle.copyWith(
                                   fontSize: 18,
-                                  color: Colors.white,
+                                  color: ConstColor.white,
                                 ),
                               ),
                             ],
@@ -238,7 +238,7 @@ class PaymentResultWidget extends StatelessWidget {
                               Text(
                                 "Doktor",
                                 style: context.caption.copyWith(
-                                  color: Colors.white70,
+                                  color: ConstColor.white.withOpacity(0.7),
                                 ),
                               ),
                               SizedBox(height: 8),
@@ -246,14 +246,14 @@ class PaymentResultWidget extends StatelessWidget {
                                 "Dr. Adil Yılmaz",
                                 style: context.cardTitle.copyWith(
                                   fontSize: 18,
-                                  color: Colors.white,
+                                  color: ConstColor.white,
                                 ),
                               ),
                               SizedBox(height: 20),
                               Text(
                                 "Saat",
                                 style: context.caption.copyWith(
-                                  color: Colors.white70,
+                                  color: ConstColor.white.withOpacity(0.7),
                                 ),
                               ),
                               SizedBox(height: 8),
@@ -261,7 +261,7 @@ class PaymentResultWidget extends StatelessWidget {
                                 "14:30",
                                 style: context.cardTitle.copyWith(
                                   fontSize: 18,
-                                  color: Colors.white,
+                                  color: ConstColor.white,
                                 ),
                               ),
                             ],
