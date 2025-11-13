@@ -2,17 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/core/utility/logger_service.dart';
-import 'package:kiosk/features/utility/custom_textfield_widget.dart';
-import 'package:kiosk/features/utility/enum/enum_textformfield.dart';
-import 'package:kiosk/features/utility/extension/input_decoration_extension.dart';
 import 'package:kiosk/features/widget/custom_button.dart';
 import 'package:kiosk/product/mandatory/cubit/mandatory_cubit.dart';
 import 'package:kiosk/product/mandatory/service/mandatory_service.dart';
 
 import '../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
-import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/const/constant_string.dart';
-import '../../../features/utility/custom_input_container.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/user_http_service.dart';
 import '../../../features/utility/extension/text_theme_extension.dart';
@@ -20,6 +15,9 @@ import '../../../features/utility/extension/color_extension.dart';
 import '../model/mandatory_request_model.dart';
 import '../model/mandatory_response_model.dart';
 import '../../../features/utility/enum/enum_object_type.dart';
+import 'widget/custom_dropdown_form_field.dart';
+import 'widget/custom_mandatory_textfield_widget.dart';
+import 'widget/custom_selection_area.dart';
 
 class MandatoryView extends StatefulWidget {
   final MandatoryRequestModel mandatoryRequestModel;
@@ -195,75 +193,33 @@ class _State extends State<MandatoryView> {
     final isReadOnly =
         item.fieldValue != null && (item.fieldValue ?? "").isNotEmpty;
     if (isReadOnly && item.objectType != ObjectType.dropdown) {
-      return CustomInputContainer(
-        type: EnumTextformfield.mandatory,
-        customLabel: label,
-        child: InputDecorator(
-          isFocused: false,
-          decoration: InputDecoration().mandatoryDecoration,
-          child: SelectionArea(
-            child: SelectableText(
-              controller.text,
-              maxLines: 1,
-              showCursor: true,
-              style: context.inputFieldReadOnly,
-            ),
-          ),
-        ),
+      return CustomSelectionArea(
+        label: label,
+        text: controller.text,
+        objectType: item.objectType,
+        maskValue: item.maskValue,
       );
     }
     if (item.objectType == ObjectType.dropdown && item.dropdownItems != null) {
-      return CustomInputContainer(
-        type: EnumTextformfield.mandatory,
-        customLabel: label,
-        child: DropdownButtonFormField<String>(
-          initialValue: controller.text.isNotEmpty ? controller.text : null,
-          decoration: InputDecoration().mandatoryDecoration,
-          hint: Text(ConstantString().select),
-          disabledHint: controller.text.isNotEmpty
-              ? Text(controller.text)
-              : null,
-          items: item.dropdownItems!
-              .map(
-                (dropdownItem) => DropdownMenuItem<String>(
-                  value: dropdownItem.value.toString(),
-                  child: Text(dropdownItem.text ?? ""),
-                ),
-              )
-              .toList(),
-          onChanged: isReadOnly
-              ? null
-              : (newValue) {
-                  controller.text = newValue ?? "";
-                },
-          onSaved: (newValue) {
-            cubitContext.read<MandatoryCubit>().mandatoryValueSave(
-              itemId,
-              newValue ?? "",
-            );
-          },
-          validator: (value) {
-            if (item.isNullable == "0" && (value == null || value.isEmpty)) {
-              cubitContext.read<MandatoryCubit>().mandatoryRequiredWarningSave(
-                label,
-                ConstantString().fieldRequired,
-              );
-              MyLog.debug("Mandatory Field Validation Failed: $label");
-              return ConstantString().fieldRequired;
-            }
-            return null;
-          },
-        ),
+      return CustomDropdownFormField(
+        controller: controller,
+        cubitContext: cubitContext,
+        dropdownItems: item.dropdownItems ?? [],
+        isNullable: item.isNullable ?? "",
+        isReadOnly: isReadOnly,
+        label: label,
+        itemId: itemId,
+        maskValue: item.maskValue,
       );
     }
-    return CustomTextfieldWidget(
-      type: EnumTextformfield.mandatory,
+    return CustomMandatoryTextfieldWidget(
       customLabel: label,
       controller: controller,
       focusNode: focusNode,
       readOnly: isReadOnly,
       textInputAction: TextInputAction.next,
       keyboardType: keyboardType,
+      obscureText: item.maskValue,
       customInputFormatters: [
         ...?(item.objectType == ObjectType.integer
             ? [FilteringTextInputFormatter.digitsOnly]
