@@ -32,10 +32,13 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
 
   Future<void> userLogin() async {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
-    _trackButton('patient_login_submit', extra: {
-      'otp_length': state.otpCode.length,
-      'encrypted_payload': state.encryptedUserData?.isNotEmpty == true,
-    });
+    _trackButton(
+      'patient_login_submit',
+      extra: {
+        'otp_length': state.otpCode.length,
+        'encrypted_payload': state.encryptedUserData?.isNotEmpty == true,
+      },
+    );
     PatientLoginRequestModel patientLoginRequestModel =
         PatientLoginRequestModel(
           encryptedUserData: state.encryptedUserData,
@@ -115,9 +118,10 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   Future<void> userRegister() async {
     _startOrResetTimer();
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
-    _trackButton('patient_register_submit', extra: {
-      'birth_date_filled': state.birthDate.isNotEmpty,
-    });
+    _trackButton(
+      'patient_register_submit',
+      extra: {'birth_date_filled': state.birthDate.isNotEmpty},
+    );
 
     try {
       final resp = await service.postUserRegister(
@@ -187,9 +191,10 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   Future<void> validateIdentity() async {
     _startOrResetTimer();
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
-    _trackButton('patient_validate_identity', extra: {
-      'tc_entered': state.tcNo.isNotEmpty,
-    });
+    _trackButton(
+      'patient_validate_identity',
+      extra: {'tc_entered': state.tcNo.isNotEmpty},
+    );
     try {
       final resp = await service.postValidateIdentify(state.tcNo);
 
@@ -255,9 +260,10 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   Future<void> sendOtpCode() async {
     _startOrResetTimer();
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
-    _trackButton('patient_send_otp', extra: {
-      'encrypted_payload': state.encryptedUserData?.isNotEmpty == true,
-    });
+    _trackButton(
+      'patient_send_otp',
+      extra: {'encrypted_payload': state.encryptedUserData?.isNotEmpty == true},
+    );
     String? encryptedUserData = state.encryptedUserData;
     if (encryptedUserData is String) {
       try {
@@ -327,76 +333,43 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
 
   void onChangeBirthDate(String value) {
     String birthDate = state.birthDate;
+    String newBirthDate = birthDate;
 
-    String newBirthDate = "$birthDate$value";
-
-    if (newBirthDate.length > 10) {
-      return;
+    // 🔹 Eğer kullanıcı 3. karakteri yazmak üzereyse ama '/' silinmişse,
+    //    gün kısmının sonuna '/' otomatik eklenir.
+    if ((birthDate.length == 2 || birthDate.length == 5) &&
+        !birthDate.endsWith('/')) {
+      newBirthDate += '/';
     }
 
-    if (newBirthDate.length <= 2) {
-      int? day = int.tryParse(newBirthDate);
-      if (day == null) return;
+    // 🔹 Yeni karakteri ekle
+    newBirthDate += value;
 
-      if (newBirthDate.length == 1 && int.parse(value) > 3) {
-        return;
-      }
+    // 🔹 Maksimum uzunluk (gg/aa/yyyy = 10)
+    if (newBirthDate.length > 10) return;
 
-      if (newBirthDate.length == 2) {
-        if (day == 0 || day > 31) {
-          return;
-        }
-      }
-    }
-
-    if (newBirthDate.length >= 3 && newBirthDate.length <= 5) {
-      if (newBirthDate.length == 2) {
-        newBirthDate = "$newBirthDate/";
-      }
-
-      if (newBirthDate.length > 3) {
-        String monthPart = newBirthDate.substring(3);
-        int? month = int.tryParse(monthPart);
-        if (month == null) return;
-
-        if (monthPart.length == 1 && int.parse(value) > 1) {
-          return;
-        }
-
-        if (monthPart.length == 2) {
-          if (month == 0 || month > 12) {
-            return;
-          }
-        }
-      }
-    }
-
-    if (newBirthDate.length >= 6) {
-      if (newBirthDate.length == 5) {
-        newBirthDate = "$newBirthDate/";
-      }
-
-      if (newBirthDate.length > 6) {
-        String yearPart = newBirthDate.substring(6);
-
-        if (yearPart.length == 1 &&
-            int.parse(value) != 1 &&
-            int.parse(value) != 2) {
-          return;
-        }
-
-        if (yearPart.length == 4) {
-          int? year = int.tryParse(yearPart);
-          if (year == null || year == 0) {
-            return;
-          }
-        }
-      }
-    }
-
-    // Otomatik slash ekleme (gg/aa/yyyy formatı)
+    // 🔹 Otomatik '/' ekleme noktaları
     if (newBirthDate.length == 2 || newBirthDate.length == 5) {
-      newBirthDate = "$newBirthDate/";
+      newBirthDate += '/';
+    }
+
+    // 🔹 Gün - Ay - Yıl kontrolü (basitleştirilmiş)
+    List<String> parts = newBirthDate.split('/');
+    if (parts.isNotEmpty && parts[0].length == 1) {
+      int? dayOne = int.tryParse(parts[0]);
+      if (dayOne == null || dayOne < 1 || dayOne > 3) return;
+    }
+    if (parts.isNotEmpty && parts[0].length == 2) {
+      int? day = int.tryParse(parts[0]);
+      if (day == null || day < 1 || day > 31) return;
+    }
+    if (parts.length > 1 && parts[1].length == 1) {
+      int? month = int.tryParse(parts[1]);
+      if (month == null || month != 1) return;
+    }
+    if (parts.length > 1 && parts[1].length == 2) {
+      int? month = int.tryParse(parts[1]);
+      if (month == null || month < 1 || month > 12) return;
     }
 
     safeEmit(state.copyWith(birthDate: newBirthDate));
@@ -406,19 +379,9 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   void deleteBirthDate() {
     String birthDate = state.birthDate;
     if (birthDate.isEmpty) return;
-
+    birthDate = birthDate.substring(0, birthDate.length - 1);
     if (birthDate.endsWith('/')) {
-      if (birthDate.length > 1) {
-        birthDate = birthDate.substring(0, birthDate.length - 2);
-      } else {
-        birthDate = "";
-      }
-    } else {
       birthDate = birthDate.substring(0, birthDate.length - 1);
-
-      if (birthDate.endsWith('/')) {
-        birthDate = birthDate.substring(0, birthDate.length - 1);
-      }
     }
 
     safeEmit(state.copyWith(birthDate: birthDate));
