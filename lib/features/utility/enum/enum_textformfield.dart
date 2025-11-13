@@ -77,7 +77,7 @@ extension EnumTextformfieldExtension on EnumTextformfield {
       case EnumTextformfield.tc:
         return 11;
       case EnumTextformfield.birthday:
-        return 12; // gg.aa.yyyy
+        return 10; // gg.aa.yyyy
       case EnumTextformfield.mandatory:
         return null; // Dinamik olarak dışarıdan verilecek
       case EnumTextformfield.otpCode:
@@ -217,8 +217,9 @@ extension EnumTextformfieldExtension on EnumTextformfield {
     // TC Kimlik No algoritması
     if (!RegExp(r'^\d{11}$').hasMatch(raw)) return 'Geçersiz T.C. Kimlik No';
     if (raw[0] == '0') return 'T.C. Kimlik No 0 ile başlayamaz';
-    if (RegExp(r'^(\d)\1{10}$').hasMatch(raw))
+    if (RegExp(r'^(\d)\1{10}$').hasMatch(raw)) {
       return 'Tüm rakamlar aynı olamaz';
+    }
 
     final d = raw.split('').map(int.parse).toList();
     final sumOdd = d[0] + d[2] + d[4] + d[6] + d[8];
