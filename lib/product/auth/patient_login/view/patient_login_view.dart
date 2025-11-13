@@ -41,6 +41,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
   bool _isOpenVerifyPhoneNumberDialog = false;
   bool _isOpenWarningPhoneNumberDialog = false;
   final ValueNotifier<bool> _validateTc = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _validateBD = ValueNotifier<bool>(true);
   final ValueNotifier<bool> _validateOtp = ValueNotifier<bool>(true);
   final ValueNotifier<bool> _obscureTc = ValueNotifier<bool>(true);
 
@@ -363,14 +364,22 @@ class _PatientLoginViewState extends State<PatientLoginView> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Expanded(
-                  child: CustomInputContainer(
-                    type: EnumTextformfield.birthday,
-                    currentValue: state.birthDate,
-                    child: Text(
-                      state.birthDate.isEmpty ? '' : state.birthDate,
-                      textAlign: TextAlign.center,
-                      style: context.birthDayLoginText,
-                    ),
+                  child: ValueListenableBuilder(
+                    valueListenable: _validateBD,
+                    builder: (context, validateBDValue, child) {
+                      return CustomInputContainer(
+                        type: EnumTextformfield.birthday,
+                        currentValue: state.birthDate,
+                        isValid: validateBDValue,
+                        errorMessage:
+                            ConstantString().pleaseEnterValidBirthDate,
+                        child: Text(
+                          state.birthDate.isEmpty ? '' : state.birthDate,
+                          textAlign: TextAlign.center,
+                          style: context.birthDayLoginText,
+                        ),
+                      );
+                    },
                   ),
                 ),
                 if (state.birthDate.isNotEmpty) ...[
@@ -382,6 +391,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                     ),
                     child: InkWell(
                       onTap: () {
+                        _validateBD.value = true;
                         cubitContext.read<PatientLoginCubit>().clearBirthDate();
                       },
                       borderRadius: BorderRadius.circular(20),
@@ -510,6 +520,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
       case PageType.register:
         onPressed = () {
           if (state.birthDate.length != 10) {
+            _validateBD.value = false;
             SnackbarService().showSnackBar(
               ConstantString().pleaseEnterValidBirthDate,
             );
@@ -518,8 +529,10 @@ class _PatientLoginViewState extends State<PatientLoginView> {
               state.birthDate,
             );
             if (birthDateError != null) {
+              _validateBD.value = false;
               SnackbarService().showSnackBar(birthDateError);
             } else {
+              _validateBD.value = true;
               cubitContext.read<PatientLoginCubit>().userRegister();
             }
           }
@@ -564,6 +577,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
   }
 
   _clean(BuildContext ctx) async {
+    _obscureTc.value = true;
     _validateTc.value = true;
     _dialogOpen = false;
     _isOpenVerifyPhoneNumberDialog = false;
