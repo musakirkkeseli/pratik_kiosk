@@ -11,6 +11,7 @@ class MandatoryResponseModel {
   String? fieldValue;
   ObjectType? objectType;
   List<DropdownModel>? dropdownItems;
+  bool? maskValue;
 
   MandatoryResponseModel({
     this.id,
@@ -22,6 +23,7 @@ class MandatoryResponseModel {
     this.fieldValue,
     this.objectType,
     this.dropdownItems,
+    this.maskValue,
   });
 
   MandatoryResponseModel.fromJson(Map<String, dynamic> json) {
@@ -39,6 +41,7 @@ class MandatoryResponseModel {
         dropdownItems!.add(DropdownModel.fromJson(v));
       });
     }
+    maskValue = json['MASK_VALUE'];
   }
 
   Map<String, dynamic> toJson() {
@@ -54,6 +57,7 @@ class MandatoryResponseModel {
     if (dropdownItems != null) {
       data['DROPDOWN_ITEMS'] = dropdownItems!.map((v) => v.toJson()).toList();
     }
+    data['MASK_VALUE'] = maskValue;
     return data;
   }
 }
