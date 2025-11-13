@@ -20,6 +20,7 @@ class CustomTextfieldWidget extends StatelessWidget {
   final TextInputAction? textInputAction;
   final void Function()? onFieldSubmitted;
   final TextInputType? keyboardType;
+  final bool? obscureText;
 
   const CustomTextfieldWidget({
     super.key,
@@ -36,6 +37,7 @@ class CustomTextfieldWidget extends StatelessWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.keyboardType,
+    this.obscureText,
   });
 
   @override
@@ -45,7 +47,7 @@ class CustomTextfieldWidget extends StatelessWidget {
       customLabel: customLabel,
       child: TextFormField(
         controller: controller,
-        obscureText: type.obscureText,
+        obscureText: obscureText ?? type.obscureText,
         keyboardType: keyboardType ?? type.keyboardType,
         inputFormatters: customInputFormatters ?? type.inputFormatters,
         maxLength: customMaxLength ?? type.maxLength,
