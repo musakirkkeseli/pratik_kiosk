@@ -68,8 +68,12 @@ class RequestInfo {
   String? hospitalName;
   String? requestTime;
 
-  RequestInfo(
-      {this.tcNo, this.hospitalId, this.hospitalName, this.requestTime});
+  RequestInfo({
+    this.tcNo,
+    this.hospitalId,
+    this.hospitalName,
+    this.requestTime,
+  });
 
   RequestInfo.fromJson(Map<String, dynamic> json) {
     tcNo = json['tcNo'];
@@ -92,13 +96,15 @@ class PatientData {
   String? name;
   String? surname;
   String? birthDate;
+  String? identityNo;
 
-  PatientData({this.name, this.surname, this.birthDate});
+  PatientData({this.name, this.surname, this.birthDate, this.identityNo});
 
   PatientData.fromJson(Map<String, dynamic> json) {
     name = json['Name'];
     surname = json['Surname'];
     birthDate = json['BirthDate'];
+    identityNo = json['IdentityNo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -106,6 +112,7 @@ class PatientData {
     data['Name'] = name;
     data['Surname'] = surname;
     data['BirthDate'] = birthDate;
+    data['IdentityNo'] = identityNo;
     return data;
   }
 }

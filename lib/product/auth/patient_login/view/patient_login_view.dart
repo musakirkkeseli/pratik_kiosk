@@ -7,7 +7,6 @@ import 'package:kiosk/features/utility/extension/text_theme_extension.dart';
 import 'package:kiosk/features/utility/navigation_service.dart';
 import 'package:kiosk/product/auth/patient_login/services/patient_services.dart';
 import 'package:provider/provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../core/utility/logger_service.dart';
@@ -26,8 +25,8 @@ import '../../../../core/utility/dynamic_theme_provider.dart';
 import '../../../../core/utility/language_manager.dart';
 import '../cubit/patient_login_cubit.dart';
 import '../../../../features/widget/inactivity_warning_dialog.dart';
-import 'widget/language_button_widget.dart';
 import 'widget/virtual_keypad.dart';
+import 'widget/welcome_screen.dart';
 
 class PatientLoginView extends StatefulWidget {
   const PatientLoginView({super.key});
@@ -137,146 +136,88 @@ class _PatientLoginViewState extends State<PatientLoginView> {
           }
         },
         builder: (context, state) {
-          return Scaffold(
-            body: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                context.read<PatientLoginCubit>().onChanged('force');
-              },
-              child: Column(
-                spacing: 10,
-                children: [
-                  CustomAppBar(),
-                  Consumer<DynamicThemeProvider>(
-                    builder: (context, themeProvider, child) {
-                      final hospitalName = themeProvider.hospitalName;
-                      if (hospitalName.isEmpty) {
-                        return const SizedBox.shrink();
-                      }
-                      return Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        decoration: BoxDecoration(color: context.primaryColor),
-                        alignment: Alignment.center,
-                        child: Text(
-                          hospitalName,
-                          style: context.hospitalNameText,
-                        ),
-                      );
-                    },
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: _body(context, state),
-                    ),
-                  ),
-                  const Divider(height: 20),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20.0,
-                          bottom: 50.0,
-                        ),
-                        child: LanguageButtonWidget(cubitContext: context),
-                      ),
-                      const Spacer(),
-                      Expanded(
-                        flex: 0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 150.0),
-                          child: Column(
-                            spacing: 10,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              continueButton(context, state),
-                              state.tcNo.isNotEmpty
-                                  ? OutlinedButton.icon(
-                                      style: OutlinedButton.styleFrom(
-                                        iconColor: ConstColor.red,
-                                        foregroundColor: ConstColor.red,
-                                        side: const BorderSide(
-                                          color: ConstColor.red,
-                                          width: 1.5,
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        _clean(context);
-                                      },
-                                      icon: Iconify(
-                                        IconParkSolid.clear_format,
-                                        color: ConstColor.red,
-                                      ),
-                                      label: Text(ConstantString().clearData),
-                                    )
-                                  : SizedBox(height: 48),
-                              VirtualKeypad(pageType: state.pageType),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          right: 20.0,
-                          bottom: 50.0,
-                        ),
-                        child: Consumer<DynamicThemeProvider>(
-                          builder: (context, themeProvider, child) {
-                            final qrCodeUrl = themeProvider.qrCodeUrl;
-                            if (qrCodeUrl.isEmpty) {
-                              return const SizedBox.shrink();
-                            }
-                            return Column(
-                              spacing: 10,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Container(
-                                  width: 150,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: ConstColor.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: ConstColor.black.withOpacity(0.1),
-                                        blurRadius: 10,
-                                        offset: Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  padding: const EdgeInsets.all(6),
-                                  child: CachedNetworkImage(
-                                    imageUrl: qrCodeUrl,
-                                    fit: BoxFit.contain,
-                                    placeholder: (context, url) => Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        const SizedBox.shrink(),
-                                  ),
-                                ),
-                                Image.asset(
-                                  ConstantString.downloadImage,
-                                  width: 150,
-                                  height: 120,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
+          return _scaffold(context, state);
         },
       ),
     );
+  }
+
+  Widget _scaffold(BuildContext cubitContext, PatientLoginState state) {
+    switch (state.screenType) {
+      case ScreenType.welcome:
+        return WelcomeScreen();
+      default:
+        return Scaffold(
+          body: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              cubitContext.read<PatientLoginCubit>().onChanged('force');
+            },
+            child: Column(
+              spacing: 10,
+              children: [
+                CustomAppBar(),
+                Consumer<DynamicThemeProvider>(
+                  builder: (context, themeProvider, child) {
+                    final hospitalName = themeProvider.hospitalName;
+                    if (hospitalName.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(color: context.primaryColor),
+                      alignment: Alignment.center,
+                      child: Text(
+                        hospitalName,
+                        style: context.hospitalNameText,
+                      ),
+                    );
+                  },
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: _body(context, state),
+                  ),
+                ),
+                const Divider(height: 20),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 150.0),
+                  child: Column(
+                    spacing: 10,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      continueButton(cubitContext, state),
+                      state.tcNo.isNotEmpty
+                          ? OutlinedButton.icon(
+                              style: OutlinedButton.styleFrom(
+                                iconColor: ConstColor.red,
+                                foregroundColor: ConstColor.red,
+                                side: const BorderSide(
+                                  color: ConstColor.red,
+                                  width: 1.5,
+                                ),
+                              ),
+                              onPressed: () {
+                                _clean(cubitContext);
+                              },
+                              icon: Iconify(
+                                IconParkSolid.clear_format,
+                                color: ConstColor.red,
+                              ),
+                              label: Text(ConstantString().backToTop),
+                            )
+                          : SizedBox(height: 48),
+                      VirtualKeypad(pageType: state.pageType),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+    }
   }
 
   Column _body(BuildContext cubitContext, PatientLoginState state) {

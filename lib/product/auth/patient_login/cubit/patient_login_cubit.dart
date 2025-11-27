@@ -30,6 +30,11 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
     );
   }
 
+  void gotoAuth() {
+    safeEmit(state.copyWith(screenType: ScreenType.auth));
+    onChanged("force");
+  }
+
   Future<void> userLogin() async {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
     _trackButton(
@@ -54,14 +59,14 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
 
           final patientName = resp.data!.patientData?.name ?? "";
           final patientSurname = resp.data!.patientData?.surname ?? "";
-          final fullName = "$patientName $patientSurname".trim();
+          final identityNo = resp.data!.patientData?.identityNo ?? "";
 
           UserLoginStatusService().login(
             accessToken: accessToken,
-            cityName: "",
-            name: fullName,
-            phone: "",
+            name: patientName,
+            surname: patientSurname,
             userId: 1,
+            tcNo: identityNo,
           );
           safeEmit(
             state.copyWith(
@@ -139,14 +144,13 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
           // Patient data'dan name ve surname'i al
           final patientName = resp.data!.patientData?.name ?? "";
           final patientSurname = resp.data!.patientData?.surname ?? "";
-          final fullName = "$patientName $patientSurname".trim();
 
           UserLoginStatusService().login(
             accessToken: accessToken,
-            cityName: "",
-            name: fullName,
-            phone: "",
+            name: patientName,
+            surname: patientSurname,
             userId: 1,
+            tcNo: "",
           );
           safeEmit(
             state.copyWith(
@@ -314,6 +318,11 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
         otpCode: "",
         birthDate: "",
         pageType: PageType.auth,
+        screenType: ScreenType.welcome,
+        phoneNumber: "",
+        encryptedUserData: null,
+        counter: null,
+        status: EnumGeneralStateStatus.initial,
       ),
     );
     stopCounter();
@@ -357,7 +366,7 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
     List<String> parts = newBirthDate.split('/');
     if (parts.isNotEmpty && parts[0].length == 1) {
       int? dayOne = int.tryParse(parts[0]);
-      if (dayOne == null || dayOne < 1 || dayOne > 3) return;
+      if (dayOne == null || dayOne < 0 || dayOne > 3) return;
     }
     if (parts.isNotEmpty && parts[0].length == 2) {
       int? day = int.tryParse(parts[0]);
@@ -365,7 +374,7 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
     }
     if (parts.length > 1 && parts[1].length == 1) {
       int? month = int.tryParse(parts[1]);
-      if (month == null || month != 1) return;
+      if (month == null || (month != 1 && month != 0)) return;
     }
     if (parts.length > 1 && parts[1].length == 2) {
       int? month = int.tryParse(parts[1]);
