@@ -1,4 +1,4 @@
-enum ObjectType { dropdown, integer, string, unknown }
+enum ObjectType { dropdown, integer, string, searchable, unknown }
 
 /// Helper for converting between the backend string and the [ObjectType] enum.
 class ObjectTypeHelper {
@@ -11,6 +11,8 @@ class ObjectTypeHelper {
         return ObjectType.integer;
       case 'string':
         return ObjectType.string;
+      case 'searchable':
+        return ObjectType.searchable;
       default:
         return ObjectType.unknown;
     }
@@ -26,6 +28,8 @@ class ObjectTypeHelper {
         return 'integer';
       case ObjectType.string:
         return 'string';
+      case ObjectType.searchable:
+        return 'searchable';
       case ObjectType.unknown:
         return null;
     }
