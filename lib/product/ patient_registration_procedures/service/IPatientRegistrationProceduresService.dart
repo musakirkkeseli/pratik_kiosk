@@ -2,6 +2,7 @@ import '../../../core/utility/http_service.dart';
 import '../../../features/model/api_response_model.dart';
 import '../../../features/model/empty_response.dart';
 import '../../../features/model/patient_price_detail_model.dart';
+import '../../appointments/model/appointments_model.dart';
 import '../model/patient_transaction_create_request_model.dart';
 import '../model/patient_transaction_create_response_model.dart';
 import '../model/patient_transaction_revenue_response_model.dart';
@@ -27,6 +28,8 @@ abstract class IPatientRegistrationProceduresService {
       IPatientRegistrationProceduresServicePath
           .patientTransactionDetails
           .rawValue;
+  final String appointmentByBranchPath =
+      IPatientRegistrationProceduresServicePath.appointmentByBranch.rawValue;
 
   Future<ApiResponse<PatientTransactionCreateResponseModel>>
   postPatientTransactionCreate(PatientTransactionCreateRequestModel request);
@@ -37,6 +40,9 @@ abstract class IPatientRegistrationProceduresService {
   );
   Future<ApiResponse<PatientTransactionDetailsResponseModel>>
   postPatientTransactionDetails(String patientId);
+  Future<ApiResponse<AppointmentsModel>> postAppointmentByBranch(
+    String branchId,
+  );
 }
 
 enum IPatientRegistrationProceduresServicePath {
@@ -44,21 +50,25 @@ enum IPatientRegistrationProceduresServicePath {
   patientTransactionRevenue,
   patientTransactionCancel,
   patientTransactionDetails,
+  appointmentByBranch,
 }
 
 //BaseUrl'nin sonuna Search sayfasının requesti için gelecek olan eklenti için oluşturuldu
 extension IMandatoryServicePathExtension
     on IPatientRegistrationProceduresServicePath {
   String get rawValue {
+    final root = '/patient-transaction';
     switch (this) {
       case IPatientRegistrationProceduresServicePath.patientTransactionCreate:
-        return '/patient-transaction/create';
+        return '$root/create';
       case IPatientRegistrationProceduresServicePath.patientTransactionRevenue:
-        return '/patient-transaction/revenue';
+        return '$root/revenue';
       case IPatientRegistrationProceduresServicePath.patientTransactionCancel:
-        return '/patient-transaction/cancel';
+        return '$root/cancel';
       case IPatientRegistrationProceduresServicePath.patientTransactionDetails:
-        return '/patient-transaction/transaction-details';
+        return '$root/transaction-details';
+      case IPatientRegistrationProceduresServicePath.appointmentByBranch:
+        return '$root/appointment-by-branch';
     }
   }
 }

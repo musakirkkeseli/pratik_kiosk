@@ -1,6 +1,7 @@
 import '../../../features/model/api_response_model.dart';
 import '../../../features/model/empty_response.dart';
 import '../../../features/model/patient_price_detail_model.dart';
+import '../../appointments/model/appointments_model.dart';
 import '../model/patient_transaction_create_request_model.dart';
 import '../model/patient_transaction_create_response_model.dart';
 import '../model/patient_transaction_revenue_response_model.dart';
@@ -62,6 +63,17 @@ class PatientRegistrationProceduresService
       fromJson: (json) => PatientTransactionDetailsResponseModel.fromJson(
         json as Map<String, dynamic>,
       ),
+    );
+  }
+
+  @override
+  Future<ApiResponse<AppointmentsModel>> postAppointmentByBranch(
+    String branchId,
+  ) async {
+    return http.request<AppointmentsModel>(
+      requestFunction: () =>
+          http.post(appointmentByBranchPath, data: {"branchId": branchId}),
+      fromJson: (json) => AppointmentsModel.fromJson(json as Map<String, dynamic>),
     );
   }
 }
