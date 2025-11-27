@@ -1,4 +1,5 @@
 import 'package:kiosk/features/utility/enum/enum_general_state_status.dart';
+import 'package:pratik_pos_integration/pratik_pos_integration.dart';
 
 import '../../../../core/exception/network_exception.dart';
 import '../../../../core/utility/analytics_service.dart';
@@ -6,6 +7,7 @@ import '../../../../core/utility/base_cubit.dart';
 import '../../../../core/utility/dynamic_theme_provider.dart';
 import '../../../../core/utility/logger_service.dart';
 import '../../../../core/utility/login_status_service.dart';
+import '../../../../core/widget/snackbar_service.dart';
 import '../model/config_response_model.dart';
 import '../model/hospital_login_request_model.dart';
 import '../model/hospital_login_response_model.dart';
@@ -34,9 +36,10 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
     required String password,
   }) async {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
-    _trackButton('hospital_login_submit', extra: {
-      'username_length': username.length,
-    });
+    _trackButton(
+      'hospital_login_submit',
+      extra: {'username_length': username.length},
+    );
     HospitalLoginRequestModel requestModel = HospitalLoginRequestModel(
       username: username,
       password: password,
@@ -104,23 +107,54 @@ class HospitalLoginCubit extends BaseCubit<HospitalLoginState> {
       final resp = await service.getConfig();
 
       if (resp.success && resp.data is ConfigResponseModel) {
+        ConfigResponseModel configResponseModel =
+            resp.data ?? ConfigResponseModel();
         safeEmit(
           state.copyWith(
             status: EnumGeneralStateStatus.success,
             message: resp.message,
-            primaryColor: resp.data!.color!.primaryColor ?? "",
           ),
         );
-        DynamicThemeProvider().updateTheme(resp.data ?? ConfigResponseModel());
+        DynamicThemeProvider().updateTheme(configResponseModel);
         await Future.delayed(const Duration(milliseconds: 5000));
-        await LoginStatusService().login();
+        final posConfig = configResponseModel.posConfig;
+        // PosConfig(
+        //   baseUrl: 'http://10.25.1.204:8090',
+        //   posIpAddress: '192.168.3.72',
+        //   serialNumber: 'PAV860049953',
+        //   pavoUrl: 'https://192.168.3.72',
+        //   authToken: 'Yml6QWRtaW46MTFxcTIyV1ch',
+        // );
+        if (posConfig is PosConfig) {
+          await PosService.instance.configure(posConfig, useMock: true);
+          try {
+            final response = await PosService.instance.pairing();
+
+            if (response.success) {
+              await LoginStatusService().login();
+            } else {
+              SnackbarService().showSnackBar(
+                response.message ?? 'POS eşleme başarısız',
+              );
+              await LoginStatusService().logout();
+            }
+          } on PosException catch (e) {
+            SnackbarService().showSnackBar('POS eşleme başarısız ${e.message}');
+            await LoginStatusService().logout();
+          } catch (e) {
+            SnackbarService().showSnackBar('POS eşleme başarısız $e');
+            await LoginStatusService().logout();
+          }
+        } else {
+          await LoginStatusService().logout();
+        }
       } else {
-        LoginStatusService().logout();
+        await LoginStatusService().logout();
       }
     } on NetworkException {
-      LoginStatusService().logout();
+      await LoginStatusService().logout();
     } catch (e) {
-      LoginStatusService().logout();
+      await LoginStatusService().logout();
     }
   }
 }
