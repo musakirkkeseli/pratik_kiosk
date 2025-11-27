@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:kiosk/features/utility/const/constant_string.dart';
+import 'package:kiosk/features/utility/navigation_service.dart';
+import 'package:kiosk/features/widget/app_dialog.dart';
 
 import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
@@ -35,16 +37,42 @@ class PatientRegistrationProceduresView extends StatelessWidget {
             PatientRegistrationProceduresCubit,
             PatientRegistrationProceduresState
           >(
+            listenWhen: (previous, current) =>
+                previous.status != current.status,
             listener: (context, state) {
               switch (state.status) {
                 case EnumGeneralStateStatus.loading:
-                  // AppDialog(context).loadingDialog();
+                  AppDialog(context).loadingDialog();
                   break;
                 case EnumGeneralStateStatus.success:
-                  // NavigationService.ns.goBack();
+                  NavigationService.ns.goBack();
+                  if (state.warningCurrentAppointment == true) {
+                    context
+                        .read<PatientRegistrationProceduresCubit>()
+                        .clearWarningCurrentAppointment();
+                    AppDialog(context).infoDialog(
+                      ConstantString().appointmentExistsForSelectedSection,
+                      ConstantString().appointmentDetails,
+                      firstActionText: ConstantString().continueWithAppointment,
+                      firstOnPressed: () {
+                        context
+                            .read<PatientRegistrationProceduresCubit>()
+                            .continueWithAppointment();
+                        NavigationService.ns.goBack();
+                      },
+                      secondActionText:
+                          ConstantString().cancelAndSelectAnotherSection,
+                      secondOnPressed: () {
+                        NavigationService.ns.goBack();
+                      },
+                      afterFunc: (onValue) => context
+                          .read<PatientRegistrationProceduresCubit>()
+                          .clearAppointmentsModel(),
+                    );
+                  }
                   break;
                 case EnumGeneralStateStatus.failure:
-                  // NavigationService.ns.goBack();
+                  NavigationService.ns.goBack();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(state.message ?? 'Error')),
                   );
@@ -59,7 +87,6 @@ class PatientRegistrationProceduresView extends StatelessWidget {
     );
   }
 
-
   _body(BuildContext context, PatientRegistrationProceduresState state) {
     if (state.paymentResultType is EnumPaymentResultType) {
       return PaymentResultWidget(
@@ -71,10 +98,9 @@ class PatientRegistrationProceduresView extends StatelessWidget {
       iColor: ConstColor.grey300,
       aColor: Theme.of(context).colorScheme.primary,
       textTheme: Theme.of(context).textTheme,
-      startStep: startStep,
+      startStep: state.startStep,
       currentStep: state.currentStep,
       model: state.model,
-
     );
   }
 }

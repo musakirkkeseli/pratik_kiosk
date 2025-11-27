@@ -22,6 +22,32 @@ class PaymentResultWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // compute dynamic dates/times
+    final now = DateTime.now();
+    String _turkishMonth(int m) {
+      const months = [
+        'Ocak',
+        'Şubat',
+        'Mart',
+        'Nisan',
+        'Mayıs',
+        'Haziran',
+        'Temmuz',
+        'Ağustos',
+        'Eylül',
+        'Ekim',
+        'Kasım',
+        'Aralık'
+      ];
+      return months[m - 1];
+    }
+
+    final todayDate = '${now.day} ${_turkishMonth(now.month)} ${now.year}';
+    String _twoDigits(int v) => v.toString().padLeft(2, '0');
+    final nowTime = '${_twoDigits(now.hour)}:${_twoDigits(now.minute)}';
+    final plus20 = now.add(const Duration(minutes: 20));
+    final plus20Time = '${_twoDigits(plus20.hour)}:${_twoDigits(plus20.minute)}';
+
     return Scaffold(
       body: Center(
         child: Padding(
@@ -159,7 +185,7 @@ class PaymentResultWidget extends StatelessWidget {
                     Divider(color: ConstColor.textfieldColor),
                     _PaymentInfoRow(
                       label: "İşlem Tarihi",
-                      value: "21 Ekim 2025 13:14",
+                      value: "$todayDate $nowTime",
                     ),
                     Divider(color: ConstColor.textfieldColor),
                     _PaymentInfoRow(
@@ -221,7 +247,7 @@ class PaymentResultWidget extends StatelessWidget {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                "25 Ekim 2023",
+                                todayDate,
                                 style: context.cardTitle.copyWith(
                                   fontSize: 18,
                                   color: ConstColor.white,
@@ -258,7 +284,7 @@ class PaymentResultWidget extends StatelessWidget {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                "14:30",
+                                plus20Time,
                                 style: context.cardTitle.copyWith(
                                   fontSize: 18,
                                   color: ConstColor.white,
