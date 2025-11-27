@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:lottie/lottie.dart';
 
-import '../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
 import '../../../features/model/patient_price_detail_model.dart';
 import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/const/constant_string.dart';
@@ -26,12 +24,6 @@ class _PaymentViewState extends State<PaymentView> {
         widget.patientPriceDetailModel.patientContent?.totalPrice ?? "0";
     final inactivity = context.read<InactivityController>();
     inactivity.bump(customTimeout: Duration(seconds: 50));
-    Future.delayed(Duration(seconds: 5), () {
-      context
-          .read<PatientRegistrationProceduresCubit>()
-          .patientTransactionRevenue(widget.patientPriceDetailModel);
-    });
-
     super.initState();
   }
 
