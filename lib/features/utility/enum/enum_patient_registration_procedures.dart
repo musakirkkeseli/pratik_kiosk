@@ -50,7 +50,7 @@ enum EnumPatientRegistrationProcedures {
       case EnumPatientRegistrationProcedures.section:
         return SectionSearchView();
       case EnumPatientRegistrationProcedures.doctor:
-        return DoctorSearchView(sectionId: int.tryParse(model.branchId ?? "0")??0);
+        return DoctorSearchView(sectionId: model.branchId ?? "0");
       case EnumPatientRegistrationProcedures.patientTransaction:
         return PatientTransactionView();
       case EnumPatientRegistrationProcedures.mandatory:
