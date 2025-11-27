@@ -38,7 +38,7 @@ class RouteGenerator {
         final args = settings.arguments as Map;
         return MaterialPageRoute(
           builder: (context) => DoctorSearchView(
-            sectionId: args["sectionId"] ?? 0,
+            sectionId: args["sectionId"] ?? "0",
             isAppointment: true,
           ),
           settings: RouteSettings(name: settings.name),
