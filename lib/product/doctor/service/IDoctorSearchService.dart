@@ -7,19 +7,25 @@ abstract class IDoctorSearchService {
 
   IDoctorSearchService(this.http);
 
-  final String listDoctorPath = IDoctorSearchServicePath.listDoctor.rawValue;
+  final String patientTransactionDoctorPath =
+      IDoctorSearchServicePath.patientTransactionDoctor.rawValue;
+  final String appointmentDoctorPath =
+      IDoctorSearchServicePath.appointmentDoctor.rawValue;
 
-  Future<ApiListResponse<DoctorItems>> getListDoctor(int branchId);
+  Future<ApiListResponse<DoctorItems>> getPatientTransactionDoctor(String branchId);
+  Future<ApiListResponse<DoctorItems>> getAppointmentDoctor(String branchId);
 }
 
-enum IDoctorSearchServicePath { listDoctor }
+enum IDoctorSearchServicePath { patientTransactionDoctor, appointmentDoctor }
 
 //BaseUrl'nin sonuna Search sayfasının requesti için gelecek olan eklenti için oluşturuldu
 extension IDoctorSearchServicePathExtension on IDoctorSearchServicePath {
   String get rawValue {
     switch (this) {
-      case IDoctorSearchServicePath.listDoctor:
-        return '/clinical-resources/doctors';
+      case IDoctorSearchServicePath.patientTransactionDoctor:
+        return '/clinical-resources/doctors/patient-transaction';
+      case IDoctorSearchServicePath.appointmentDoctor:
+        return "/clinical-resources/doctors/appointment";
     }
   }
 }

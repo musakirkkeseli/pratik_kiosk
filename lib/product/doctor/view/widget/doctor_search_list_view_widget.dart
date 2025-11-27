@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiosk/core/utility/logger_service.dart';
 
 import '../../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
 import '../../../../features/widget/item_button.dart';
@@ -7,7 +8,12 @@ import '../../model/doctor_model.dart';
 
 class DoctorListTileWidget extends StatelessWidget {
   final List<DoctorItems> doctorItemList;
-  const DoctorListTileWidget({super.key, required this.doctorItemList});
+  final bool isAppointment;
+  const DoctorListTileWidget({
+    super.key,
+    required this.doctorItemList,
+    required this.isAppointment,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +26,15 @@ class DoctorListTileWidget extends StatelessWidget {
         return ItemButton(
           title: doctor.doctorName ?? "",
           onTap: () {
-            context.read<PatientRegistrationProceduresCubit>().selectDoctor(
-              doctor,
-            );
+            if (isAppointment) {
+              MyLog.debug(
+                "Doctor Selected for Appointment: ${doctor.doctorName}",
+              );
+            } else {
+              context.read<PatientRegistrationProceduresCubit>().selectDoctor(
+                doctor,
+              );
+            }
           },
         );
       },

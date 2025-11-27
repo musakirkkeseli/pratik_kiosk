@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kiosk/features/utility/navigation_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
@@ -7,7 +8,12 @@ import '../../model/section_model.dart';
 
 class SectionSearchListViewWidget extends StatelessWidget {
   final List<SectionItems> sectionItemList;
-  const SectionSearchListViewWidget({super.key, required this.sectionItemList});
+  final bool isAppointment;
+  const SectionSearchListViewWidget({
+    super.key,
+    required this.sectionItemList,
+    required this.isAppointment,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +25,16 @@ class SectionSearchListViewWidget extends StatelessWidget {
         return ItemButton(
           title: section.sectionName ?? "",
           onTap: () {
-            context.read<PatientRegistrationProceduresCubit>().selectSection(
-              section,
-            );
+            if (isAppointment) {
+              NavigationService.ns.routeTo(
+                "DoctorSearchView",
+                arguments: {"sectionId": section.sectionId ?? 0},
+              );
+            } else {
+              context.read<PatientRegistrationProceduresCubit>().selectSection(
+                section,
+              );
+            }
           },
         );
       },

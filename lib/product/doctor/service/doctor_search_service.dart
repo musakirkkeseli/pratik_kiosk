@@ -6,9 +6,22 @@ class DoctorSearchService extends IDoctorSearchService {
   DoctorSearchService(super.http);
 
   @override
-  Future<ApiListResponse<DoctorItems>> getListDoctor(int branchId) async {
+  Future<ApiListResponse<DoctorItems>> getPatientTransactionDoctor(
+    String branchId,
+  ) async {
     return http.requestList<DoctorItems>(
-      requestFunction: () => http.get("$listDoctorPath/$branchId"),
+      requestFunction: () =>
+          http.get("$patientTransactionDoctorPath/$branchId"),
+      fromJson: (json) => DoctorItems.fromJson(json),
+    );
+  }
+
+  @override
+  Future<ApiListResponse<DoctorItems>> getAppointmentDoctor(
+    String branchId,
+  ) async {
+    return http.requestList<DoctorItems>(
+      requestFunction: () => http.get("$appointmentDoctorPath/$branchId"),
       fromJson: (json) => DoctorItems.fromJson(json),
     );
   }

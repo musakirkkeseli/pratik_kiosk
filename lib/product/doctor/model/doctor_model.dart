@@ -1,11 +1,11 @@
 class DoctorItems {
-  int? doctorId;
+  String? doctorId;
   String? doctorTitle;
   String? doctorName;
   String? doctorImage;
-  int? branchId;
+  String? branchId;
   String? branchName;
-  int? departmentId;
+  String? departmentId;
   String? departmentName;
 
   DoctorItems({
@@ -20,26 +20,26 @@ class DoctorItems {
   });
 
   DoctorItems.fromJson(Map<String, dynamic> json) {
-    doctorId = json['doctorId'];
-    doctorTitle = json['doctorTitle'];
-    doctorName = json['doctorName'];
-    doctorImage = json['doctorImage'];
-    branchId = json['branchId'];
-    branchName = json['branchName'];
-    departmentId = json['departmentId'];
-    departmentName = json['departmentName'];
+    doctorId = json['ID'];
+    doctorTitle = json['Title'];
+    doctorName = json['Name'];
+    doctorImage = json['DoctorImage'];
+    branchId = json['BranchID'];
+    branchName = json['BranchName'];
+    departmentId = json['DeptID'];
+    departmentName = json['DeptName'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['doctorId'] = doctorId;
-    data['doctorTitle'] = doctorTitle;
-    data['doctorName'] = doctorName;
-    data['doctorImage'] = doctorImage;
-    data['branchId'] = branchId;
-    data['branchName'] = branchName;
-    data['departmentId'] = departmentId;
-    data['departmentName'] = departmentName;
+    data['ID'] = doctorId;
+    data['Title'] = doctorTitle;
+    data['Name'] = doctorName;
+    data['DoctorImage'] = doctorImage;
+    data['BranchID'] = branchId;
+    data['BranchName'] = branchName;
+    data['DeptID'] = departmentId;
+    data['DeptName'] = departmentName;
     return data;
   }
 }

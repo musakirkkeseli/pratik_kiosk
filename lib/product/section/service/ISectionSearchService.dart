@@ -7,20 +7,25 @@ abstract class ISectionSearchService {
 
   ISectionSearchService(this.http);
 
-  final String branchAndDepPath =
-      ISectionSearchServicePath.branchAndDep.rawValue;
+  final String patientTransactionBranchPath =
+      ISectionSearchServicePath.patientTransactionBranch.rawValue;
+  final String appointmentBranchPath =
+      ISectionSearchServicePath.appointmentBranch.rawValue;
 
-  Future<ApiListResponse<SectionItems>> getBranchAndDeptListRequest();
+  Future<ApiListResponse<SectionItems>> getPatientTransactionBranch();
+  Future<ApiListResponse<SectionItems>> getAppointmentBranch();
 }
 
-enum ISectionSearchServicePath { branchAndDep }
+enum ISectionSearchServicePath { patientTransactionBranch, appointmentBranch }
 
 //BaseUrl'nin sonuna Search sayfasının requesti için gelecek olan eklenti için oluşturuldu
 extension ISearchServicePathExtension on ISectionSearchServicePath {
   String get rawValue {
     switch (this) {
-      case ISectionSearchServicePath.branchAndDep:
-        return '/clinical-resources/branches';
+      case ISectionSearchServicePath.patientTransactionBranch:
+        return '/clinical-resources/branches/patient-transaction';
+      case ISectionSearchServicePath.appointmentBranch:
+        return "/clinical-resources/branches/appointment";
     }
   }
 }

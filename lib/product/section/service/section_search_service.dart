@@ -6,9 +6,17 @@ class SectionSearchService extends ISectionSearchService {
   SectionSearchService(super.http);
 
   @override
-  Future<ApiListResponse<SectionItems>> getBranchAndDeptListRequest() async {
+  Future<ApiListResponse<SectionItems>> getPatientTransactionBranch() async {
     return http.requestList<SectionItems>(
-      requestFunction: () => http.get(branchAndDepPath),
+      requestFunction: () => http.get(patientTransactionBranchPath),
+      fromJson: (json) => SectionItems.fromJson(json),
+    );
+  }
+
+  @override
+  Future<ApiListResponse<SectionItems>> getAppointmentBranch() async {
+    return http.requestList<SectionItems>(
+      requestFunction: () => http.get(appointmentBranchPath),
       fromJson: (json) => SectionItems.fromJson(json),
     );
   }

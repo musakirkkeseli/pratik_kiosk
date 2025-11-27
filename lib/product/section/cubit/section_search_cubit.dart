@@ -9,14 +9,17 @@ part 'section_search_state.dart';
 
 class SectionSearchCubit extends BaseCubit<SectionSearchState> {
   final ISectionSearchService service;
+  final bool isAppointment;
 
-  SectionSearchCubit({required this.service})
+  SectionSearchCubit({required this.service, required this.isAppointment})
     : super(const SectionSearchState());
 
   Future<void> fetchSections() async {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
     try {
-      final res = await service.getBranchAndDeptListRequest();
+      final res = isAppointment
+          ? await service.getAppointmentBranch()
+          : await service.getPatientTransactionBranch();
       if (res.success == true && res.data is List<SectionItems>) {
         safeEmit(
           state.copyWith(

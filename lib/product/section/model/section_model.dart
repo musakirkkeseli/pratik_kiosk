@@ -1,19 +1,21 @@
+import 'package:kiosk/core/utility/logger_service.dart';
+
 class SectionItems {
-  int? sectionId;
+  String? sectionId;
   String? sectionName;
 
   SectionItems({this.sectionId, this.sectionName});
 
   SectionItems.fromJson(Map<String, dynamic> json) {
-    sectionId = json['sectionId'];
-    sectionName = json['sectionName'];
+    MyLog.debug('SectionItems.fromJson: $json');
+    sectionId = json['ID'];
+    sectionName = json['Name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['sectionId'] = sectionId;
-    data['sectionName'] = sectionName;
+    data['ID'] = sectionId;
+    data['Name'] = sectionName;
     return data;
   }
 }
-

@@ -9,15 +9,21 @@ part 'doctor_search_state.dart';
 
 class DoctorSearchCubit extends BaseCubit<DoctorSearchState> {
   final IDoctorSearchService service;
-  final int sectionId;
+  final String sectionId;
+  final bool isAppointment;
 
-  DoctorSearchCubit({required this.service, required this.sectionId})
-    : super(const DoctorSearchState());
+  DoctorSearchCubit({
+    required this.service,
+    required this.sectionId,
+    required this.isAppointment,
+  }) : super(const DoctorSearchState());
 
   Future<void> fetchDoctors() async {
     safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
     try {
-      final res = await service.getListDoctor(sectionId);
+      final res = isAppointment
+          ? await service.getAppointmentDoctor(sectionId)
+          : await service.getPatientTransactionDoctor(sectionId);
       if (res.success == true && res.data is List<DoctorItems>) {
         safeEmit(
           state.copyWith(
