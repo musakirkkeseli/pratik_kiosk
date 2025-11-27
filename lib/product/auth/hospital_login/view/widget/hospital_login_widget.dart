@@ -8,7 +8,6 @@ import '../../../../../features/utility/const/constant_color.dart';
 import '../../../../../features/utility/const/constant_string.dart';
 import '../../../../../features/utility/custom_textfield_widget.dart';
 import '../../../../../features/utility/enum/enum_textformfield.dart';
-import '../../../../pdf_viewer/view/widget/pdf_test_button.dart';
 import '../../cubit/hospital_login_cubit.dart';
 
 class HospitalLoginWidget extends StatefulWidget {
@@ -110,7 +109,7 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
                             }
                           },
                         ),
-                        const PdfTestButton(),
+                        // const PdfTestButton(),
                       ],
                     ),
                   ),
