@@ -15,7 +15,7 @@ class CustomDropdownFormField extends StatefulWidget {
   final bool isReadOnly;
   final String itemId;
   final BuildContext cubitContext;
-  final List<DropdownModel> dropdownItems;
+  final List<Options> optionList;
   final String isNullable;
   final bool? maskValue;
   const CustomDropdownFormField({
@@ -25,7 +25,7 @@ class CustomDropdownFormField extends StatefulWidget {
     required this.isReadOnly,
     required this.itemId,
     required this.cubitContext,
-    required this.dropdownItems,
+    required this.optionList,
     required this.isNullable,
     this.maskValue = false,
   });
@@ -79,14 +79,14 @@ class _CustomDropdownFormFieldState extends State<CustomDropdownFormField> {
                     },
                   )
                 : null,
-            items: widget.dropdownItems
+            items: widget.optionList
                 .map(
-                  (dropdownItem) => DropdownMenuItem<String>(
-                    value: dropdownItem.value.toString(),
+                  (option) => DropdownMenuItem<String>(
+                    value: option.value.toString(),
                     child: Text(
                       obscureValue
-                          ? _mask(dropdownItem.text ?? "")
-                          : dropdownItem.text ?? "",
+                          ? _mask(option.text ?? "")
+                          : option.text ?? "",
                     ),
                   ),
                 )

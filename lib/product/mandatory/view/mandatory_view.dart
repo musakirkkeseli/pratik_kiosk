@@ -7,6 +7,7 @@ import 'package:kiosk/product/mandatory/cubit/mandatory_cubit.dart';
 import 'package:kiosk/product/mandatory/service/mandatory_service.dart';
 
 import '../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
+import '../../../core/model/dropdown_model.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/user_http_service.dart';
@@ -17,6 +18,7 @@ import '../model/mandatory_response_model.dart';
 import '../../../features/utility/enum/enum_object_type.dart';
 import 'widget/custom_dropdown_form_field.dart';
 import 'widget/custom_mandatory_textfield_widget.dart';
+import 'widget/custom_select_button.dart';
 import 'widget/custom_selection_area.dart';
 
 class MandatoryView extends StatefulWidget {
@@ -33,7 +35,7 @@ class _State extends State<MandatoryView> {
   final Map<String, FocusNode> _focusNodes = {};
   final List<String> _editableFields = [];
   final ScrollController _scrollController = ScrollController();
-  // final MyLog _log = MyLog('MandatoryView');
+  final MyLog _log = MyLog('MandatoryView');
 
   @override
   void dispose() {
@@ -192,7 +194,9 @@ class _State extends State<MandatoryView> {
     final focusNode = _focusNodes[itemId]!;
     final isReadOnly =
         item.fieldValue != null && (item.fieldValue ?? "").isNotEmpty;
-    if (isReadOnly && item.objectType != ObjectType.dropdown) {
+    if (isReadOnly &&
+        item.objectType != ObjectType.dropdown &&
+        item.objectType != ObjectType.searchable) {
       return CustomSelectionArea(
         label: label,
         text: controller.text,
@@ -200,14 +204,38 @@ class _State extends State<MandatoryView> {
         maskValue: item.maskValue,
       );
     }
-    if (item.objectType == ObjectType.dropdown && item.dropdownItems != null) {
+    if (item.objectType == ObjectType.dropdown && item.optionList != null) {
       return CustomDropdownFormField(
         controller: controller,
         cubitContext: cubitContext,
-        dropdownItems: item.dropdownItems ?? [],
+        optionList: item.optionList ?? [],
         isNullable: item.isNullable ?? "",
         isReadOnly: isReadOnly,
         label: label,
+        itemId: itemId,
+        maskValue: item.maskValue,
+      );
+    }
+    if (item.objectType == ObjectType.searchable && item.optionList != null) {
+      if ((item.fieldValue ?? "").isNotEmpty) {
+        return CustomDropdownFormField(
+          controller: controller,
+          cubitContext: cubitContext,
+          optionList: item.optionList ?? [],
+          isNullable: item.isNullable ?? "",
+          isReadOnly: isReadOnly,
+          label: label,
+          itemId: itemId,
+          maskValue: item.maskValue,
+        );
+      }
+      List<Options> optionList = (item.optionList ?? []);
+      return CustomSelectButton(
+        controller: controller,
+        cubitContext: cubitContext,
+        label: label,
+        optionList: optionList,
+        isReadOnly: isReadOnly,
         itemId: itemId,
         maskValue: item.maskValue,
       );
@@ -234,10 +262,10 @@ class _State extends State<MandatoryView> {
             label,
             ConstantString().fieldRequired,
           );
-          MyLog.debug("Mandatory Field Validation Failed: $label");
+          _log.d("Mandatory Field Validation Failed: $label");
           return ConstantString().fieldRequired;
         }
-        if (item.minValue != null) {
+        if ((value ?? "").isNotEmpty && item.minValue != null) {
           int minLength = int.tryParse(item.minValue ?? "") ?? 0;
           if ((value ?? "").length < minLength) {
             cubitContext.read<MandatoryCubit>().mandatoryRequiredWarningSave(

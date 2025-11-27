@@ -10,7 +10,7 @@ class MandatoryResponseModel {
   String? isNullable;
   String? fieldValue;
   ObjectType? objectType;
-  List<DropdownModel>? dropdownItems;
+  List<Options>? optionList;
   bool? maskValue;
 
   MandatoryResponseModel({
@@ -22,7 +22,7 @@ class MandatoryResponseModel {
     this.isNullable,
     this.fieldValue,
     this.objectType,
-    this.dropdownItems,
+    this.optionList,
     this.maskValue,
   });
 
@@ -35,10 +35,10 @@ class MandatoryResponseModel {
     isNullable = json['IS_NULLABLE'];
     fieldValue = json['FIELD_VALUE'];
     objectType = ObjectTypeHelper.fromString(json['OBJECT_TYPE'] as String?);
-    if (json['DROPDOWN_ITEMS'] != null) {
-      dropdownItems = <DropdownModel>[];
-      json['DROPDOWN_ITEMS'].forEach((v) {
-        dropdownItems!.add(DropdownModel.fromJson(v));
+    if (json['OPTIONS'] != null) {
+      optionList = <Options>[];
+      json['OPTIONS'].forEach((v) {
+        optionList!.add(Options.fromJson(v));
       });
     }
     maskValue = json['MASK_VALUE'];
@@ -54,8 +54,8 @@ class MandatoryResponseModel {
     data['IS_NULLABLE'] = isNullable;
     data['FIELD_VALUE'] = fieldValue;
     data['OBJECT_TYPE'] = ObjectTypeHelper.toJson(objectType);
-    if (dropdownItems != null) {
-      data['DROPDOWN_ITEMS'] = dropdownItems!.map((v) => v.toJson()).toList();
+    if (optionList != null) {
+      data['OPTIONS'] = optionList!.map((v) => v.toJson()).toList();
     }
     data['MASK_VALUE'] = maskValue;
     return data;
