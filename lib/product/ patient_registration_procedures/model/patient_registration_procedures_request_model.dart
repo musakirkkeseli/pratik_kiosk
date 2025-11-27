@@ -1,10 +1,11 @@
 import '../../../features/model/patient_price_detail_model.dart';
 
 class PatientRegistrationProceduresModel {
-  int? doctorId;
+  String? doctorId;
   String? doctorName;
-  int? branchId;
-  int? departmentId;
+  String? departmentId;
+  String? departmentName;
+  String? branchId;
   String? branchName;
   String? appointmentId;
   String? assocationId;
@@ -20,8 +21,9 @@ class PatientRegistrationProceduresModel {
     this.doctorId,
     this.doctorName,
     this.branchId,
-    this.departmentId,
     this.branchName,
+    this.departmentId,
+    this.departmentName,
     this.appointmentId,
     this.assocationId,
     this.assocationName,
