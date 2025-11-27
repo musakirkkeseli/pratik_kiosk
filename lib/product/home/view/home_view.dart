@@ -40,7 +40,7 @@ class _HomeViewState extends State<HomeView> {
                   children: [
                     Text(ConstantString().welcome, style: context.pageTitle),
                     Text(
-                      UserLoginStatusService().userName ?? "",
+                      UserLoginStatusService().fullName ?? "",
                       style: context.pageTitle.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -108,6 +108,7 @@ class _HomeViewState extends State<HomeView> {
                         style: context.sectionTitle,
                       ),
                       leading: EnumHomeItem.values[index].icon(context),
+                      trailing:EnumHomeItem.values[index].trailing,
                     ),
                     EnumHomeItem.values[index].widget(),
                   ],
