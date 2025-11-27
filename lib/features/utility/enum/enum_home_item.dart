@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/material_symbols.dart';
+import 'package:kiosk/features/utility/navigation_service.dart';
 
 import '../../../product/appointments/view/appointments_view.dart';
 import '../../../product/home/view/widget/section_button_widget.dart';
@@ -39,6 +40,20 @@ enum EnumHomeItem {
         );
       case EnumHomeItem.qr:
         return Iconify(MaterialSymbols.view_list, color: context.primaryColor);
+    }
+  }
+
+  Widget? get trailing {
+    switch (this) {
+      case EnumHomeItem.appointments:
+        return OutlinedButton(
+          onPressed: () {
+            NavigationService.ns.routeTo("SectionSearchView");
+          },
+          child: Text(ConstantString().takeAppointment),
+        );
+      default:
+        return null;
     }
   }
 
