@@ -1,12 +1,17 @@
+import 'package:pratik_pos_integration/pratik_pos_integration.dart';
+
 import '../../../core/exception/network_exception.dart';
 import '../../../core/utility/analytics_service.dart';
 import '../../../core/utility/base_cubit.dart';
 import '../../../core/utility/logger_service.dart';
+import '../../../core/utility/user_login_status_service.dart';
+import '../../../core/widget/snackbar_service.dart';
 import '../../../features/model/patient_price_detail_model.dart';
 import '../../../features/utility/const/constant_string.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/enum/enum_patient_registration_procedures.dart';
 import '../../../features/utility/enum/enum_payment_result_type.dart';
+import '../../appointments/model/appointments_model.dart';
 import '../../doctor/model/doctor_model.dart';
 import '../../../features/model/patient_mandatory_model.dart';
 import '../../patient_transaction/model/association_model.dart';
@@ -31,6 +36,7 @@ class PatientRegistrationProceduresCubit
     required this.model,
   }) : super(
          PatientRegistrationProceduresState(
+           startStep: startStep,
            currentStep: startStep,
            model: model ?? PatientRegistrationProceduresModel(),
          ),
@@ -46,22 +52,103 @@ class PatientRegistrationProceduresCubit
     );
   }
 
-  void selectSection(SectionItems section) {
+  Future<void> selectSection(SectionItems section) async {
     if (section.sectionId != null && section.sectionName != null) {
+      safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
       final updatedModel = state.model;
-      updatedModel.branchId = section.sectionId;
+      updatedModel.branchId = section.sectionId.toString();
       updatedModel.branchName = section.sectionName;
-      emit(state.copyWith(model: updatedModel));
       _trackButton('select_section');
-      nextStep();
+      try {
+        final res = await service.postAppointmentByBranch(
+          section.sectionId.toString(),
+        );
+
+        if (res.success && res.data is AppointmentsModel) {
+          AppointmentsModel appointmentsModel = res.data!;
+          emit(
+            state.copyWith(
+              status: EnumGeneralStateStatus.success,
+              warningCurrentAppointment: true,
+              appointmentsModel: appointmentsModel,
+            ),
+          );
+          // updatedModel.appointmentId = appointmentsModel.appointmentID;
+          // updatedModel.doctorId = appointmentsModel.doctorID;
+          // updatedModel.doctorName = appointmentsModel.doctorName;
+          // updatedModel.departmentId = appointmentsModel.departmentID;
+          // updatedModel.departmentName = appointmentsModel.departmentName;
+          // emit(
+          //   state.copyWith(
+          //     model: updatedModel,
+          //     currentStep: EnumPatientRegistrationProcedures.doctor,
+          //     startStep: EnumPatientRegistrationProcedures.patientTransaction,
+          //   ),
+          // );
+          // nextStep();
+        } else {
+          emit(
+            state.copyWith(
+              status: EnumGeneralStateStatus.success,
+              model: updatedModel,
+            ),
+          );
+          nextStep();
+        }
+      } on NetworkException catch (e) {
+        _log.e('postAppointmentByBranch NetworkException: $e');
+        emit(
+          state.copyWith(
+            status: EnumGeneralStateStatus.success,
+            model: updatedModel,
+          ),
+        );
+        nextStep();
+      } catch (e) {
+        emit(
+          state.copyWith(
+            status: EnumGeneralStateStatus.success,
+            model: updatedModel,
+          ),
+        );
+        nextStep();
+      }
     }
+  }
+
+  clearWarningCurrentAppointment() {
+    emit(state.copyWith(warningCurrentAppointment: false));
+  }
+
+  continueWithAppointment() {
+    final updatedModel = state.model;
+    final appointmentsModel = state.appointmentsModel;
+    if (appointmentsModel != null) {
+      updatedModel.appointmentId = appointmentsModel.appointmentID;
+      updatedModel.doctorId = appointmentsModel.doctorID;
+      updatedModel.doctorName = appointmentsModel.doctorName;
+      updatedModel.departmentId = appointmentsModel.departmentID;
+      updatedModel.departmentName = appointmentsModel.departmentName;
+      emit(
+        state.copyWith(
+          model: updatedModel,
+          currentStep: EnumPatientRegistrationProcedures.patientTransaction,
+          startStep: EnumPatientRegistrationProcedures.patientTransaction,
+        ),
+      );
+    }
+  }
+
+  clearAppointmentsModel() {
+    emit(state.copyWith(appointmentsModel: null));
   }
 
   void selectDoctor(DoctorItems section) {
     if (section.doctorId != null && section.doctorName != null) {
       final updatedModel = state.model;
-      updatedModel.doctorId = section.doctorId;
-      updatedModel.departmentId = section.departmentId;
+      updatedModel.doctorId = section.doctorId.toString();
+      updatedModel.departmentId = section.departmentId.toString();
+      updatedModel.departmentName = section.departmentName;
       updatedModel.doctorName = section.doctorName;
       emit(state.copyWith(model: updatedModel));
       _trackButton('select_doctor');
@@ -120,9 +207,14 @@ class PatientRegistrationProceduresCubit
     try {
       PatientTransactionCreateRequestModel request =
           PatientTransactionCreateRequestModel(
-            associationId: int.tryParse(model.assocationId ?? ""),
+            associationId: model.assocationId,
+            associationName: model.assocationName,
             departmentId: model.departmentId,
+            departmentName: model.departmentName,
+            branchId: model.branchId,
+            branchName: model.branchName,
             doctorId: model.doctorId,
+            doctorName: model.doctorName,
             appointmentId: model.appointmentId,
             mandatoryFields: mandatoryModelList,
           );
@@ -222,7 +314,7 @@ class PatientRegistrationProceduresCubit
     }
   }
 
-  void paymentAction() {
+  Future<void> paymentAction() async {
     final updatedModel = state.model;
     PatientTransactionDetailsResponseModel patientPriceDetailModel =
         PatientTransactionDetailsResponseModel(
@@ -231,10 +323,83 @@ class PatientRegistrationProceduresCubit
         );
     updatedModel.patientPriceDetailModel = patientPriceDetailModel;
     emit(state.copyWith(model: updatedModel));
+    final totalAmount =
+        patientPriceDetailModel.patientContent?.totalPrice ?? "0";
     AnalyticsService().trackPaymentScreenOpened(
       amount: double.tryParse(updatedModel.patientContent?.totalPrice ?? '0'),
     );
     nextStep();
+    List<PosProduct> products = [];
+    for (PaymentContent paymentContent
+        in updatedModel.paymentContentList ?? []) {
+      products.add(
+        PosProduct(
+          amount: double.tryParse(paymentContent.price ?? "0") ?? 0.0,
+          name: paymentContent.paymentName ?? "",
+          taxGroupCode: (paymentContent.isContributionFee ?? false)
+              ? EnumProductTaxGroupCode.contributionFee
+              : EnumProductTaxGroupCode.standart,
+        ),
+      );
+    }
+    try {
+      final customerInfo = {
+        'firstName': UserLoginStatusService().userName ?? "",
+        'familyName': UserLoginStatusService().userSurname ?? "",
+        'taxNumber': UserLoginStatusService().userTcNo ?? "",
+        'country': 'TR',
+        'city': 'ISTANBUL',
+        'district': 'KADIKOY',
+      };
+
+      // final orderNo = DateTime.now().millisecondsSinceEpoch.toString();
+      final now = DateTime.now();
+      final datePart =
+          '${now.hour}'.padLeft(2, '0') + '${now.minute}'.padLeft(2, '0');
+      final orderNo = "$datePart${updatedModel.patientId ?? '0000000'}";
+      final result = await PosService.instance.completeSaleWithPolling(
+        orderNo: orderNo,
+        products: products,
+        customerInfo: customerInfo,
+        onPolling: (int attempt, PosSaleStatus status) {
+          MyLog.debug('Polling Attempt: $attempt, Status: $status');
+        },
+      );
+
+      if (result.success && result.saleStatus == PosSaleStatus.success) {
+        SnackbarService().showSnackBar(ConstantString().paymentSuccess);
+        patientTransactionRevenue(patientPriceDetailModel);
+      } else {
+        SnackbarService().showSnackBar(ConstantString().paymentFailure);
+        patientTransactionCancel();
+        safeEmit(
+          state.copyWith(
+            paymentResultType: EnumPaymentResultType.failure,
+            totalAmount: totalAmount,
+          ),
+        );
+      }
+    } on PosException catch (e) {
+      SnackbarService().showSnackBar(
+        "${ConstantString().paymentFailure} ${e.message}",
+      );
+      patientTransactionCancel();
+      safeEmit(
+        state.copyWith(
+          paymentResultType: EnumPaymentResultType.failure,
+          totalAmount: totalAmount,
+        ),
+      );
+    } catch (e) {
+      SnackbarService().showSnackBar("${ConstantString().paymentFailure}, $e");
+      patientTransactionCancel();
+      safeEmit(
+        state.copyWith(
+          paymentResultType: EnumPaymentResultType.failure,
+          totalAmount: totalAmount,
+        ),
+      );
+    }
   }
 
   Future<void> patientTransactionRevenue(
