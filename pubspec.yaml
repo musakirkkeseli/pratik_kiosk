@@ -54,6 +54,16 @@ dependencies:
   dio: ^5.9.0
   qr_flutter: ^4.1.0
   # http: ^1.2.2
+
+  # my packages
+  pratik_pos_integration:
+    git:
+      url: https://github.com/musakirkkeseli/pratik_pos_integration.git
+      ref: main
+  mylog:
+    git:
+      url: https://github.com/musakirkkeseli/mylog.git
+      ref: main
   
 dev_dependencies:
   flutter_test:

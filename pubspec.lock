@@ -385,10 +385,10 @@ packages:
     dependency: "direct main"
     description:
       name: logger
-      sha256: "55d6c23a6c15db14920e037fe7e0dc32e7cdaf3b64b4b25df2d541b5b6b81c0c"
+      sha256: a7967e31b703831a893bbc3c3dd11db08126fe5f369b5c648a36f821979f5be3
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.1"
+    version: "2.6.2"
   lottie:
     dependency: "direct main"
     description:
@@ -437,6 +437,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.4"
+  mylog:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: d45c127124ab46571a70d21732dbd3fa6b847596
+      url: "https://github.com/musakirkkeseli/mylog.git"
+    source: git
+    version: "0.0.1"
   nested:
     dependency: transitive
     description:
@@ -605,6 +614,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.3"
+  pratik_pos_integration:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "5308cfbed1538412779c1e4d35345532af1b5f48"
+      url: "https://github.com/musakirkkeseli/pratik_pos_integration.git"
+    source: git
+    version: "0.0.1"
   provider:
     dependency: "direct main"
     description:
