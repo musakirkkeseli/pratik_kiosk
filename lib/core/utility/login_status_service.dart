@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:pratik_pos_integration/pratik_pos_integration.dart';
+
 import '../../features/utility/navigation_service.dart';
 
 enum LoginStatus { online, offline }
@@ -58,6 +60,7 @@ class LoginStatusService {
     _accessToken = null;
     _refreshToken = null;
     _controller.add(LoginStatus.offline);
+    PosService.instance.clearConfig();
     NavigationService.ns.gotoMain();
   }
 }
