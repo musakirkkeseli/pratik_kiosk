@@ -1,10 +1,10 @@
-class DropdownModel {
+class Options {
   String? text;
   String? value;
 
-  DropdownModel({this.text, this.value});
+  Options({this.text, this.value});
 
-  DropdownModel.fromJson(Map<String, dynamic> json) {
+  Options.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
   }
