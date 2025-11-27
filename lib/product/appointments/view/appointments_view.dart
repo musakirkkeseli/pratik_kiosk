@@ -111,11 +111,11 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                       itemBuilder: (_, i) {
                         final AppointmentsModel appointment =
                             appointmentList[i];
-
+                        bool isRegisterable =
+                            appointment.isRegisterable ?? false;
                         _log.d(
                           "Appointment $i - ID: ${appointment.appointmentID}, GUID: ${appointment.gUID}",
                         );
-
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 12.0),
                           child: AppointmentCard(
@@ -125,6 +125,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                             doctorName: appointment.doctorName ?? "",
                             appointmentID: appointment.appointmentID ?? "",
                             guid: appointment.gUID ?? "",
+                            isRegisterable: isRegisterable,
                             onCancel: () {
                               _showCancelConfirmation(
                                 context,
@@ -133,27 +134,24 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                               );
                             },
                             onTap: () {
-                              NavigationService.ns.routeTo(
-                                "PatientRegistrationProceduresView",
-                                arguments: {
-                                  "startStep": EnumPatientRegistrationProcedures
-                                      .patientTransaction,
-                                  "model": PatientRegistrationProceduresModel(
-                                    branchId: int.tryParse(
-                                      appointment.branchID ?? "",
+                              if (isRegisterable) {
+                                NavigationService.ns.routeTo(
+                                  "PatientRegistrationProceduresView",
+                                  arguments: {
+                                    "startStep":
+                                        EnumPatientRegistrationProcedures
+                                            .patientTransaction,
+                                    "model": PatientRegistrationProceduresModel(
+                                      branchId: appointment.branchID,
+                                      departmentId: appointment.departmentID,
+                                      branchName: appointment.branchName,
+                                      doctorId: appointment.doctorID,
+                                      doctorName: appointment.doctorName,
+                                      appointmentId: appointment.appointmentID,
                                     ),
-                                    departmentId: int.tryParse(
-                                      appointment.departmentID ?? "",
-                                    ),
-                                    branchName: appointment.branchName,
-                                    doctorId: int.tryParse(
-                                      appointment.doctorID ?? "",
-                                    ),
-                                    doctorName: appointment.doctorName,
-                                    appointmentId: appointment.appointmentID,
-                                  ),
-                                },
-                              );
+                                  },
+                                );
+                              }
                             },
                           ),
                         );

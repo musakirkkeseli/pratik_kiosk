@@ -1,3 +1,5 @@
+import 'package:kiosk/core/utility/logger_service.dart';
+
 class AppointmentsModel {
   String? tCKNo;
   String? passportNo;
@@ -12,23 +14,29 @@ class AppointmentsModel {
   String? appointmentID;
   String? appointmentTime;
   String? gUID;
+  bool? isRegisterable;
 
-  AppointmentsModel(
-      {this.tCKNo,
-      this.passportNo,
-      this.uPN,
-      this.hospitalID,
-      this.departmentID,
-      this.departmentName,
-      this.branchID,
-      this.branchName,
-      this.doctorID,
-      this.doctorName,
-      this.appointmentID,
-      this.appointmentTime,
-      this.gUID});
+  AppointmentsModel({
+    this.tCKNo,
+    this.passportNo,
+    this.uPN,
+    this.hospitalID,
+    this.departmentID,
+    this.departmentName,
+    this.branchID,
+    this.branchName,
+    this.doctorID,
+    this.doctorName,
+    this.appointmentID,
+    this.appointmentTime,
+    this.gUID,
+    this.isRegisterable,
+  });
 
   AppointmentsModel.fromJson(Map<String, dynamic> json) {
+    MyLog.debug(
+      "AppointmentsModel fromJson: ${json['DoctorName']} -- ${json['isRegisterable']}",
+    );
     tCKNo = json['TCKNo'];
     passportNo = json['PassportNo'];
     uPN = json['UPN'];
@@ -42,6 +50,7 @@ class AppointmentsModel {
     appointmentID = json['AppointmentID'];
     appointmentTime = json['AppointmentTime'];
     gUID = json['GUID'];
+    isRegisterable = json['isRegisterable'];
   }
 
   Map<String, dynamic> toJson() {
@@ -59,6 +68,7 @@ class AppointmentsModel {
     data['AppointmentID'] = appointmentID;
     data['AppointmentTime'] = appointmentTime;
     data['GUID'] = gUID;
+    data['isRegisterable'] = isRegisterable;
     return data;
   }
 }

@@ -14,6 +14,7 @@ class AppointmentCard extends StatelessWidget {
   final String guid;
   final VoidCallback? onTap;
   final VoidCallback? onCancel;
+  final bool isRegisterable;
 
   const AppointmentCard({
     super.key,
@@ -25,6 +26,7 @@ class AppointmentCard extends StatelessWidget {
     required this.guid,
     this.onTap,
     this.onCancel,
+    this.isRegisterable = false,
   });
 
   @override
@@ -123,8 +125,14 @@ class AppointmentCard extends StatelessWidget {
                       onPressed: onCancel,
                       style: OutlinedButton.styleFrom(
                         foregroundColor: ConstColor.red,
-                        side: const BorderSide(color: ConstColor.red, width: 1.5),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        side: const BorderSide(
+                          color: ConstColor.red,
+                          width: 1.5,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -146,35 +154,38 @@ class AppointmentCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
-                  // Seç butonu
-                  SizedBox(
-                    height: 40,
-                    child: ElevatedButton(
-                      onPressed: onTap,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            ConstantString().select,
-                            style: context.whiteButtonText.copyWith(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                  isRegisterable
+                      ? SizedBox(
+                          height: 40,
+                          child: ElevatedButton(
+                            onPressed: onTap,
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  ConstantString().select,
+                                  style: context.whiteButtonText.copyWith(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                const Icon(
+                                  Icons.arrow_forward,
+                                  color: ConstColor.white,
+                                  size: 18,
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          const Icon(
-                            Icons.arrow_forward,
-                            color: ConstColor.white,
-                            size: 18,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        )
+                      : SizedBox(),
                 ],
               ),
             ],
