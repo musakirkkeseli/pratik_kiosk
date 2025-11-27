@@ -69,6 +69,7 @@
   "updatePhoneAtAdmission": "You can update your phone number in the system by applying to patient admission.",
   "yes": "Yes",
   "clearData": "Clear Data",
+  "backToTop": "Back to Top",
   "downloadOurApp": "Download Our App",
   "sessionTimeout": "Session Timeout",
   "sessionWillCloseIfInactive": "If you do not continue, your session will be closed.",
@@ -100,5 +101,18 @@
   "enterValidDateFormat": "Enter a valid date in the format dd.mm.yyyy",
   "save": "Save",
   "pleaseSignFirst": "Please sign first",
-  "pleaseProvideSignature": "Please provide your signature"
+  "pleaseProvideSignature": "Please provide your signature",
+  "search": "Search",
+  "start": "START",
+  "takeAppointment": "Take Appointment",
+  "registerPatientForAppointment": "Register Patient for Appointment",
+  "viewTestResults": "View Test Results",
+  "selectToMakeChoice": "Tap to make a selection",
+  "appointmentExistsForSelectedSection": "You have an appointment in the selected department",
+  "appointmentDetails": "Appointment Details",
+  "continueWithAppointment": "Continue with Appointment",
+  "cancelAndSelectAnotherSection": "Cancel and Select Another Section",
+  "enterYourBirthDate": "Enter Your Birth Date",
+  "pleaseEnterValidBirthDate": "Please enter a valid birth date",
+  "filledFieldInfo":"To change existing information, please apply to patient admission. You can complete missing information."
 }

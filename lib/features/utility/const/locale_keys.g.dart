@@ -106,4 +106,19 @@ abstract class LocaleKeys {
   static const save = 'save';
   static const pleaseSignFirst = 'pleaseSignFirst';
   static const pleaseProvideSignature = 'pleaseProvideSignature';
+  static const search = 'search';
+  static const start = 'start';
+  static const takeAppointment = 'takeAppointment';
+  static const registerPatientForAppointment = 'registerPatientForAppointment';
+  static const viewTestResults = 'viewTestResults';
+  static const selectToMakeChoice = 'selectToMakeChoice';
+  static const backToTop = 'backToTop';
+  static const appointmentExistsForSelectedSection =
+      'appointmentExistsForSelectedSection';
+  static const appointmentDetails = 'appointmentDetails';
+  static const continueWithAppointment = 'continueWithAppointment';
+  static const cancelAndSelectAnotherSection = 'cancelAndSelectAnotherSection';
+  static const enterYourBirthDate = 'enterYourBirthDate';
+  static const pleaseEnterValidBirthDate = 'pleaseEnterValidBirthDate';
+  static const filledFieldInfo = 'filledFieldInfo';
 }

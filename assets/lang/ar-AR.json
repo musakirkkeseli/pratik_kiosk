@@ -70,6 +70,7 @@
   "updatePhoneAtAdmission": "يمكنك تحديث رقم هاتفك في النظام من خلال مراجعة قسم قبول المرضى.",
   "yes": "نعم",
   "clearData": "مسح البيانات",
+  "backToTop": "العودة إلى الأعلى",
   "downloadOurApp": "قم بتنزيل تطبيقنا",
   "sessionTimeout": "انتهت مهلة الجلسة",
   "sessionWillCloseIfInactive": "إذا لم تواصل العملية، فستُغلق جلستك.",
@@ -101,5 +102,18 @@
   "enterValidDateFormat": "أدخل تاريخًا صالحًا بالتنسيق dd.mm.yyyy",
   "save": "حفظ",
   "pleaseSignFirst": "يرجى التوقيع أولاً",
-  "pleaseProvideSignature": "يرجى وضع توقيعك"
+  "pleaseProvideSignature": "يرجى وضع توقيعك",
+  "search": "بحث",
+  "start": "ابدأ",
+  "takeAppointment": "خذ موعدًا",
+  "registerPatientForAppointment": "تسجيل المريض للموعد",
+  "viewTestResults": "عرض نتائج الاختبار",
+  "selectToMakeChoice": "اضغط لإجراء اختيار",
+  "appointmentExistsForSelectedSection": "لديك موعد في القسم المحدد",
+  "appointmentDetails": "تفاصيل الموعد",
+  "continueWithAppointment": "استمر بالموعد",
+  "cancelAndSelectAnotherSection": "إلغاء واختيار قسم آخر",
+  "enterYourBirthDate": "أدخل تاريخ ميلادك",
+  "pleaseEnterValidBirthDate": "يرجى إدخال تاريخ ميلاد صالح",
+  "filledFieldInfo":"لتغيير المعلومات الحالية، يرجى التقدم إلى قسم قبول المرضى. يمكنك إكمال المعلومات الناقصة."
 }

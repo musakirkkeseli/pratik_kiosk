@@ -21,6 +21,11 @@ class ConstantString {
   static const turkish = "Türkçe";
   static const english = "English";
   static const arabic = "عربي";
+
+  //urls
+  static const form = "https://prtk.gen.tr/kiosk_forms.php";
+
+  // Assets
   static const loadingGif = "assets/gif/loading.gif";
   static const posGif = "assets/gif/pos_gif.json";
   static const healthGif = "assets/gif/health_gif.json";
@@ -31,7 +36,12 @@ class ConstantString {
   static const configSetting = "assets/gif/config_setting.json";
   static const paymentLoading = "assets/gif/payment_loading.json";
   static const downloadImage = "assets/images/downloadImage.png";
-  static const form = "https://docs.google.com/forms/d/e/1FAIpQLSfndUVNdpeDg0Nh1Xwzkv8O2w2rg8UucMj_GQE1IvzFTkh5dw/viewform?usp=dialog";
+  static const appstoreLight = "assets/images/appstore_light.png";
+  static const appstoreDark = "assets/images/appstore_dark.png";
+  static const googlePlayLight = "assets/images/google_play_light.png";
+  static const googlePlayDark = "assets/images/google_play_dark.png";
+
+  // Localized Strings
 
   String isThisNumberYoursWithPhone(String phoneNumber) =>
       LocaleKeys.isThisNumberYoursWithPhone.localArg([phoneNumber]);
@@ -108,9 +118,10 @@ class ConstantString {
   String phoneNumberNotFound = LocaleKeys.phoneNumberNotFound.locale;
   String updatePhoneAtAdmission = LocaleKeys.updatePhoneAtAdmission.locale;
   String yes = LocaleKeys.yes.locale;
-  String enterYourBirthDate = "Doğum Tarihinizi Giriniz";
-  String pleaseEnterValidBirthDate = "Lütfen geçerli bir doğum tarihi giriniz";
+  String enterYourBirthDate = LocaleKeys.enterYourBirthDate.locale;
+  String pleaseEnterValidBirthDate = LocaleKeys.pleaseEnterValidBirthDate.locale;
   String clearData = LocaleKeys.clearData.locale;
+  String backToTop = LocaleKeys.backToTop.locale;
   String downloadOurApp = LocaleKeys.downloadOurApp.locale;
   String sessionTimeout = LocaleKeys.sessionTimeout.locale;
   String sessionWillCloseIfInactive =
@@ -126,8 +137,7 @@ class ConstantString {
   String turkishIdNumber = LocaleKeys.turkishIdNumber.locale;
   String smsCode = LocaleKeys.smsCode.locale;
   String elevenDigitTurkishIdInfo = LocaleKeys.elevenDigitTurkishIdInfo.locale;
-  String filledFieldInfo =
-      "Mevcut bilgileri değişmek için Hasta Kabule müracaat ediniz. Eksik Bilgileri tamamlayabilirsiniz. "; 
+  String filledFieldInfo = LocaleKeys.filledFieldInfo.locale;
   String welcome = LocaleKeys.welcome.locale;
   String vatIncluded = LocaleKeys.vatIncluded.locale;
   String otherBranches = LocaleKeys.otherBranches.locale;
@@ -146,4 +156,17 @@ class ConstantString {
   String save = LocaleKeys.save.locale;
   String pleaseSignFirst = LocaleKeys.pleaseSignFirst.locale;
   String pleaseProvideSignature = LocaleKeys.pleaseProvideSignature.locale;
+  String search = LocaleKeys.search.locale;
+  String start = LocaleKeys.start.locale;
+  String takeAppointment = LocaleKeys.takeAppointment.locale;
+  String registerPatientForAppointment =
+      LocaleKeys.registerPatientForAppointment.locale;
+  String viewTestResults = LocaleKeys.viewTestResults.locale;
+  String selectToMakeChoice = LocaleKeys.selectToMakeChoice.locale;
+  String appointmentExistsForSelectedSection =
+      LocaleKeys.appointmentExistsForSelectedSection.locale;
+  String appointmentDetails = LocaleKeys.appointmentDetails.locale;
+  String continueWithAppointment = LocaleKeys.continueWithAppointment.locale;
+  String cancelAndSelectAnotherSection =
+      LocaleKeys.cancelAndSelectAnotherSection.locale;
 }

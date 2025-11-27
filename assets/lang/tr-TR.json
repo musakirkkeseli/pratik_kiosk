@@ -69,6 +69,7 @@
   "updatePhoneAtAdmission": "Hasta kabüle müracaat ederek sistemdeki telefon numaranızı güncelleyebilirsiniz.",
   "yes": "Evet",
   "clearData": "Verileri Temizle",
+  "backToTop": "Başa Dön",
   "downloadOurApp": "Uygulamamızı İndir",
   "sessionTimeout": "Oturum Zaman Aşımı",
   "sessionWillCloseIfInactive": "İşleminize devam etmezseniz oturumunuz kapanacaktır.",
@@ -100,5 +101,18 @@
   "enterValidDateFormat": "gg.aa.yyyy biçiminde geçerli bir tarih girin",
   "save": "Kaydet",
   "pleaseSignFirst": "Lütfen önce imza atınız",
-  "pleaseProvideSignature": "İmzanızı Atınız"
+  "pleaseProvideSignature": "İmzanızı Atınız",
+  "search": "Ara",
+  "start": "BAŞLA",
+  "takeAppointment": "Randevu Al",
+  "registerPatientForAppointment": "Randevuya Hasta Kayıt",
+  "viewTestResults": "Tetkik Görüntüle",
+  "selectToMakeChoice": "Seçim yapmak için dokununuz",
+  "appointmentExistsForSelectedSection": "Seçtiğiniz bölüme randevunuz bulunmaktadır",
+  "appointmentDetails": "Randevu Detayları",
+  "continueWithAppointment": "Randevu ile devam et",
+  "cancelAndSelectAnotherSection": "İptal et ve başka bölüm seç",
+  "enterYourBirthDate": "Doğum Tarihinizi Giriniz",
+  "pleaseEnterValidBirthDate": "Lütfen geçerli bir doğum tarihi giriniz",
+  "filledFieldInfo":"Mevcut bilgileri değişmek için Hasta Kabule müracaat ediniz. Eksik Bilgileri tamamlayabilirsiniz."
 }
