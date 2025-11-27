@@ -22,6 +22,7 @@ class CustomAppBar extends StatelessWidget {
             CachedNetworkImage(
               imageUrl: logoUrl,
               fit: BoxFit.contain,
+              height: 130,
               placeholder: (context, url) => SizedBox(
                 child: Center(
                   child: CircularProgressIndicator(color: ConstColor.white),
