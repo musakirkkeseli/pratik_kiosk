@@ -24,11 +24,16 @@ class UserLoginStatusService {
 
   String? _accessToken;
   String? _userName;
+  String? _userSurname;
+  String? _userTcNo;
 
   Stream<UserLoginStatus> get statusStream => _controller.stream;
 
   String? get accessToken => _accessToken;
+  String? get fullName => "${_userName ?? ""} ${_userSurname ?? ""}".trim();
   String? get userName => _userName;
+  String? get userSurname => _userSurname;
+  String? get userTcNo => _userTcNo;
 
   Future<void> _loadInitialStatus() async {
     _controller.add(
@@ -44,16 +49,18 @@ class UserLoginStatusService {
   Future<void> login({
     required String accessToken,
     required int userId,
-    required String cityName,
     required String name,
-    required String phone,
+    required String surname,
+    required String tcNo,
   }) async {
     _accessToken = accessToken;
     _userName = name;
+    _userSurname = surname;
+    _userTcNo = tcNo;
     _controller.add(UserLoginStatus.online);
     _inactivityStartSafe();
-  await AnalyticsService().identifyUser(userId.toString());
-  await AnalyticsService().startSession(origin: 'patient_login');
+    await AnalyticsService().identifyUser(userId.toString());
+    await AnalyticsService().startSession(origin: 'patient_login');
     await AnalyticsService().setUserProperties({
       "Name": "Lokman Hekim 3.kat",
       // "Phone": phone,
@@ -67,7 +74,9 @@ class UserLoginStatusService {
     _accessToken = accessToken;
   }
 
-  Future<void> logout({SessionEndReason reason = SessionEndReason.manual}) async {
+  Future<void> logout({
+    SessionEndReason reason = SessionEndReason.manual,
+  }) async {
     _accessToken = null;
     _userName = null;
     await AnalyticsService().endSession(reason);
