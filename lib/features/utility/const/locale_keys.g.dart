@@ -79,7 +79,10 @@ abstract class LocaleKeys {
   static const sessionWillCloseIfInactive = 'sessionWillCloseIfInactive';
   static const examinationRegistrationCreated =
       'examinationRegistrationCreated';
+  static const requirePaymentForExaminationRegistration =
+      'requirePaymentForExaminationRegistration';
   static const paymentCompletedSuccessfully = 'paymentCompletedSuccessfully';
+  static const paymentCompletedFailed = 'paymentCompletedFailed';
   static const selectDepartment = 'selectDepartment';
   static const welcomeUser = 'welcomeUser';
   static const examinationDetails = 'examinationDetails';
@@ -121,4 +124,10 @@ abstract class LocaleKeys {
   static const enterYourBirthDate = 'enterYourBirthDate';
   static const pleaseEnterValidBirthDate = 'pleaseEnterValidBirthDate';
   static const filledFieldInfo = 'filledFieldInfo';
+  static const amountPaid = 'amountPaid';
+  static const creditCard = 'creditCard';
+  static const paymentMethod = 'paymentMethod';
+  static const transactionDate = 'transactionDate';
+  static const transactionNumber = 'transactionNumber';
+  static const date = 'date';
 }

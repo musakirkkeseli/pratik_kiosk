@@ -119,7 +119,8 @@ class ConstantString {
   String updatePhoneAtAdmission = LocaleKeys.updatePhoneAtAdmission.locale;
   String yes = LocaleKeys.yes.locale;
   String enterYourBirthDate = LocaleKeys.enterYourBirthDate.locale;
-  String pleaseEnterValidBirthDate = LocaleKeys.pleaseEnterValidBirthDate.locale;
+  String pleaseEnterValidBirthDate =
+      LocaleKeys.pleaseEnterValidBirthDate.locale;
   String clearData = LocaleKeys.clearData.locale;
   String backToTop = LocaleKeys.backToTop.locale;
   String downloadOurApp = LocaleKeys.downloadOurApp.locale;
@@ -128,8 +129,11 @@ class ConstantString {
       LocaleKeys.sessionWillCloseIfInactive.locale;
   String examinationRegistrationCreated =
       LocaleKeys.examinationRegistrationCreated.locale;
+  String requirePaymentForExaminationRegistration =
+      LocaleKeys.requirePaymentForExaminationRegistration.locale;
   String paymentCompletedSuccessfully =
       LocaleKeys.paymentCompletedSuccessfully.locale;
+  String paymentCompletedFailed = LocaleKeys.paymentCompletedFailed.locale;
   String selectDepartment = LocaleKeys.selectDepartment.locale;
   String examinationDetails = LocaleKeys.examinationDetails.locale;
   String username = LocaleKeys.username.locale;
@@ -169,4 +173,10 @@ class ConstantString {
   String continueWithAppointment = LocaleKeys.continueWithAppointment.locale;
   String cancelAndSelectAnotherSection =
       LocaleKeys.cancelAndSelectAnotherSection.locale;
+  String amountPaid = LocaleKeys.amountPaid.locale;
+  String creditCard = LocaleKeys.creditCard.locale;
+  String paymentMethod = LocaleKeys.paymentMethod.locale;
+  String transactionDate = LocaleKeys.transactionDate.locale;
+  String transactionNumber = LocaleKeys.transactionNumber.locale;
+  String date = LocaleKeys.date.locale;
 }

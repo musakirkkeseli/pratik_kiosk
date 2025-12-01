@@ -74,7 +74,9 @@
   "sessionTimeout": "Session Timeout",
   "sessionWillCloseIfInactive": "If you do not continue, your session will be closed.",
   "examinationRegistrationCreated": "Your examination registration has been created",
+  "requirePaymentForExaminationRegistration": "You need to make a payment for your examination registration",
   "paymentCompletedSuccessfully": "Your payment has been completed successfully.",
+  "paymentCompletedFailed": "Your payment has failed.",
   "selectDepartment": "Select Department",
   "welcomeUser": "Welcome, {}",
   "examinationDetails": "Examination Details",
@@ -114,5 +116,11 @@
   "cancelAndSelectAnotherSection": "Cancel and Select Another Section",
   "enterYourBirthDate": "Enter Your Birth Date",
   "pleaseEnterValidBirthDate": "Please enter a valid birth date",
-  "filledFieldInfo":"To change existing information, please apply to patient admission. You can complete missing information."
+  "filledFieldInfo":"To change existing information, please apply to patient admission. You can complete missing information.",
+  "amountPaid": "Amount Paid",
+  "creditCard": "Credit Card",
+  "paymentMethod": "Payment Method",
+  "transactionDate": "Transaction Date",
+  "transactionNumber": "Transaction Number",
+  "date": "Date"
 }

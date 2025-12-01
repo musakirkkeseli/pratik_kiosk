@@ -74,7 +74,9 @@
   "sessionTimeout": "Oturum Zaman Aşımı",
   "sessionWillCloseIfInactive": "İşleminize devam etmezseniz oturumunuz kapanacaktır.",
   "examinationRegistrationCreated": "Muayene Kaydınız Oluşturuldu",
+  "requirePaymentForExaminationRegistration": "Muayene Kaydınız için Ödeme Yapmanız Gerekiyor",
   "paymentCompletedSuccessfully": "Ödeme işleminiz başarıyla tamamlandı.",
+  "paymentCompletedFailed": "Ödeme işleminiz başarısız sonuçlandı.",
   "selectDepartment": "Bölüm Seç",
   "welcomeUser": "Hoşgeldiniz Sayın {}",
   "examinationDetails": "Muayene Detayları",
@@ -114,5 +116,11 @@
   "cancelAndSelectAnotherSection": "İptal et ve başka bölüm seç",
   "enterYourBirthDate": "Doğum Tarihinizi Giriniz",
   "pleaseEnterValidBirthDate": "Lütfen geçerli bir doğum tarihi giriniz",
-  "filledFieldInfo":"Mevcut bilgileri değişmek için Hasta Kabule müracaat ediniz. Eksik Bilgileri tamamlayabilirsiniz."
+  "filledFieldInfo": "Mevcut bilgileri değişmek için Hasta Kabule müracaat ediniz. Eksik Bilgileri tamamlayabilirsiniz.",
+  "amountPaid": "Ödenen Tutar",
+  "creditCard": "Kredi Kartı",
+  "paymentMethod": "Ödeme Yöntemi",
+  "transactionDate": "İşlem Tarihi",
+  "transactionNumber": "İşlem No",
+  "date": "Tarih"
 }

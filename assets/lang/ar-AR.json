@@ -75,7 +75,9 @@
   "sessionTimeout": "انتهت مهلة الجلسة",
   "sessionWillCloseIfInactive": "إذا لم تواصل العملية، فستُغلق جلستك.",
   "examinationRegistrationCreated": "تم إنشاء تسجيل الفحص الخاص بك",
+  "requirePaymentForExaminationRegistration": "تحتاج إلى إجراء دفع لتسجيل الفحص الخاص بك",
   "paymentCompletedSuccessfully": "تم إكمال عملية الدفع بنجاح.",
+  "paymentCompletedFailed": "فشل الدفع الخاص بك.",
   "selectDepartment": "اختر القسم",
   "welcomeUser": "مرحبًا، {}",
   "examinationDetails": "تفاصيل الفحص",
@@ -115,5 +117,11 @@
   "cancelAndSelectAnotherSection": "إلغاء واختيار قسم آخر",
   "enterYourBirthDate": "أدخل تاريخ ميلادك",
   "pleaseEnterValidBirthDate": "يرجى إدخال تاريخ ميلاد صالح",
-  "filledFieldInfo":"لتغيير المعلومات الحالية، يرجى التقدم إلى قسم قبول المرضى. يمكنك إكمال المعلومات الناقصة."
+  "filledFieldInfo": "لتغيير المعلومات الحالية، يرجى التقدم إلى قسم قبول المرضى. يمكنك إكمال المعلومات الناقصة.",
+  "amountPaid": "المبلغ المدفوع",
+  "creditCard": "بطاقة ائتمان",
+  "paymentMethod": "طريقة الدفع",
+  "transactionDate": "تاريخ المعاملة",
+  "transactionNumber": "رقم المعاملة",
+  "date": "التاريخ"
 }
