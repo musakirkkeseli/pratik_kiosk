@@ -9,12 +9,12 @@ class WarningScreen extends StatelessWidget {
   final Function()? onTap;
 
   const WarningScreen({
-    Key? key,
+    super.key,
     required this.title,
     required this.desc,
     required this.buttonText,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
