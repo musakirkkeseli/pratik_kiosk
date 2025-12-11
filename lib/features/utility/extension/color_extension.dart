@@ -9,7 +9,7 @@ extension AppColors on BuildContext {
   // Ana renkler
   Color get primaryColor => Theme.of(this).primaryColor;
   Color get secondaryColor => colorScheme.secondary;
-  Color get backgroundColor => colorScheme.background;
+  Color get backgroundColor => colorScheme.surface;
   Color get surfaceColor => colorScheme.surface;
   
   // Durum renkleri
