@@ -25,6 +25,7 @@ class InactivityController extends ChangeNotifier {
   bool _dialogShown = false;
   InactivityPhase phase = InactivityPhase.idle;
   bool _disposed = false;
+  bool _paused = false;
 
   void _notifyLater() {
     if (_disposed) return;
@@ -55,9 +56,32 @@ class InactivityController extends ChangeNotifier {
       'InactivityController.bump called ${customTimeout ?? totalTimeout}',
     );
     if (phase == InactivityPhase.cleaning) return;
+    if (_paused) return; // Pause durumdayken bump işlemi yapma
     _deadline = DateTime.now().add(customTimeout ?? totalTimeout);
     phase = InactivityPhase.idle;
     _hideWarningIfAny();
+    _notifyLater();
+  }
+
+  /// Timer'ı duraklat (POS ödeme ekranı gibi durumlarda)
+  void pause() {
+    MyLog().d('InactivityController paused');
+    _paused = true;
+    _timer?.cancel();
+    _timer = null;
+    _hideWarningIfAny();
+    phase = InactivityPhase.idle;
+    _notifyLater();
+  }
+
+  /// Timer'ı devam ettir ve süreyi sıfırla
+  void resume() {
+    MyLog().d('InactivityController resumed');
+    _paused = false;
+    _deadline = DateTime.now().add(totalTimeout);
+    phase = InactivityPhase.idle;
+    _hideWarningIfAny();
+    _startTicker();
     _notifyLater();
   }
 
@@ -67,6 +91,7 @@ class InactivityController extends ChangeNotifier {
   }
 
   Future<void> _tick() async {
+    if (_paused) return; // Pause durumdayken tick işlemi yapma
     final now = DateTime.now();
     final remaining = _deadline.difference(now);
 
