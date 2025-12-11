@@ -18,13 +18,30 @@ class PaymentView extends StatefulWidget {
 
 class _PaymentViewState extends State<PaymentView> {
   String totalAmount = "";
+  InactivityController? _inactivityController;
+
   @override
   void initState() {
+    super.initState();
     totalAmount =
         widget.patientPriceDetailModel.patientContent?.totalPrice ?? "0";
-    final inactivity = context.read<InactivityController>();
-    inactivity.bump(customTimeout: Duration(seconds: 50));
-    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // InactivityController referansını güvenli bir şekilde kaydet
+    if (_inactivityController == null) {
+      _inactivityController = context.read<InactivityController>();
+      _inactivityController?.pause(); // POS ödeme sırasında timer'ı durdur
+    }
+  }
+
+  @override
+  void dispose() {
+    // Kaydedilmiş referansı kullan, context'e tekrar erişme
+    _inactivityController?.resume(); // Ekran kapandığında timer'ı yeniden başlat
+    super.dispose();
   }
 
   @override
