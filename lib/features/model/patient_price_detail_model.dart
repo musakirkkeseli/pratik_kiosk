@@ -1,8 +1,13 @@
 class PatientTransactionDetailsResponseModel {
   List<PaymentContent>? paymentContent;
   PatientContent? patientContent;
+  PosContent? posContent;
 
-  PatientTransactionDetailsResponseModel({this.paymentContent, this.patientContent});
+  PatientTransactionDetailsResponseModel({
+    this.paymentContent,
+    this.patientContent,
+    this.posContent,
+  });
 
   PatientTransactionDetailsResponseModel.fromJson(Map<String, dynamic> json) {
     if (json['paymentContent'] != null) {
@@ -23,6 +28,9 @@ class PatientTransactionDetailsResponseModel {
     }
     if (patientContent != null) {
       data['patientContent'] = patientContent!.toJson();
+    }
+    if (posContent != null) {
+      data['posContent'] = posContent!.toJson();
     }
     return data;
   }
@@ -76,6 +84,48 @@ class PatientContent {
     data['patientProcessId'] = patientProcessId;
     data['patientId'] = patientId;
     data['totalPrice'] = totalPrice;
+    return data;
+  }
+}
+
+class PosContent {
+  String? patientTransactionId;
+  String? dataId;
+  String? orderNo;
+  String? statusId;
+  String? saleNumber;
+  String? inquiryLink;
+  double? amount;
+
+  PosContent({
+    this.patientTransactionId,
+    this.dataId,
+    this.orderNo,
+    this.statusId,
+    this.saleNumber,
+    this.inquiryLink,
+    this.amount,
+  });
+
+  PosContent.fromJson(Map<String, dynamic> json) {
+    patientTransactionId = json['patientTransactionId'];
+    dataId = json['dataId'];
+    orderNo = json['orderNo'];
+    statusId = json['statusId'];
+    saleNumber = json['saleNumber'];
+    inquiryLink = json['inquiryLink'];
+    amount = json['amount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['patientTransactionId'] = patientTransactionId;
+    data['dataId'] = dataId;
+    data['orderNo'] = orderNo;
+    data['statusId'] = statusId;
+    data['saleNumber'] = saleNumber;
+    data['inquiryLink'] = inquiryLink;
+    data['amount'] = amount;
     return data;
   }
 }
