@@ -13,6 +13,7 @@ class DeviceInfoService {
   String? _deviceId;
   String? _deviceModel;
   String? _osVersion;
+  final fakeDeviceId = 'BP1A.250505.005';
 
   Future<String> getDeviceId() async {
     if (_deviceId != null) {
@@ -26,12 +27,11 @@ class DeviceInfoService {
         _deviceId = androidInfo.id;
         _deviceModel = androidInfo.model;
         _osVersion = androidInfo.version.release;
-
         _log.i('Android Device ID: $_deviceId');
         _log.i('Device Model: $_deviceModel');
         _log.i('OS Version: $_osVersion');
       } else {
-        _deviceId = 'lokmanEtlik';
+        _deviceId = fakeDeviceId;
       }
     } catch (e) {
       _log.e('Error getting device ID: $e');
