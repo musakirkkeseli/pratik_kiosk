@@ -51,7 +51,7 @@ Future<void> main() async {
           ),
           ChangeNotifierProvider(
             create: (_) => InactivityController(
-              totalTimeout: const Duration(seconds: 3000),
+              totalTimeout: const Duration(seconds: 30),
               warningBefore: const Duration(seconds: 15),
             ),
           ),
