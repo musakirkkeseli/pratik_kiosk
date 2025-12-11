@@ -26,7 +26,7 @@ class PatientTransactionRevenueResponseModel {
 
 class Revenues {
   String? paymentName;
-  int? price;
+  String? price;
   bool? isContributionFee;
   Result? result;
 

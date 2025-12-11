@@ -224,6 +224,7 @@ class PatientRegistrationProceduresCubit
           res.data is PatientTransactionCreateResponseModel &&
           res.data!.patientId is String) {
         model.patientId = res.data!.patientId ?? "";
+        model.patientTransactionId = res.data!.patientTransactionId.toString();
         fetchPatientPrice(model);
         // emit(
         //   state.copyWith(status: EnumGeneralStateStatus.success, model: model),
@@ -357,17 +358,27 @@ class PatientRegistrationProceduresCubit
       final datePart =
           '${now.hour}'.padLeft(2, '0') + '${now.minute}'.padLeft(2, '0');
       final orderNo = "$datePart${updatedModel.patientId ?? '0000000'}";
-      final result = await PosService.instance.completeSaleWithPolling(
-        orderNo: orderNo,
-        products: products,
-        customerInfo: customerInfo,
-        onPolling: (int attempt, PosSaleStatus status) {
-          MyLog.debug('Polling Attempt: $attempt, Status: $status');
-        },
-      );
+      final PosGetSaleResultResponse result = await PosService.instance
+          .completeSaleWithPolling(
+            orderNo: orderNo,
+            products: products,
+            customerInfo: customerInfo,
+            onPolling: (int attempt, PosSaleStatus status) {
+              MyLog.debug('Polling Attempt: $attempt, Status: $status');
+            },
+          );
 
       if (result.success && result.saleStatus == PosSaleStatus.success) {
         SnackbarService().showSnackBar(ConstantString().paymentSuccess);
+        patientPriceDetailModel.posContent = PosContent(
+          patientTransactionId: updatedModel.patientTransactionId,
+          dataId: result.id.toString(),
+          orderNo: result.orderNo ?? '',
+          statusId: result.statusId.toString(),
+          saleNumber: result.saleNumber ?? '',
+          inquiryLink: result.inquiryLink ?? '',
+          amount: result.amount ?? 0.0,
+        );
         patientTransactionRevenue(patientPriceDetailModel);
       } else {
         SnackbarService().showSnackBar(ConstantString().paymentFailure);
@@ -405,6 +416,7 @@ class PatientRegistrationProceduresCubit
   Future<void> patientTransactionRevenue(
     PatientTransactionDetailsResponseModel patientPriceDetailModel,
   ) async {
+    MyLog("patientTransactionRevenue").d(patientPriceDetailModel.toJson());
     try {
       final res = await service.postPatientTransactionRevenue(
         patientPriceDetailModel,
@@ -438,7 +450,7 @@ class PatientRegistrationProceduresCubit
         );
       }
     } on NetworkException catch (e) {
-      _log.d("NetworkException $e");
+      _log.d("NetworkException ${e.message}");
       AnalyticsService().trackPaymentFailed(
         amount: double.tryParse(
           patientPriceDetailModel.patientContent?.totalPrice ?? '0',
@@ -447,9 +459,10 @@ class PatientRegistrationProceduresCubit
       );
       safeEmit(
         state.copyWith(
-          paymentResultType: EnumPaymentResultType.success,
+          paymentResultType: EnumPaymentResultType.failure,
           totalAmount:
               patientPriceDetailModel.patientContent?.totalPrice ?? "0",
+          message: e.message,
         ),
       );
     } catch (e) {
@@ -461,9 +474,10 @@ class PatientRegistrationProceduresCubit
       );
       safeEmit(
         state.copyWith(
-          paymentResultType: EnumPaymentResultType.success,
+          paymentResultType: EnumPaymentResultType.failure,
           totalAmount:
               patientPriceDetailModel.patientContent?.totalPrice ?? "0",
+          message: ConstantString().errorOccurred,
         ),
       );
     }

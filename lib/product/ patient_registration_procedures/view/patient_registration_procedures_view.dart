@@ -92,6 +92,9 @@ class PatientRegistrationProceduresView extends StatelessWidget {
       return PaymentResultWidget(
         paymentResultType: state.paymentResultType!,
         totalAmount: state.totalAmount,
+        doctorName: state.model.doctorName,
+        sectionName: state.model.branchName,
+        transactionId: state.model.patientTransactionId,
       );
     }
     return ProceduresWidget(

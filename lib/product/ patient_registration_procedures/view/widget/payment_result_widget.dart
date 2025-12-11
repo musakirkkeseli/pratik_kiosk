@@ -13,11 +13,17 @@ import '../../../../features/utility/extension/color_extension.dart';
 class PaymentResultWidget extends StatelessWidget {
   final EnumPaymentResultType paymentResultType;
   final String? totalAmount;
+  final String? transactionId;
+  final String? doctorName;
+  final String? sectionName;
 
   const PaymentResultWidget({
     super.key,
     required this.paymentResultType,
-    this.totalAmount,
+    required this.totalAmount,
+    required this.transactionId,
+    required this.doctorName,
+    required this.sectionName,
   });
 
   @override
@@ -37,7 +43,7 @@ class PaymentResultWidget extends StatelessWidget {
         'Eylül',
         'Ekim',
         'Kasım',
-        'Aralık'
+        'Aralık',
       ];
       return months[m - 1];
     }
@@ -46,7 +52,8 @@ class PaymentResultWidget extends StatelessWidget {
     String _twoDigits(int v) => v.toString().padLeft(2, '0');
     final nowTime = '${_twoDigits(now.hour)}:${_twoDigits(now.minute)}';
     final plus20 = now.add(const Duration(minutes: 20));
-    final plus20Time = '${_twoDigits(plus20.hour)}:${_twoDigits(plus20.minute)}';
+    final plus20Time =
+        '${_twoDigits(plus20.hour)}:${_twoDigits(plus20.minute)}';
 
     return Scaffold(
       body: Center(
@@ -119,8 +126,9 @@ class PaymentResultWidget extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          UserLoginStatusService()
-                              .logout(reason: SessionEndReason.completed);
+                          UserLoginStatusService().logout(
+                            reason: SessionEndReason.completed,
+                          );
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -145,21 +153,13 @@ class PaymentResultWidget extends StatelessWidget {
               ),
               Icon(
                 Icons.check_circle,
-                color: paymentResultType == EnumPaymentResultType.success
-                    ? ConstColor.green
-                    : ConstColor.red,
+                color: paymentResultType.color,
                 size: 100,
               ),
               Text(paymentResultType.title, style: context.successText),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              Text(
-                ConstantString().paymentCompletedSuccessfully,
-                style: context.bodyPrimary,
-              ),
-              Text(
-                ConstantString().examinationRegistrationCreated,
-                style: context.bodyPrimary,
-              ),
+              Text(paymentResultType.description, style: context.bodyPrimary),
+              Text(paymentResultType.message, style: context.bodyPrimary),
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(20),
@@ -171,7 +171,7 @@ class PaymentResultWidget extends StatelessWidget {
                 child: Column(
                   children: [
                     _PaymentInfoRow(
-                      label: "Ödenen Tutar",
+                      label: ConstantString().amountPaid,
                       value: "${totalAmount ?? '0'} ₺",
                       valueColor: context.primaryColor,
                       valueSize: 32,
@@ -179,18 +179,18 @@ class PaymentResultWidget extends StatelessWidget {
                     ),
                     Divider(color: ConstColor.textfieldColor),
                     _PaymentInfoRow(
-                      label: "Ödeme Yöntemi",
-                      value: "Kredi Kartı",
+                      label: ConstantString().paymentMethod,
+                      value: ConstantString().creditCard,
                     ),
                     Divider(color: ConstColor.textfieldColor),
                     _PaymentInfoRow(
-                      label: "İşlem Tarihi",
+                      label: ConstantString().transactionDate,
                       value: "$todayDate $nowTime",
                     ),
                     Divider(color: ConstColor.textfieldColor),
                     _PaymentInfoRow(
-                      label: "İşlem No",
-                      value: "TRX-2023-845621",
+                      label: ConstantString().transactionNumber,
+                      value: transactionId ?? "",
                     ),
                   ],
                 ),
@@ -225,14 +225,14 @@ class PaymentResultWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Bölüm",
+                                ConstantString().section,
                                 style: context.caption.copyWith(
                                   color: ConstColor.white.withOpacity(0.7),
                                 ),
                               ),
                               SizedBox(height: 8),
                               Text(
-                                "Beyin ve Sinir Cerrahisi",
+                                sectionName ?? "",
                                 style: context.cardTitle.copyWith(
                                   fontSize: 18,
                                   color: ConstColor.white,
@@ -240,7 +240,7 @@ class PaymentResultWidget extends StatelessWidget {
                               ),
                               SizedBox(height: 20),
                               Text(
-                                "Tarih",
+                                ConstantString().date,
                                 style: context.caption.copyWith(
                                   color: ConstColor.white.withOpacity(0.7),
                                 ),
@@ -262,14 +262,14 @@ class PaymentResultWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Doktor",
+                                ConstantString().doctor,
                                 style: context.caption.copyWith(
                                   color: ConstColor.white.withOpacity(0.7),
                                 ),
                               ),
                               SizedBox(height: 8),
                               Text(
-                                "Dr. Adil Yılmaz",
+                                doctorName ?? "",
                                 style: context.cardTitle.copyWith(
                                   fontSize: 18,
                                   color: ConstColor.white,
@@ -277,7 +277,7 @@ class PaymentResultWidget extends StatelessWidget {
                               ),
                               SizedBox(height: 20),
                               Text(
-                                "Saat",
+                                ConstantString().hour,
                                 style: context.caption.copyWith(
                                   color: ConstColor.white.withOpacity(0.7),
                                 ),

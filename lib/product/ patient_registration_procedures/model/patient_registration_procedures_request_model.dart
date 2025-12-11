@@ -14,6 +14,7 @@ class PatientRegistrationProceduresModel {
   String? insuredTypeId;
   String? insuredTypeName;
   String? patientId;
+  String? patientTransactionId;
   PatientTransactionDetailsResponseModel? patientPriceDetailModel;
   List<PaymentContent>? paymentContentList;
   PatientContent? patientContent;
@@ -31,6 +32,7 @@ class PatientRegistrationProceduresModel {
     this.insuredTypeId,
     this.insuredTypeName,
     this.patientId,
+    this.patientTransactionId,
     this.patientPriceDetailModel,
     this.paymentContentList,
     this.patientContent,

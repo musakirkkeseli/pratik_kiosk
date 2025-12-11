@@ -4,6 +4,7 @@ class PatientTransactionCreateResponseModel {
   String? serviceId;
   String? errorId;
   String? errorMessage;
+  int? patientTransactionId;
 
   PatientTransactionCreateResponseModel({
     this.patientId,
@@ -11,6 +12,7 @@ class PatientTransactionCreateResponseModel {
     this.serviceId,
     this.errorId,
     this.errorMessage,
+    this.patientTransactionId,
   });
 
   PatientTransactionCreateResponseModel.fromJson(Map<String, dynamic> json) {
@@ -19,6 +21,7 @@ class PatientTransactionCreateResponseModel {
     serviceId = json['ServiceId'];
     errorId = json['ErrorId'];
     errorMessage = json['ErrorMessage'];
+    patientTransactionId = json['patientTransactionId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +31,7 @@ class PatientTransactionCreateResponseModel {
     data['ServiceId'] = serviceId;
     data['ErrorId'] = errorId;
     data['ErrorMessage'] = errorMessage;
+    data['patientTransactionId'] = patientTransactionId;
     return data;
   }
 }
