@@ -11,7 +11,9 @@ import '../../../../../features/utility/enum/enum_textformfield.dart';
 import '../../cubit/hospital_login_cubit.dart';
 
 class HospitalLoginWidget extends StatefulWidget {
-  const HospitalLoginWidget({super.key});
+  final String deviceId;
+
+  const HospitalLoginWidget({super.key, required this.deviceId});
 
   @override
   State<HospitalLoginWidget> createState() => _HospitalLoginWidgetState();
@@ -21,10 +23,10 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController userNameController = kReleaseMode
       ? TextEditingController()
-      : TextEditingController(text: "lokmanEtlik");
+      : TextEditingController(text: "buhara");
   final TextEditingController passwordController = kReleaseMode
       ? TextEditingController()
-      : TextEditingController(text: "etlikk");
+      : TextEditingController(text: "buhara");
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,6 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
               ),
             ),
           ),
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -116,6 +117,11 @@ class _HospitalLoginWidgetState extends State<HospitalLoginWidget> {
                 ),
               ),
             ],
+          ),
+          Positioned(
+            bottom: 40,
+            width: MediaQuery.of(context).size.width,
+            child: Center(child: Text(widget.deviceId)),
           ),
         ],
       ),

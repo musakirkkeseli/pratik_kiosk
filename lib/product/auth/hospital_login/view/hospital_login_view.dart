@@ -39,11 +39,7 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
   @override
   Widget build(BuildContext context) {
     if (_deviceId == null) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return BlocProvider<HospitalLoginCubit>(
@@ -81,7 +77,7 @@ class _HospitalLoginViewState extends State<HospitalLoginView> {
   Widget _body(BuildContext context, HospitalLoginState state) {
     switch (state.loginStatus) {
       case EnumHospitalLoginStatus.login:
-        return HospitalLoginWidget();
+        return HospitalLoginWidget(deviceId: _deviceId ?? "");
       case EnumHospitalLoginStatus.config:
         return ConfigWidget();
     }
