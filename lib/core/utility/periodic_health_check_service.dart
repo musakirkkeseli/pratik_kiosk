@@ -58,7 +58,7 @@ class PeriodicHealthCheckService {
       _log.i('Sending health check to $url');
       final response = await _dio.post(
         url,
-        data: {"kiosk_id": "lokmanEtlik", "is_login": true},
+        data: {"kiosk_id": _deviceId, "is_login": true},
         options: Options(
           sendTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 10),
