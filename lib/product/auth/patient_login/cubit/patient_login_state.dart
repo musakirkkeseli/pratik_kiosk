@@ -15,6 +15,7 @@ class PatientLoginState {
   final String tcNo;
   final String birthDate;
   final String? encryptedUserData;
+  final List<SliderModel> sliders;
 
   const PatientLoginState({
     this.counter,
@@ -27,6 +28,7 @@ class PatientLoginState {
     this.tcNo = "41467192600",
     this.birthDate = "",
     this.encryptedUserData,
+    this.sliders = const [],
   });
 
   PatientLoginState copyWith({
@@ -40,6 +42,7 @@ class PatientLoginState {
     String? tcNo,
     String? birthDate,
     String? encryptedUserData,
+    List<SliderModel>? sliders,
   }) {
     return PatientLoginState(
       message: message ?? this.message,
@@ -52,6 +55,7 @@ class PatientLoginState {
       tcNo: tcNo ?? this.tcNo,
       birthDate: birthDate ?? this.birthDate,
       encryptedUserData: encryptedUserData ?? this.encryptedUserData,
+      sliders: sliders ?? this.sliders,
     );
   }
 }

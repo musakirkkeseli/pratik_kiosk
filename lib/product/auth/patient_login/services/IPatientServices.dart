@@ -1,10 +1,12 @@
 import '../../../../core/utility/http_service.dart';
+import '../../../../features/model/api_list_response_model.dart';
 import '../../../../features/model/api_response_model.dart';
 import '../model/patient_login_request_model.dart';
 import '../model/patient_register_request_model.dart';
 import '../model/patient_response_model.dart';
 import '../model/patient_send_login_otp_response_model.dart';
 import '../model/patient_validate_identity_response_model.dart';
+import '../model/slider_model.dart';
 
 abstract class IPatientServices {
   final IHttpService http;
@@ -16,8 +18,11 @@ abstract class IPatientServices {
   final String validateIdentityPath =
       IPatientServicesPath.validateIdentity.rawValue;
   final String sendOtpLoginPath = IPatientServicesPath.sendOtpLogin.rawValue;
+  final String slidersPath = IPatientServicesPath.sliders.rawValue;
 
-  Future<ApiResponse<PatientResponseModel>> postUserLogin(PatientLoginRequestModel patientLoginRequestModel);
+  Future<ApiResponse<PatientResponseModel>> postUserLogin(
+    PatientLoginRequestModel patientLoginRequestModel,
+  );
   Future<ApiResponse<PatientResponseModel>> postUserRegister(
     PatientRegisterRequestModel patientRegisterRequestModel,
   );
@@ -26,6 +31,7 @@ abstract class IPatientServices {
   Future<ApiResponse<PatientSendLoginOtpResponseModel>> postSendLoginOtp(
     String encryptedUserData,
   );
+  Future<ApiListResponse<SliderModel>> getSliders();
 }
 
 enum IPatientServicesPath {
@@ -33,19 +39,23 @@ enum IPatientServicesPath {
   userRegister,
   validateIdentity,
   sendOtpLogin,
+  sliders,
 }
 
 extension IHospitalAndUserLoginServicesExtension on IPatientServicesPath {
   String get rawValue {
+    final root = "/user-auth";
     switch (this) {
       case IPatientServicesPath.userLogin:
-        return '/user-auth/loginVTwo';
+        return '$root/loginVTwo';
       case IPatientServicesPath.userRegister:
-        return '/user-auth/register';
+        return '$root/register';
       case IPatientServicesPath.validateIdentity:
-        return '/user-auth/validate-identity';
+        return '$root/validate-identity';
       case IPatientServicesPath.sendOtpLogin:
-        return '/user-auth/send-login-otp';
+        return '$root/send-login-otp';
+      case IPatientServicesPath.sliders:
+        return '/kiosk-device/sliders';
     }
   }
 }

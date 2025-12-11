@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/features/utility/extension/color_extension.dart';
 import 'package:provider/provider.dart';
 
@@ -7,11 +8,26 @@ import '../../../../../core/utility/dynamic_theme_provider.dart';
 import '../../../../../core/widget/custom_image.dart';
 import '../../../../../features/utility/const/constant_color.dart';
 import '../../../../../features/utility/const/constant_string.dart';
+import '../../cubit/patient_login_cubit.dart';
 import 'bouncing_balls_page.dart';
 import 'language_button_widget2.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Slider'ları yükle
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PatientLoginCubit>().fetchSliders();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +51,37 @@ class WelcomeScreen extends StatelessWidget {
   }
 
   _slider(BuildContext context) {
-    return Container(
-      height: 200,
-      width: double.infinity,
-      color: ConstColor.black,
-      child: PageView(
-        children: [
-          CustomImage.image(
-            "https://kiosk.prtk.gen.tr/assets/images/sliders/kioskSlider.png",
-            CustomImageType.standart,
+    return BlocBuilder<PatientLoginCubit, PatientLoginState>(
+      builder: (context, state) {
+        final sliders = state.sliders;
+        
+        // Slider yoksa varsayılan görseli göster
+        if (sliders.isEmpty) {
+          return Container(
+            height: 200,
+            width: double.infinity,
+            color: ConstColor.black,
+            child: CustomImage.image(
+              "https://kiosk.prtk.gen.tr/assets/images/sliders/kioskSlider.png",
+              CustomImageType.standart,
+            ),
+          );
+        }
+
+        // Backend'den gelen slider'ları göster
+        return Container(
+          height: 200,
+          width: double.infinity,
+          child: PageView(
+            children: sliders.map((slider) {
+              return CustomImage.image(
+                slider.path ?? "",
+                CustomImageType.standart,
+              );
+            }).toList(),
           ),
-          CustomImage.image(
-            "https://www.lokmanhekim.com.tr/assets/uploads/catalog/slider/654_Slider-1_1920x1280px-1.webp",
-            CustomImageType.standart,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -61,7 +92,6 @@ class WelcomeScreen extends StatelessWidget {
     return Container(
       height: 200,
       width: double.infinity,
-      color: Colors.black,
       alignment: Alignment.center,
       padding: EdgeInsets.all(30),
       child: Row(

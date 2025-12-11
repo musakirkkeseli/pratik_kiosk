@@ -156,6 +156,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
             child: Column(
               spacing: 10,
               children: [
+                SizedBox(height: 30),
                 CustomAppBar(),
                 Consumer<DynamicThemeProvider>(
                   builder: (context, themeProvider, child) {
@@ -178,37 +179,35 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: _body(context, state),
+                    child: _body(cubitContext, state),
                   ),
                 ),
                 const Divider(height: 20),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 150.0),
+                  padding: const EdgeInsets.only(bottom: 70.0),
                   child: Column(
                     spacing: 10,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       continueButton(cubitContext, state),
-                      state.tcNo.isNotEmpty
-                          ? OutlinedButton.icon(
-                              style: OutlinedButton.styleFrom(
-                                iconColor: ConstColor.red,
-                                foregroundColor: ConstColor.red,
-                                side: const BorderSide(
-                                  color: ConstColor.red,
-                                  width: 1.5,
-                                ),
-                              ),
-                              onPressed: () {
-                                _clean(cubitContext);
-                              },
-                              icon: Iconify(
-                                IconParkSolid.clear_format,
-                                color: ConstColor.red,
-                              ),
-                              label: Text(ConstantString().backToTop),
-                            )
-                          : SizedBox(height: 48),
+                      OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          iconColor: ConstColor.red,
+                          foregroundColor: ConstColor.red,
+                          side: const BorderSide(
+                            color: ConstColor.red,
+                            width: 1.5,
+                          ),
+                        ),
+                        onPressed: () {
+                          _clean(cubitContext);
+                        },
+                        icon: Iconify(
+                          IconParkSolid.clear_format,
+                          color: ConstColor.red,
+                        ),
+                        label: Text(ConstantString().backToTop),
+                      ),
                       VirtualKeypad(pageType: state.pageType),
                     ],
                   ),
@@ -323,34 +322,31 @@ class _PatientLoginViewState extends State<PatientLoginView> {
                     },
                   ),
                 ),
-                if (state.birthDate.isNotEmpty) ...[
-                  const SizedBox(width: 10),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom:
-                          MediaQuery.of(context).size.height * 0.11 / 2 - 18,
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        _validateBD.value = true;
-                        cubitContext.read<PatientLoginCubit>().clearBirthDate();
-                      },
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: ConstColor.red.withOpacity(0.1),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.close,
-                          size: 20,
-                          color: ConstColor.red,
-                        ),
+                if (state.birthDate.isNotEmpty) const SizedBox(width: 10),
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height * 0.11 / 2 - 18,
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      _validateBD.value = true;
+                      cubitContext.read<PatientLoginCubit>().clearBirthDate();
+                    },
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: ConstColor.red.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.close,
+                        size: 20,
+                        color: ConstColor.red,
                       ),
                     ),
                   ),
-                ],
+                ),
               ],
             ),
           ],
@@ -363,7 +359,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
               child: Text(ConstantString().pleaseEnterSmsCode),
             ),
             CircularCountdown(
-              total: Duration(seconds: 30),
+              total: Duration(seconds: 150),
               size: 100,
               strokeWidth: 8,
               color: Theme.of(context).colorScheme.primary,

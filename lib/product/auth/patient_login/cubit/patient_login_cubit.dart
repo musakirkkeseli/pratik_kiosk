@@ -12,6 +12,7 @@ import '../model/patient_login_request_model.dart';
 import '../model/patient_register_request_model.dart';
 import '../model/patient_response_model.dart';
 import '../model/patient_validate_identity_response_model.dart';
+import '../model/slider_model.dart';
 import '../services/IPatientServices.dart';
 
 part 'patient_login_state.dart';
@@ -33,6 +34,22 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
   void gotoAuth() {
     safeEmit(state.copyWith(screenType: ScreenType.auth));
     onChanged("force");
+  }
+
+  Future<void> fetchSliders() async {
+    try {
+      final resp = await service.getSliders();
+      if (resp.success == true && resp.data != null && resp.data!.isNotEmpty) {
+        _log.d('Sliders loaded: ${resp.data!.length}');
+        safeEmit(state.copyWith(sliders: resp.data));
+      } else {
+        _log.e('Failed to load sliders: ${resp.message}');
+      }
+    } on NetworkException catch (e) {
+      _log.e('NetworkException while fetching sliders: ${e.message}');
+    } catch (e) {
+      _log.e('Error fetching sliders: $e');
+    }
   }
 
   Future<void> userLogin() async {
@@ -462,7 +479,7 @@ class PatientLoginCubit extends BaseCubit<PatientLoginState> {
         safeEmit(state.copyWith(counter: 30));
         break;
       case PageType.verifySms:
-        safeEmit(state.copyWith(counter: 60));
+        safeEmit(state.copyWith(counter: 150));
         break;
     }
     _timer = Timer.periodic(const Duration(seconds: 1), (t) {
