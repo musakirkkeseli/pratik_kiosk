@@ -123,5 +123,17 @@
   "paymentMethod": "طريقة الدفع",
   "transactionDate": "تاريخ المعاملة",
   "transactionNumber": "رقم المعاملة",
-  "date": "التاريخ"
+  "date": "التاريخ",
+  "sectionName": "اسم القسم",
+  "doctorName": "اسم الطبيب",
+  "time": "الوقت",
+  "confirmation": "التأكيد",
+  "confirm": "تأكيد",
+  "cancel": "إلغاء",
+  "areYouSureToBookAppointment": "هل أنت متأكد أنك تريد حجز الموعد؟",
+  "noAvailableAppointmentsForDoctor": "لم يتم العثور على مواعيد متاحة لهذا الطبيب",
+  "success": "نجاح",
+  "ok": "موافق",
+  "appointmentSuccessfullyBooked": "تم حجز موعدك بنجاح!",
+  "error": "خطأ"
 }

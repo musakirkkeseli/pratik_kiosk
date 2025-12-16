@@ -130,4 +130,16 @@ abstract class LocaleKeys {
   static const transactionDate = 'transactionDate';
   static const transactionNumber = 'transactionNumber';
   static const date = 'date';
+  static const sectionName = 'sectionName';
+  static const doctorName = 'doctorName';
+  static const time = 'time';
+  static const confirmation = 'confirmation';
+  static const confirm = 'confirm';
+  static const cancel = 'cancel';
+  static const areYouSureToBookAppointment = 'areYouSureToBookAppointment';
+  static const noAvailableAppointmentsForDoctor = 'noAvailableAppointmentsForDoctor';
+  static const success = 'success';
+  static const ok = 'ok';
+  static const appointmentSuccessfullyBooked = 'appointmentSuccessfullyBooked';
+  static const error = 'error';
 }

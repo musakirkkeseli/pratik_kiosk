@@ -179,4 +179,19 @@ class ConstantString {
   String transactionDate = LocaleKeys.transactionDate.locale;
   String transactionNumber = LocaleKeys.transactionNumber.locale;
   String date = LocaleKeys.date.locale;
+  String sectionName = LocaleKeys.sectionName.locale;
+  String doctorName = LocaleKeys.doctorName.locale;
+  String time = LocaleKeys.time.locale;
+  String confirmation = LocaleKeys.confirmation.locale;
+  String confirm = LocaleKeys.confirm.locale;
+  String cancel = LocaleKeys.cancel.locale;
+  String areYouSureToBookAppointment =
+      LocaleKeys.areYouSureToBookAppointment.locale;
+  String noAvailableAppointmentsForDoctor =
+      LocaleKeys.noAvailableAppointmentsForDoctor.locale;
+  String success = LocaleKeys.success.locale;
+  String ok = LocaleKeys.ok.locale;
+  String appointmentBookedMessage =
+      LocaleKeys.appointmentSuccessfullyBooked.locale;
+      String error = LocaleKeys.error.locale;
 }

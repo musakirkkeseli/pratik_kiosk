@@ -122,5 +122,19 @@
   "paymentMethod": "Ödeme Yöntemi",
   "transactionDate": "İşlem Tarihi",
   "transactionNumber": "İşlem No",
-  "date": "Tarih"
+  "date": "Tarih",
+  "sectionName": "Bölüm Adı",
+  "doctorName": "Doktor Adı",
+  "time": "Saat",
+  "confirmation": "Onay",
+  "confirm": "Onayla",
+  "cancel": "İptal",
+  "areYouSureToBookAppointment": "Randevu almak istediğinize emin misiniz?",
+  "noAvailableAppointmentsForDoctor": "Bu doktor için uygun randevu bulunamadı",
+  "success": "Başarılı",
+  "ok": "Tamam",
+  "appointmentSuccessfullyBooked": "Randevunuz başarıyla alındı!",
+  "error": "Hata"
+
+
 }

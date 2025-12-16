@@ -4,6 +4,7 @@ import 'package:kiosk/core/utility/logger_service.dart';
 
 import '../../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
 import '../../../../features/widget/item_button.dart';
+import '../../../make_appointment/view/appointment_slot_view.dart';
 import '../../model/doctor_model.dart';
 
 class DoctorListTileWidget extends StatelessWidget {
@@ -29,6 +30,17 @@ class DoctorListTileWidget extends StatelessWidget {
             if (isAppointment) {
               MyLog.debug(
                 "Doctor Selected for Appointment: ${doctor.doctorName}",
+              );
+
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AppointmentSlotView(
+                    doctorId: int.tryParse(doctor.doctorId ?? '0') ?? 0,
+                    departmentId: int.tryParse(doctor.departmentId ?? '0') ?? 0,
+                    doctorName: doctor.doctorName ?? '',
+                    departmentName: doctor.departmentName ?? '',
+                  ),
+                ),
               );
             } else {
               context.read<PatientRegistrationProceduresCubit>().selectDoctor(

@@ -122,5 +122,18 @@
   "paymentMethod": "Payment Method",
   "transactionDate": "Transaction Date",
   "transactionNumber": "Transaction Number",
-  "date": "Date"
+  "date": "Date",
+  "sectionName": "Section Name",
+  "doctorName": "Doctor Name",
+  "time": "Time",
+  "confirmation": "Confirmation",
+  "confirm": "Confirm",
+  "cancel": "Cancel",
+  "areYouSureToBookAppointment": "Are you sure you want to book the appointment?",
+  "noAvailableAppointmentsForDoctor": "No available appointments found for this doctor",
+  "success": "Success",
+  "ok": "OK",
+  "appointmentSuccessfullyBooked": "Your appointment has been successfully booked!",
+  "error": "Error"
+
 }
