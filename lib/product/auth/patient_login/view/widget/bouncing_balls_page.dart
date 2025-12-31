@@ -1,11 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kiosk/features/utility/const/constant_color.dart';
-import 'package:kiosk/features/utility/const/constant_string.dart';
 
-import '../../cubit/patient_login_cubit.dart';
 import 'package:kiosk/features/utility/enum/enum_welcome_feature.dart';
+
+import '../../../../../features/utility/const/constant_color.dart';
+import '../../../../../features/utility/const/constant_string.dart';
 
 class BouncingBallsPage extends StatefulWidget {
   final Color color;
@@ -32,13 +31,12 @@ class _BouncingBallsPageState extends State<BouncingBallsPage>
     super.initState();
     // features/balls will be placed statically based on their enum-defined positions
     // but we keep a controller running to animate the dashed-outline rotation.
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 8),
-    )..addListener(() {
-        // repaint to update dashed outline phase
-        setState(() {});
-      });
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 8))
+          ..addListener(() {
+            // repaint to update dashed outline phase
+            setState(() {});
+          });
     _controller.repeat();
   }
 
@@ -51,7 +49,7 @@ class _BouncingBallsPageState extends State<BouncingBallsPage>
   void _initBallsIfNeeded() {
     if (_screenSize == null || _balls.isNotEmpty) return;
 
-  final size = _screenSize!;
+    final size = _screenSize!;
     _features = WelcomeFeature.values;
 
     for (int i = 0; i < _features.length; i++) {
@@ -60,7 +58,10 @@ class _BouncingBallsPageState extends State<BouncingBallsPage>
 
       // Place each feature at the percentage position defined in the enum
       final percent = _features[i].positionPercent;
-      final position = Offset(size.width * percent.dx, size.height * percent.dy);
+      final position = Offset(
+        size.width * percent.dx,
+        size.height * percent.dy,
+      );
 
       _balls.add(
         _Ball(
@@ -135,7 +136,7 @@ class _BouncingBallsPageState extends State<BouncingBallsPage>
                     ),
                   ),
                 );
-              }).toList(),
+              }),
 
               // centered circular button on top of the painted center circle
               Center(
@@ -150,9 +151,9 @@ class _BouncingBallsPageState extends State<BouncingBallsPage>
                       side: BorderSide(color: widget.color, width: 2),
                     ),
                     onPressed: () {
-                      try {
-                        context.read<PatientLoginCubit>().gotoAuth();
-                      } catch (_) {}
+                      // try {
+                      //   context.read<PatientLoginCubit>().gotoAuth();
+                      // } catch (_) {}
                     },
                     icon: Icon(Icons.play_circle_fill, size: 40),
                     label: Text(
@@ -166,11 +167,6 @@ class _BouncingBallsPageState extends State<BouncingBallsPage>
                   ),
                 ),
               ),
-              // Positioned(
-              //   bottom: 50,
-              //   width: MediaQuery.sizeOf(context).width,
-              //   child: LanguageButtonWidget2(cubitContext: context),
-              // ),
             ],
           ),
         );
@@ -196,10 +192,15 @@ class _Ball {
 }
 
 class _BallsPainter extends CustomPainter {
-  _BallsPainter({required this.balls, required this.centerRadius, this.dashPhase = 0.0});
+  _BallsPainter({
+    required this.balls,
+    required this.centerRadius,
+    this.dashPhase = 0.0,
+  });
 
   final List<_Ball> balls;
   final double centerRadius;
+
   /// Phase in range [0..1) used to rotate the dashed outline; 1.0 -> full turn
   final double dashPhase;
 

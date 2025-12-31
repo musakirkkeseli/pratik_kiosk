@@ -38,7 +38,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         children: [
           SizedBox(height: MediaQuery.paddingOf(context).top),
           _slider(context),
-          Expanded(child: BouncingBallsPage(color: context.primaryColor)),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                try {
+                  context.read<PatientLoginCubit>().gotoAuth();
+                } catch (_) {}
+              },
+              child: BouncingBallsPage(color: context.primaryColor),
+            ),
+          ),
           Padding(
             padding: EdgeInsetsGeometry.only(bottom: 50),
             child: LanguageButtonWidget2(cubitContext: context),
@@ -54,7 +63,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return BlocBuilder<PatientLoginCubit, PatientLoginState>(
       builder: (context, state) {
         final sliders = state.sliders;
-        
+
         // Slider yoksa varsayılan görseli göster
         if (sliders.isEmpty) {
           return Container(
@@ -69,7 +78,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         }
 
         // Backend'den gelen slider'ları göster
-        return Container(
+        return SizedBox(
           height: 200,
           width: double.infinity,
           child: PageView(
