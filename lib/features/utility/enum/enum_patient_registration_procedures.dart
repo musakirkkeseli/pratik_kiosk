@@ -13,7 +13,7 @@ import '../../../product/section/view/section_view.dart';
 enum EnumPatientRegistrationProcedures {
   section,
   doctor,
-  patientTransaction,
+  // patientTransaction,
   mandatory,
   price,
   payment;
@@ -24,8 +24,8 @@ enum EnumPatientRegistrationProcedures {
         return ConstantString().sectionSelection;
       case EnumPatientRegistrationProcedures.doctor:
         return ConstantString().selectDoctor;
-      case EnumPatientRegistrationProcedures.patientTransaction:
-        return ConstantString().patientTransaction;
+      // case EnumPatientRegistrationProcedures.patientTransaction:
+      //   return ConstantString().patientTransaction;
       case EnumPatientRegistrationProcedures.mandatory:
         return ConstantString().mandatoryFields;
       case EnumPatientRegistrationProcedures.price:
@@ -51,13 +51,12 @@ enum EnumPatientRegistrationProcedures {
         return SectionSearchView();
       case EnumPatientRegistrationProcedures.doctor:
         return DoctorSearchView(sectionId: model.branchId ?? "0");
-      case EnumPatientRegistrationProcedures.patientTransaction:
-        return PatientTransactionView();
+      // case EnumPatientRegistrationProcedures.patientTransaction:
+      //   return PatientTransactionView();
       case EnumPatientRegistrationProcedures.mandatory:
         return MandatoryView(
           mandatoryRequestModel: MandatoryRequestModel(
             assocationId: model.assocationId,
-            insuranceTypeId: model.insuredTypeId,
           ),
         );
       case EnumPatientRegistrationProcedures.price:
