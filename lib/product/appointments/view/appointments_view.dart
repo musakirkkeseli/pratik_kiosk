@@ -140,7 +140,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                                   arguments: {
                                     "startStep":
                                         EnumPatientRegistrationProcedures
-                                            .patientTransaction,
+                                            .mandatory,
                                     "model": PatientRegistrationProceduresModel(
                                       branchId: appointment.branchID,
                                       departmentId: appointment.departmentID,
