@@ -40,7 +40,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
   bool _isOpenVerifyPhoneNumberDialog = false;
   bool _isOpenWarningPhoneNumberDialog = false;
   final ValueNotifier<bool> _validateTc = ValueNotifier<bool>(true);
-  final ValueNotifier<bool> _validateBD = ValueNotifier<bool>(true);
+  // final ValueNotifier<bool> _validateBD = ValueNotifier<bool>(true);
   final ValueNotifier<bool> _validateOtp = ValueNotifier<bool>(true);
   final ValueNotifier<bool> _obscureTc = ValueNotifier<bool>(true);
 
@@ -297,60 +297,79 @@ class _PatientLoginViewState extends State<PatientLoginView> {
         );
       case PageType.register:
         return Column(
+          spacing: 40,
           children: [
-            const SizedBox(height: 40),
-            Text(ConstantString().enterYourBirthDate),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: ValueListenableBuilder(
-                    valueListenable: _validateBD,
-                    builder: (context, validateBDValue, child) {
-                      return CustomInputContainer(
-                        type: EnumTextformfield.birthday,
-                        currentValue: state.birthDate,
-                        isValid: validateBDValue,
-                        errorMessage:
-                            ConstantString().pleaseEnterValidBirthDate,
-                        child: Text(
-                          state.birthDate.isEmpty ? '' : state.birthDate,
-                          textAlign: TextAlign.center,
-                          style: context.birthDayLoginText,
-                        ),
-                      );
-                    },
-                  ),
+            Text(
+              ConstantString().pleaseProceedToPatientAdmission,
+              style: context.tcLoginText,
+            ),
+            Expanded(
+              child: Center(
+                child: Text(
+                  ConstantString().patientNotFound,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(color: ConstColor.grey700),
                 ),
-                if (state.birthDate.isNotEmpty) const SizedBox(width: 10),
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).size.height * 0.11 / 2 - 18,
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      _validateBD.value = true;
-                      cubitContext.read<PatientLoginCubit>().clearBirthDate();
-                    },
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: ConstColor.red.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        size: 20,
-                        color: ConstColor.red,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         );
+      // return Column(
+      //   children: [
+      //     const SizedBox(height: 40),
+      //     Text(ConstantString().enterYourBirthDate),
+      //     Row(
+      //       crossAxisAlignment: CrossAxisAlignment.end,
+      //       children: [
+      //         Expanded(
+      //           child: ValueListenableBuilder(
+      //             valueListenable: _validateBD,
+      //             builder: (context, validateBDValue, child) {
+      //               return CustomInputContainer(
+      //                 type: EnumTextformfield.birthday,
+      //                 currentValue: state.birthDate,
+      //                 isValid: validateBDValue,
+      //                 errorMessage:
+      //                     ConstantString().pleaseEnterValidBirthDate,
+      //                 child: Text(
+      //                   state.birthDate.isEmpty ? '' : state.birthDate,
+      //                   textAlign: TextAlign.center,
+      //                   style: context.birthDayLoginText,
+      //                 ),
+      //               );
+      //             },
+      //           ),
+      //         ),
+      //         if (state.birthDate.isNotEmpty) const SizedBox(width: 10),
+      //         Padding(
+      //           padding: EdgeInsets.only(
+      //             bottom: MediaQuery.of(context).size.height * 0.11 / 2 - 18,
+      //           ),
+      //           child: InkWell(
+      //             onTap: () {
+      //               _validateBD.value = true;
+      //               cubitContext.read<PatientLoginCubit>().clearBirthDate();
+      //             },
+      //             borderRadius: BorderRadius.circular(20),
+      //             child: Container(
+      //               padding: const EdgeInsets.all(8),
+      //               decoration: BoxDecoration(
+      //                 color: ConstColor.red.withOpacity(0.1),
+      //                 shape: BoxShape.circle,
+      //               ),
+      //               child: const Icon(
+      //                 Icons.close,
+      //                 size: 20,
+      //                 color: ConstColor.red,
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ],
+      // );
       case PageType.verifySms:
         return Column(
           children: [
@@ -426,6 +445,7 @@ class _PatientLoginViewState extends State<PatientLoginView> {
 
   continueButton(BuildContext cubitContext, PatientLoginState state) {
     Function()? onPressed;
+    String label = ConstantString().continueLabel;
     switch (state.pageType) {
       case PageType.verifySms:
         onPressed = () {
@@ -455,32 +475,36 @@ class _PatientLoginViewState extends State<PatientLoginView> {
         };
         break;
       case PageType.register:
+        label = ConstantString().backToTop;
         onPressed = () {
-          if (state.birthDate.length != 10) {
-            _validateBD.value = false;
-            SnackbarService().showSnackBar(
-              ConstantString().pleaseEnterValidBirthDate,
-            );
-          } else {
-            final birthDateError = EnumTextformfieldExtension.validateBirthDate(
-              state.birthDate,
-            );
-            if (birthDateError != null) {
-              _validateBD.value = false;
-              SnackbarService().showSnackBar(birthDateError);
-            } else {
-              _validateBD.value = true;
-              cubitContext.read<PatientLoginCubit>().userRegister();
-            }
-          }
+          _clean(cubitContext);
         };
+        // () {
+        //   if (state.birthDate.length != 10) {
+        //     _validateBD.value = false;
+        //     SnackbarService().showSnackBar(
+        //       ConstantString().pleaseEnterValidBirthDate,
+        //     );
+        //   } else {
+        //     final birthDateError = EnumTextformfieldExtension.validateBirthDate(
+        //       state.birthDate,
+        //     );
+        //     if (birthDateError != null) {
+        //       _validateBD.value = false;
+        //       SnackbarService().showSnackBar(birthDateError);
+        //     } else {
+        //       _validateBD.value = true;
+        //       cubitContext.read<PatientLoginCubit>().userRegister();
+        //     }
+        //   }
+        // };
         break;
     }
 
     return CustomButton(
       height: MediaQuery.of(context).size.height * 0.07,
       width: MediaQuery.sizeOf(context).width * .5,
-      label: ConstantString().continueLabel,
+      label: label,
       onPressed: onPressed,
     );
   }
