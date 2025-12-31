@@ -11,10 +11,8 @@ class MandatoryService extends IMandatoryService {
     MandatoryRequestModel request,
   ) async {
     return http.requestList<MandatoryResponseModel>(
-      requestFunction: () => http.post(
-        listMandatoryPath,
-        data: request.toJson(),
-      ),
+      requestFunction: () =>
+          http.post(listMandatoryPath, data: request.toJson()),
       fromJson: (json) => MandatoryResponseModel.fromJson(json),
     );
   }
