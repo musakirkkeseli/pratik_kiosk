@@ -5,7 +5,6 @@ import '../../../product/ patient_registration_procedures/model/patient_registra
 import '../../../product/doctor/view/doctors_view.dart';
 import '../../../product/mandatory/model/mandatory_request_model.dart';
 import '../../../product/mandatory/view/mandatory_view.dart';
-import '../../../product/patient_transaction/view/patient_transaction_view.dart';
 import '../../../product/payment_screen/view/payment_view.dart';
 import '../../../product/price_details/view/price_details_view.dart';
 import '../../../product/section/view/section_view.dart';
