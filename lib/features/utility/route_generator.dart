@@ -4,7 +4,6 @@ import 'package:kiosk/product/appointments/view/appointments_view.dart';
 import '../../core/widget/login_aware_widget.dart';
 import '../../product/ patient_registration_procedures/view/patient_registration_procedures_view.dart';
 import '../../product/doctor/view/doctors_view.dart';
-import '../../product/patient_transaction/view/patient_transaction_view.dart';
 import '../../product/section/view/section_view.dart';
 
 class RouteGenerator {
@@ -43,11 +42,11 @@ class RouteGenerator {
           ),
           settings: RouteSettings(name: settings.name),
         );
-      case "PatientTransactionView":
-        return MaterialPageRoute(
-          builder: (context) => PatientTransactionView(),
-          settings: RouteSettings(name: settings.name),
-        );
+      // case "PatientTransactionView":
+      //   return MaterialPageRoute(
+      //     builder: (context) => PatientTransactionView(),
+      //     settings: RouteSettings(name: settings.name),
+      //   );
       default:
         return MaterialPageRoute(
           builder: (context) => const Scaffold(),
