@@ -14,8 +14,7 @@ import '../../../features/utility/enum/enum_payment_result_type.dart';
 import '../../appointments/model/appointments_model.dart';
 import '../../doctor/model/doctor_model.dart';
 import '../../../features/model/patient_mandatory_model.dart';
-import '../../patient_transaction/model/association_model.dart';
-import '../../patient_transaction/model/insurance_model.dart';
+import '../model/association_model.dart';
 import '../../section/model/section_model.dart';
 import '../model/patient_registration_procedures_request_model.dart';
 import '../model/patient_transaction_create_request_model.dart';
@@ -132,8 +131,8 @@ class PatientRegistrationProceduresCubit
       emit(
         state.copyWith(
           model: updatedModel,
-          currentStep: EnumPatientRegistrationProcedures.patientTransaction,
-          startStep: EnumPatientRegistrationProcedures.patientTransaction,
+          currentStep: EnumPatientRegistrationProcedures.mandatory,
+          startStep: EnumPatientRegistrationProcedures.mandatory,
         ),
       );
     }
@@ -152,46 +151,68 @@ class PatientRegistrationProceduresCubit
       updatedModel.doctorName = section.doctorName;
       emit(state.copyWith(model: updatedModel));
       _trackButton('select_doctor');
-      nextStep();
+      fetchAssociations();
     }
   }
 
-  void selectAssociation(AssocationModel section) {
-    if (section.assocationId != null && section.assocationName != null) {
-      final updatedModel = state.model;
-      updatedModel.assocationId = section.assocationId ?? "";
-      updatedModel.assocationName = section.assocationName;
-      updatedModel.gssAssocationId = section.gssAssocationId ?? "";
-      emit(state.copyWith(model: updatedModel));
-      _trackButton(
-        'select_association',
-        extra: {
-          'association_id': section.assocationId,
-          'association_name': section.assocationName,
-        },
+  Future<void> fetchAssociations() async {
+    safeEmit(state.copyWith(status: EnumGeneralStateStatus.loading));
+    try {
+      final res = await service.getAssociationList();
+      if (res.success == true && res.data is List<AssocationModel>) {
+        _log.d("patient: $res");
+        if ((res.data ?? []).length == 1) {
+          final section = res.data![0];
+          if (section.assocationId != null && section.assocationName != null) {
+            final updatedModel = state.model;
+            updatedModel.assocationId = section.assocationId ?? "";
+            updatedModel.assocationName = section.assocationName;
+            updatedModel.gssAssocationId = section.gssAssocationId ?? "";
+            emit(
+              state.copyWith(
+                status: EnumGeneralStateStatus.success,
+                model: updatedModel,
+              ),
+            );
+            _trackButton(
+              'select_association',
+              extra: {
+                'association_id': section.assocationId,
+                'association_name': section.assocationName,
+              },
+            );
+            nextStep();
+          }
+        } else {
+          safeEmit(
+            state.copyWith(
+              status: EnumGeneralStateStatus.failure,
+              message: "Sigorta türünüz bulunamadı.",
+            ),
+          );
+        }
+      } else {
+        safeEmit(
+          state.copyWith(
+            status: EnumGeneralStateStatus.failure,
+            message: res.message,
+          ),
+        );
+      }
+    } on NetworkException catch (e) {
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: e.message,
+        ),
       );
-      nextStep();
-    }
-  }
-
-  void selectAssociationWithInsurance(
-    AssocationModel section,
-    InsuranceModel insurance,
-  ) {
-    if (section.assocationId != null && section.assocationName != null) {
-      final updatedModel = state.model;
-      updatedModel.assocationId = section.assocationId ?? "";
-      updatedModel.assocationName = section.assocationName;
-      updatedModel.gssAssocationId = section.gssAssocationId ?? "";
-      emit(state.copyWith(model: updatedModel));
-      _trackButton(
-        'select_association_with_insurance',
-        extra: {
-          'association_id': section.assocationId,
-          'insurance_type_id': insurance.insuredTypeId,
-        },
+    } catch (e) {
+      safeEmit(
+        state.copyWith(
+          status: EnumGeneralStateStatus.failure,
+          message: ConstantString().errorOccurred,
+        ),
       );
-      nextStep();
     }
   }
 
@@ -532,11 +553,11 @@ class PatientRegistrationProceduresCubit
         model.branchName = null;
         emit(state.copyWith(model: model));
         break;
-      case EnumPatientRegistrationProcedures.patientTransaction:
-        model.doctorId = null;
-        model.doctorName = null;
-        emit(state.copyWith(model: model));
-        break;
+      // case EnumPatientRegistrationProcedures.patientTransaction:
+      //   model.doctorId = null;
+      //   model.doctorName = null;
+      //   emit(state.copyWith(model: model));
+      //   break;
       case EnumPatientRegistrationProcedures.payment:
         model.assocationId = null;
         model.assocationName = null;
@@ -545,6 +566,8 @@ class PatientRegistrationProceduresCubit
       case EnumPatientRegistrationProcedures.mandatory:
         model.assocationId = null;
         model.assocationName = null;
+        model.doctorId = null;
+        model.doctorName = null;
         emit(state.copyWith(model: model));
         break;
       case EnumPatientRegistrationProcedures.price:

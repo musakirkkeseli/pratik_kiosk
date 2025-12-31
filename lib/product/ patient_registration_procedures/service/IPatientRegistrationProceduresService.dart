@@ -1,8 +1,10 @@
 import '../../../core/utility/http_service.dart';
+import '../../../features/model/api_list_response_model.dart';
 import '../../../features/model/api_response_model.dart';
 import '../../../features/model/empty_response.dart';
 import '../../../features/model/patient_price_detail_model.dart';
 import '../../appointments/model/appointments_model.dart';
+import '../model/association_model.dart';
 import '../model/patient_transaction_create_request_model.dart';
 import '../model/patient_transaction_create_response_model.dart';
 import '../model/patient_transaction_revenue_response_model.dart';
@@ -12,6 +14,8 @@ abstract class IPatientRegistrationProceduresService {
 
   IPatientRegistrationProceduresService(this.http);
 
+  final String associationListPath =
+      IPatientRegistrationProceduresServicePath.associationList.rawValue;
   final String patientTransactionCreatePath =
       IPatientRegistrationProceduresServicePath
           .patientTransactionCreate
@@ -31,6 +35,7 @@ abstract class IPatientRegistrationProceduresService {
   final String appointmentByBranchPath =
       IPatientRegistrationProceduresServicePath.appointmentByBranch.rawValue;
 
+  Future<ApiListResponse<AssocationModel>> getAssociationList();
   Future<ApiResponse<PatientTransactionCreateResponseModel>>
   postPatientTransactionCreate(PatientTransactionCreateRequestModel request);
   Future<ApiResponse<PatientTransactionRevenueResponseModel>>
@@ -46,6 +51,7 @@ abstract class IPatientRegistrationProceduresService {
 }
 
 enum IPatientRegistrationProceduresServicePath {
+  associationList,
   patientTransactionCreate,
   patientTransactionRevenue,
   patientTransactionCancel,
@@ -59,6 +65,8 @@ extension IMandatoryServicePathExtension
   String get rawValue {
     final root = '/patient-transaction';
     switch (this) {
+      case IPatientRegistrationProceduresServicePath.associationList:
+        return '/patient-transaction/associations';
       case IPatientRegistrationProceduresServicePath.patientTransactionCreate:
         return '$root/create';
       case IPatientRegistrationProceduresServicePath.patientTransactionRevenue:

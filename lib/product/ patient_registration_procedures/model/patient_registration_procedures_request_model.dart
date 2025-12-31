@@ -11,8 +11,6 @@ class PatientRegistrationProceduresModel {
   String? assocationId;
   String? assocationName;
   String? gssAssocationId;
-  String? insuredTypeId;
-  String? insuredTypeName;
   String? patientId;
   String? patientTransactionId;
   PatientTransactionDetailsResponseModel? patientPriceDetailModel;
@@ -29,8 +27,6 @@ class PatientRegistrationProceduresModel {
     this.assocationId,
     this.assocationName,
     this.gssAssocationId,
-    this.insuredTypeId,
-    this.insuredTypeName,
     this.patientId,
     this.patientTransactionId,
     this.patientPriceDetailModel,
