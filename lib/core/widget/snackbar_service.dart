@@ -14,7 +14,7 @@ class SnackbarService {
   GlobalKey<ScaffoldMessengerState> get key => _scaffoldMessengerKey;
 
   // Public method to show SnackBar
-  void showSnackBar(String message, {Duration duration = const Duration(seconds: 3)}) {
+  void showSnackBar(String message, {Duration duration = const Duration(seconds: 5)}) {
     final messenger = _scaffoldMessengerKey.currentState;
     if (messenger != null) {
       messenger.showSnackBar(
