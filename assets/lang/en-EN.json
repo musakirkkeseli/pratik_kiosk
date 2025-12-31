@@ -116,7 +116,7 @@
   "cancelAndSelectAnotherSection": "Cancel and Select Another Section",
   "enterYourBirthDate": "Enter Your Birth Date",
   "pleaseEnterValidBirthDate": "Please enter a valid birth date",
-  "filledFieldInfo":"To change existing information, please apply to patient admission. You can complete missing information.",
+  "filledFieldInfo": "To change existing information, please apply to patient admission. You can complete missing information.",
   "amountPaid": "Amount Paid",
   "creditCard": "Credit Card",
   "paymentMethod": "Payment Method",
@@ -134,6 +134,7 @@
   "success": "Success",
   "ok": "OK",
   "appointmentSuccessfullyBooked": "Your appointment has been successfully booked!",
-  "error": "Error"
-
+  "error": "Error",
+  "patientNotFound": "Patient not found in the Hospital Registration System. Please apply to Patient Admission.",
+  "profDrRecords": "For Prof. Dr. records, please apply to Patient Admission."
 }

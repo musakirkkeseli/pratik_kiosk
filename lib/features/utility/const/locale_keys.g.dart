@@ -142,4 +142,6 @@ abstract class LocaleKeys {
   static const ok = 'ok';
   static const appointmentSuccessfullyBooked = 'appointmentSuccessfullyBooked';
   static const error = 'error';
+  static const patientNotFound = 'patientNotFound';
+  static const profDrRecords = 'profDrRecords';
 }

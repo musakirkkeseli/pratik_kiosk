@@ -134,7 +134,7 @@
   "success": "Başarılı",
   "ok": "Tamam",
   "appointmentSuccessfullyBooked": "Randevunuz başarıyla alındı!",
-  "error": "Hata"
-
-
+  "error": "Hata",
+  "patientNotFound": "Hastane Kayıt Sisteminde kaydınız bulunamadı. Lütfen Hasta Kabul'de müracaat ediniz.",
+  "profDrRecords": "Prof. Dr. kayıtları için lütfen hasta kabule başvurunuz."
 }

@@ -193,5 +193,7 @@ class ConstantString {
   String ok = LocaleKeys.ok.locale;
   String appointmentBookedMessage =
       LocaleKeys.appointmentSuccessfullyBooked.locale;
-      String error = LocaleKeys.error.locale;
+  String error = LocaleKeys.error.locale;
+  String patientNotFound = LocaleKeys.patientNotFound.locale;
+  String profDrRecords = LocaleKeys.profDrRecords.locale;
 }
