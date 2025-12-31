@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/features/utility/const/constant_string.dart';
+import 'package:mylog/mylog.dart';
 
 import '../../../features/utility/const/constant_color.dart';
 import '../../../features/utility/enum/enum_general_state_status.dart';
 import '../../../features/utility/navigation_service.dart';
 import '../../../features/utility/user_http_service.dart';
-import '../../../features/widget/custom_appbar.dart';
 import '../cubit/appointment_slot_cubit.dart';
 import '../service/makeAppointmentServices.dart';
 import 'widget/appointment_slot_body_widget.dart';
@@ -37,13 +37,17 @@ class AppointmentSlotView extends StatelessWidget {
       )..fetchEmptySlots(),
       child: BlocConsumer<AppointmentSlotCubit, AppointmentSlotState>(
         listenWhen: (previous, current) {
-          print('\n========== LISTEN WHEN ==========');
-          print('Previous status: ${previous.status}');
-          print('Current status: ${current.status}');
-          print('Previous appointmentBooked: ${previous.appointmentBooked}');
-          print('Current appointmentBooked: ${current.appointmentBooked}');
-          print('Previous appointmentId: ${previous.appointmentId}');
-          print('Current appointmentId: ${current.appointmentId}');
+          MyLog.debug('\n========== LISTEN WHEN ==========');
+          MyLog.debug('Previous status: ${previous.status}');
+          MyLog.debug('Current status: ${current.status}');
+          MyLog.debug(
+            'Previous appointmentBooked: ${previous.appointmentBooked}',
+          );
+          MyLog.debug(
+            'Current appointmentBooked: ${current.appointmentBooked}',
+          );
+          MyLog.debug('Previous appointmentId: ${previous.appointmentId}');
+          MyLog.debug('Current appointmentId: ${current.appointmentId}');
 
           // appointmentBooked flag'ini kontrol et veya failure durumu
           final shouldListen =
@@ -62,10 +66,7 @@ class AppointmentSlotView extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(130),
-              child: CustomAppBar(),
-            ),
+            appBar: AppBar(title: Text(ConstantString().takeAppointment)),
             body: AppointmentSlotBodyWidget(
               doctorName: doctorName,
               departmentName: departmentName,

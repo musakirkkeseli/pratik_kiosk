@@ -22,30 +22,31 @@ class AppointmentSlotBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasSelectedSlot = state.selectedSlotId != null && state.selectedSlotId!.isNotEmpty;
-    
+    final hasSelectedSlot =
+        state.selectedSlotId != null && state.selectedSlotId!.isNotEmpty;
+
     return Column(
       children: [
         // Geri Butonu
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.arrow_back, size: 32),
-              style: IconButton.styleFrom(
-                backgroundColor: ConstColor.grey200,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-          ),
-        ),
-        
+        // Padding(
+        //   padding: const EdgeInsets.all(16),
+        //   child: Align(
+        //     alignment: Alignment.centerLeft,
+        //     child: IconButton(
+        //       onPressed: () => Navigator.of(context).pop(),
+        //       icon: const Icon(Icons.arrow_back, size: 32),
+        //       style: IconButton.styleFrom(
+        //         backgroundColor: ConstColor.grey200,
+        //         shape: RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.circular(8),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
         Container(
           padding: const EdgeInsets.all(20),
+          margin: EdgeInsets.symmetric(vertical: 20),
           color: Theme.of(context).primaryColor.withOpacity(0.1),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,10 +63,7 @@ class AppointmentSlotBodyWidget extends StatelessWidget {
             ],
           ),
         ),
-
         Expanded(child: _buildSlotsList(context)),
-        
-        // Randevu Al Butonu
         if (state.slots != null && state.slots!.isNotEmpty)
           Container(
             padding: const EdgeInsets.all(20),
@@ -88,7 +86,9 @@ class AppointmentSlotBodyWidget extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: hasSelectedSlot ? ConstColor.white : Theme.of(context).primaryColor,
+                  color: hasSelectedSlot
+                      ? ConstColor.white
+                      : Theme.of(context).primaryColor,
                 ),
               ),
             ),
@@ -164,43 +164,26 @@ class AppointmentSlotBodyWidget extends StatelessWidget {
 
   void _showConfirmDialog(BuildContext context) {
     final cubit = context.read<AppointmentSlotCubit>();
-    
+
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
           ConstantString().confirm,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildInfoRow(
-              ConstantString().doctorName,
-              doctorName,
-            ),
+            _buildInfoRow(ConstantString().doctorName, doctorName),
             const SizedBox(height: 12),
-            _buildInfoRow(
-              ConstantString().sectionName,
-              departmentName,
-            ),
+            _buildInfoRow(ConstantString().sectionName, departmentName),
             const SizedBox(height: 12),
-            _buildInfoRow(
-              ConstantString().date,
-              cubit.selectedDate ?? '',
-            ),
+            _buildInfoRow(ConstantString().date, cubit.selectedDate ?? ''),
             const SizedBox(height: 12),
-            _buildInfoRow(
-              ConstantString().time,
-              cubit.selectedTime ?? '',
-            ),
+            _buildInfoRow(ConstantString().time, cubit.selectedTime ?? ''),
           ],
         ),
         actions: [
@@ -217,10 +200,7 @@ class AppointmentSlotBodyWidget extends StatelessWidget {
               cubit.confirmAppointment();
             },
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 12,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -241,19 +221,13 @@ class AppointmentSlotBodyWidget extends StatelessWidget {
       children: [
         Text(
           '$label:',
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             value,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             textAlign: TextAlign.end,
           ),
         ),
