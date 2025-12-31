@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiosk/core/utility/logger_service.dart';
+import 'package:kiosk/features/utility/const/constant_string.dart';
 
 import '../../../ patient_registration_procedures/cubit/patient_registration_procedures_cubit.dart';
+import '../../../../core/widget/snackbar_service.dart';
 import '../../../../features/widget/item_button.dart';
 import '../../../make_appointment/view/appointment_slot_view.dart';
 import '../../model/doctor_model.dart';
@@ -25,7 +27,7 @@ class DoctorListTileWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         DoctorItems doctor = doctorItemList[index];
         return ItemButton(
-          title: doctor.doctorName ?? "",
+          title: "${doctor.doctorTitle} ${doctor.doctorName}",
           onTap: () {
             if (isAppointment) {
               MyLog.debug(
@@ -43,9 +45,13 @@ class DoctorListTileWidget extends StatelessWidget {
                 ),
               );
             } else {
-              context.read<PatientRegistrationProceduresCubit>().selectDoctor(
-                doctor,
-              );
+              if (doctor.doctorTitle == "Prof. Dr.") {
+                SnackbarService().showSnackBar(ConstantString().profDrRecords);
+              } else {
+                context.read<PatientRegistrationProceduresCubit>().selectDoctor(
+                  doctor,
+                );
+              }
             }
           },
         );
